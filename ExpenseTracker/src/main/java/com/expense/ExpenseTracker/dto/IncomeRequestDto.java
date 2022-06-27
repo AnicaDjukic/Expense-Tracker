@@ -1,7 +1,10 @@
 package com.expense.ExpenseTracker.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class IncomeRequestDto {
 
+    @NotBlank
     private String description;
 
     private double amount;

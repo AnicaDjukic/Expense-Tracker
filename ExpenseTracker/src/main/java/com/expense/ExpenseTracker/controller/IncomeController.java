@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class IncomeController {
     }
 
     @PostMapping
-    public ResponseEntity<IncomeRequestDto> create(@RequestBody IncomeRequestDto newDto) {
+    public ResponseEntity<IncomeRequestDto> create(@RequestBody @Valid IncomeRequestDto newDto) {
         Income income = new Income(newDto.getDescription(), newDto.getAmount());
         Income savedIncome = incomeService.addNew(income);
         return new ResponseEntity(new ExpenseResponseDto(savedIncome.getId(), savedIncome.getDescription(), savedIncome.getAmount()), HttpStatus.CREATED);
@@ -50,7 +51,7 @@ public class IncomeController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<IncomeResponseDto> update(@PathVariable Long id, @RequestBody IncomeRequestDto updateDto) {
+    public ResponseEntity<IncomeResponseDto> update(@PathVariable Long id, @RequestBody @Valid IncomeRequestDto updateDto) {
         try {
             Income updatedIncome = incomeService.update(id, updateDto);
             return ResponseEntity.ok(new IncomeResponseDto(updatedIncome.getId(), updatedIncome.getDescription(), updatedIncome.getAmount()));

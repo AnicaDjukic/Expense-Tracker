@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class ExpenseGroupController {
     }
 
     @PostMapping
-    public ResponseEntity<ExpenseGroupResponseDto> create(@RequestBody ExpenseGroupRequestDto newExpenseGroupDto) {
+    public ResponseEntity<ExpenseGroupResponseDto> create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto) {
         ExpenseGroup expenseGroup = new ExpenseGroup(newExpenseGroupDto.getName(), newExpenseGroupDto.getDescription());
         ExpenseGroup savedExpenseGroup = expenseGroupService.addNew(expenseGroup);
         return new ResponseEntity(new ExpenseGroupResponseDto(savedExpenseGroup.getId(), savedExpenseGroup.getName(), savedExpenseGroup.getDescription()), HttpStatus.CREATED);
@@ -49,7 +50,7 @@ public class ExpenseGroupController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable Long id, @RequestBody ExpenseGroupRequestDto updateDto) {
+    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
         try {
             ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto);
             return ResponseEntity.ok(new ExpenseGroupResponseDto(updatedExpenseGroup.getId(), updatedExpenseGroup.getName(), updatedExpenseGroup.getDescription()));

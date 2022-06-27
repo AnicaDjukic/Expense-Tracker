@@ -2,7 +2,7 @@ package com.expense.ExpenseTracker.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class ExpenseGroupRequestDto {
+public class IncomeGroupRequestDto {
 
     @NotBlank
     private String name;
@@ -10,10 +10,10 @@ public class ExpenseGroupRequestDto {
     @NotBlank
     private String description;
 
-    public ExpenseGroupRequestDto() {
+    public IncomeGroupRequestDto() {
     }
 
-    public ExpenseGroupRequestDto(String name, String description) {
+    public IncomeGroupRequestDto(String name, String description) {
         this.name = name;
         this.description = description;
     }

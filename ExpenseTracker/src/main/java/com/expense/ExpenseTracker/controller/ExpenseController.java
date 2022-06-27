@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<ExpenseResponseDto> create(@RequestBody ExpenseRequestDto newExpenseDto) {
+    public ResponseEntity<ExpenseResponseDto> create(@RequestBody @Valid ExpenseRequestDto newExpenseDto) {
         Expense expense = new Expense(newExpenseDto.getDescription(), newExpenseDto.getAmount());
         Expense savedExpense = expenseService.addNew(expense);
         return new ResponseEntity(new ExpenseResponseDto(savedExpense.getId(), savedExpense.getDescription(), savedExpense.getAmount()), HttpStatus.CREATED);
@@ -49,7 +50,7 @@ public class ExpenseController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ExpenseResponseDto> update(@PathVariable Long id, @RequestBody ExpenseRequestDto updateDto) {
+    public ResponseEntity<ExpenseResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseRequestDto updateDto) {
         try {
             Expense updatedExpense = expenseService.update(id, updateDto);
             return ResponseEntity.ok(new ExpenseResponseDto(updatedExpense.getId(), updatedExpense.getDescription(), updatedExpense.getAmount()));

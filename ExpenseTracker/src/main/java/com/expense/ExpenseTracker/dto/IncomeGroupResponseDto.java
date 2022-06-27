@@ -1,21 +1,24 @@
 package com.expense.ExpenseTracker.dto;
 
-import javax.validation.constraints.NotBlank;
+public class IncomeGroupResponseDto {
 
-public class ExpenseGroupRequestDto {
+    private Long id;
 
-    @NotBlank
     private String name;
 
-    @NotBlank
     private String description;
 
-    public ExpenseGroupRequestDto() {
+    public IncomeGroupResponseDto() {
     }
 
-    public ExpenseGroupRequestDto(String name, String description) {
+    public IncomeGroupResponseDto(Long id, String name, String description) {
+        this.id = id;
         this.name = name;
         this.description = description;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
