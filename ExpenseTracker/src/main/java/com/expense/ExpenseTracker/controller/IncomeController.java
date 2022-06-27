@@ -1,11 +1,9 @@
 package com.expense.ExpenseTracker.controller;
 
 import com.expense.ExpenseTracker.dto.IncomeRequestDto;
-import com.expense.ExpenseTracker.dto.ExpenseRequestDto;
 import com.expense.ExpenseTracker.dto.ExpenseResponseDto;
 import com.expense.ExpenseTracker.dto.IncomeResponseDto;
 import com.expense.ExpenseTracker.exception.NotFoundException;
-import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.service.IncomeService;
 import org.springframework.http.HttpStatus;
