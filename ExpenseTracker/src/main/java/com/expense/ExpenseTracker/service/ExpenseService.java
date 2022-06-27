@@ -1,6 +1,6 @@
 package com.expense.ExpenseTracker.service;
 
-import com.expense.ExpenseTracker.dto.NewExpenseRequestDto;
+import com.expense.ExpenseTracker.dto.ExpenseRequestDto;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.repository.ExpenseRepository;
@@ -30,7 +30,7 @@ public class ExpenseService {
         return repository.findById(id);
     }
 
-    public Expense update(Long id, NewExpenseRequestDto updateDto) throws NotFoundException {
+    public Expense update(Long id, ExpenseRequestDto updateDto) throws NotFoundException {
         Expense expense = getById(id).orElseThrow(NotFoundException::new);
         expense.setDescription(updateDto.getDescription());
         expense.setAmount(updateDto.getAmount());
