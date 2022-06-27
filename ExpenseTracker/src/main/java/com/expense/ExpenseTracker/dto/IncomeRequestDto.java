@@ -1,24 +1,17 @@
 package com.expense.ExpenseTracker.dto;
 
-public class ExpenseDto {
-
-    private Long id;
+public class IncomeRequestDto {
 
     private String description;
 
     private double amount;
 
-    public ExpenseDto() {
+    public IncomeRequestDto() {
     }
 
-    public ExpenseDto(Long id, String description, double amount) {
-        this.id = id;
+    public IncomeRequestDto(String description, double amount) {
         this.description = description;
         this.amount = amount;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getDescription() {

@@ -1,6 +1,6 @@
 package com.expense.ExpenseTracker.dto;
 
-public class NewExpenseResponseDto {
+public class ExpenseResponseDto {
 
     private Long id;
 
@@ -8,10 +8,10 @@ public class NewExpenseResponseDto {
 
     private double amount;
 
-    public NewExpenseResponseDto() {
+    public ExpenseResponseDto() {
     }
 
-    public NewExpenseResponseDto(Long id, String description, double amount) {
+    public ExpenseResponseDto(Long id, String description, double amount) {
         this.id = id;
         this.description = description;
         this.amount = amount;

@@ -42,10 +42,6 @@ public class Expense {
         return expenseGroup;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }

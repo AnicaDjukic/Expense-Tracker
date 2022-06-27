@@ -27,6 +27,10 @@ public class Income {
         this.incomeGroup = incomeGroup;
     }
 
+    public Income(String description, double amount) {
+        this.description = description;
+        this.amount = amount;
+    }
 
     public Long getId() {
         return id;
@@ -38,6 +42,18 @@ public class Income {
 
     public double getAmount() {
         return amount;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setIncomeGroup(IncomeGroup incomeGroup) {
+        this.incomeGroup = incomeGroup;
     }
 
     public IncomeGroup getIncomeGroup() {
