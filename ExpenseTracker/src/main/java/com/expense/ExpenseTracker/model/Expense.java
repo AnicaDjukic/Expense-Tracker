@@ -1,17 +1,17 @@
 package com.expense.ExpenseTracker.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Expense {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int amount;
+    private String description;
+
+    private double amount;
 
     @ManyToOne
     @JoinColumn
@@ -21,21 +21,40 @@ public class Expense {
 
     }
 
-    public Expense(int amount, ExpenseGroup expenseGroup) {
+    public Expense(String description, double amount) {
+        this.description = description;
         this.amount = amount;
-        this.expenseGroup = expenseGroup;
     }
-
 
     public Long getId() {
         return id;
     }
 
-    public int getAmount() {
+    public String getDescription() {
+        return description;
+    }
+
+    public double getAmount() {
         return amount;
     }
 
     public ExpenseGroup getExpenseGroup() {
         return expenseGroup;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setExpenseGroup(ExpenseGroup expenseGroup) {
+        this.expenseGroup = expenseGroup;
     }
 }
