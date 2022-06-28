@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -23,12 +24,10 @@ public class Expense {
     private double amount;
 
     @Setter
+    private Date creationTime;
+
+    @Setter
     @ManyToOne
     @JoinColumn
     private ExpenseGroup expenseGroup;
-
-    public Expense(String description, double amount) {
-        this.description = description;
-        this.amount = amount;
-    }
 }

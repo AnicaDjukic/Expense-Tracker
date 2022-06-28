@@ -20,5 +20,7 @@ public class ExpenseResponseDto {
 
     private double amount;
 
-    private ExpenseGroup expenseGroup;
+    private ExpenseGroupViewDto expenseGroup;
+
+    private String creationTime;
 }

@@ -6,6 +6,7 @@ import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +23,7 @@ public class ExpenseService {
     }
 
     public Expense addNew(Expense expense, UUID expenseGroupId) throws NotFoundException {
+        expense.setCreationTime(new Date());
         expense.setExpenseGroup(expenseGroupService.getById(expenseGroupId));
         return repository.save(expense);
     }
@@ -38,6 +40,7 @@ public class ExpenseService {
         Expense expense = repository.findById(id).orElseThrow(NotFoundException::new);
         expense.setDescription(updateDto.getDescription());
         expense.setAmount(updateDto.getAmount());
+        expense.setExpenseGroup(expenseGroupService.getById(updateDto.getExpenseGroupId()));
         return repository.save(expense);
     }
 
