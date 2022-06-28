@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/income-groups")
@@ -44,31 +43,21 @@ public class IncomeGroupController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<IncomeGroupResponseDto> getById(@PathVariable Long id) {
-        Optional<IncomeGroup> incomeGroup = incomeGroupService.getById(id);
-        if(incomeGroup.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new IncomeGroupResponseDto(incomeGroup.get().getId(), incomeGroup.get().getName(), incomeGroup.get().getDescription()));
+    public ResponseEntity<IncomeGroupResponseDto> getById(@PathVariable Long id) throws NotFoundException {
+        IncomeGroup incomeGroup = incomeGroupService.getById(id);
+        return ResponseEntity.ok(new IncomeGroupResponseDto(incomeGroup.getId(), incomeGroup.getName(), incomeGroup.getDescription()));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
-        try {
-            IncomeGroup updatedIncomeGroup = incomeGroupService.update(id, updateDto);
-            return ResponseEntity.ok(new ExpenseGroupResponseDto(updatedIncomeGroup.getId(), updatedIncomeGroup.getName(), updatedIncomeGroup.getDescription()));
-        } catch (NotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) throws NotFoundException {
+        IncomeGroup updatedIncomeGroup = incomeGroupService.update(id, updateDto);
+        return ResponseEntity.ok(new ExpenseGroupResponseDto(updatedIncomeGroup.getId(), updatedIncomeGroup.getName(), updatedIncomeGroup.getDescription()));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
-        try {
-            incomeGroupService.deleteById(id);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity delete(@PathVariable Long id) throws NotFoundException {
+        incomeGroupService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/expense-groups")
@@ -42,30 +41,20 @@ public class ExpenseGroupController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ExpenseGroupResponseDto> getById(@PathVariable Long id) {
-        Optional<ExpenseGroup> expenseGroup = expenseGroupService.getById(id);
-        if(expenseGroup.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new ExpenseGroupResponseDto(expenseGroup.get().getId(), expenseGroup.get().getName(), expenseGroup.get().getDescription()));
+    public ResponseEntity<ExpenseGroupResponseDto> getById(@PathVariable Long id) throws NotFoundException {
+        ExpenseGroup expenseGroup = expenseGroupService.getById(id);
+        return ResponseEntity.ok(new ExpenseGroupResponseDto(expenseGroup.getId(), expenseGroup.getName(), expenseGroup.getDescription()));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
-        try {
-            ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto);
-            return ResponseEntity.ok(new ExpenseGroupResponseDto(updatedExpenseGroup.getId(), updatedExpenseGroup.getName(), updatedExpenseGroup.getDescription()));
-        } catch (NotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) throws NotFoundException {
+        ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto);
+        return ResponseEntity.ok(new ExpenseGroupResponseDto(updatedExpenseGroup.getId(), updatedExpenseGroup.getName(), updatedExpenseGroup.getDescription()));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
-        try {
-            expenseGroupService.deleteById(id);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity delete(@PathVariable Long id) throws NotFoundException {
+        expenseGroupService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

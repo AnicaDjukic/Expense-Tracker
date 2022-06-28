@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/expenses")
@@ -42,31 +41,21 @@ public class ExpenseController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ExpenseResponseDto> getById(@PathVariable Long id) {
-        Optional<Expense> expense = expenseService.getById(id);
-        if(expense.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new ExpenseResponseDto(expense.get().getId(), expense.get().getDescription(), expense.get().getAmount()));
+    public ResponseEntity<ExpenseResponseDto> getById(@PathVariable Long id) throws NotFoundException {
+        Expense expense = expenseService.getById(id);
+        return ResponseEntity.ok(new ExpenseResponseDto(expense.getId(), expense.getDescription(), expense.getAmount()));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ExpenseResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseRequestDto updateDto) {
-        try {
-            Expense updatedExpense = expenseService.update(id, updateDto);
-            return ResponseEntity.ok(new ExpenseResponseDto(updatedExpense.getId(), updatedExpense.getDescription(), updatedExpense.getAmount()));
-        } catch (NotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ExpenseResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseRequestDto updateDto) throws NotFoundException {
+        Expense updatedExpense = expenseService.update(id, updateDto);
+        return ResponseEntity.ok(new ExpenseResponseDto(updatedExpense.getId(), updatedExpense.getDescription(), updatedExpense.getAmount()));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
-       try {
-           expenseService.deleteById(id);
-           return ResponseEntity.ok().build();
-       } catch (NotFoundException ex) {
-           return ResponseEntity.notFound().build();
-       }
+    public ResponseEntity delete(@PathVariable Long id) throws NotFoundException {
+        expenseService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
 }

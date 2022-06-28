@@ -43,30 +43,20 @@ public class IncomeController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<IncomeResponseDto> getById(@PathVariable Long id) {
-        Optional<Income> income = incomeService.getById(id);
-        if(income.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new IncomeResponseDto(income.get().getId(), income.get().getDescription(), income.get().getAmount()));
+    public ResponseEntity<IncomeResponseDto> getById(@PathVariable Long id) throws NotFoundException {
+        Income income = incomeService.getById(id);
+        return ResponseEntity.ok(new IncomeResponseDto(income.getId(), income.getDescription(), income.getAmount()));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<IncomeResponseDto> update(@PathVariable Long id, @RequestBody @Valid IncomeRequestDto updateDto) {
-        try {
-            Income updatedIncome = incomeService.update(id, updateDto);
-            return ResponseEntity.ok(new IncomeResponseDto(updatedIncome.getId(), updatedIncome.getDescription(), updatedIncome.getAmount()));
-        } catch (NotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<IncomeResponseDto> update(@PathVariable Long id, @RequestBody @Valid IncomeRequestDto updateDto) throws NotFoundException {
+        Income updatedIncome = incomeService.update(id, updateDto);
+        return ResponseEntity.ok(new IncomeResponseDto(updatedIncome.getId(), updatedIncome.getDescription(), updatedIncome.getAmount()));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
-        try {
-            incomeService.deleteById(id);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity delete(@PathVariable Long id) throws NotFoundException {
+        incomeService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

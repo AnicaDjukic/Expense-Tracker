@@ -25,19 +25,19 @@ public class ExpenseGroupService {
         return repository.findAll();
     }
 
-    public Optional<ExpenseGroup> getById(Long id) {
-        return repository.findById(id);
+    public ExpenseGroup getById(Long id) throws NotFoundException {
+        return repository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     public ExpenseGroup update(Long id, ExpenseGroupRequestDto updateDto) throws NotFoundException {
-        ExpenseGroup expenseGroup = getById(id).orElseThrow(NotFoundException::new);
+        ExpenseGroup expenseGroup = repository.findById(id).orElseThrow(NotFoundException::new);
         expenseGroup.setName(updateDto.getName());
         expenseGroup.setDescription(updateDto.getDescription());
         return repository.save(expenseGroup);
     }
 
     public void deleteById(Long id) throws NotFoundException {
-        ExpenseGroup expenseGroup = getById(id).orElseThrow(NotFoundException::new);
+        ExpenseGroup expenseGroup = repository.findById(id).orElseThrow(NotFoundException::new);
         repository.delete(expenseGroup);
     }
 }

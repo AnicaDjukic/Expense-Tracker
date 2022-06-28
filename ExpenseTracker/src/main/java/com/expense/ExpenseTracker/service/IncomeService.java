@@ -26,19 +26,19 @@ public class IncomeService {
         return repository.findAll();
     }
 
-    public Optional<Income> getById(Long id) {
-        return repository.findById(id);
+    public Income getById(Long id) throws NotFoundException {
+        return repository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     public Income update(Long id, IncomeRequestDto updateDto) throws NotFoundException {
-        Income income = getById(id).orElseThrow(NotFoundException::new);
+        Income income = repository.findById(id).orElseThrow(NotFoundException::new);
         income.setDescription(updateDto.getDescription());
         income.setAmount(updateDto.getAmount());
         return repository.save(income);
     }
 
     public void deleteById(Long id) throws NotFoundException {
-        Income income = getById(id).orElseThrow(NotFoundException::new);
+        Income income = repository.findById(id).orElseThrow(NotFoundException::new);
         repository.delete(income);
     }
 }
