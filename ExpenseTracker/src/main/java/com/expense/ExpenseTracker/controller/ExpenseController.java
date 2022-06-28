@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/expenses")
@@ -41,19 +42,19 @@ public class ExpenseController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ExpenseResponseDto> getById(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<ExpenseResponseDto> getById(@PathVariable UUID id) throws NotFoundException {
         Expense expense = expenseService.getById(id);
         return ResponseEntity.ok(new ExpenseResponseDto(expense.getId(), expense.getDescription(), expense.getAmount()));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ExpenseResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseRequestDto updateDto) throws NotFoundException {
+    public ResponseEntity<ExpenseResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDto updateDto) throws NotFoundException {
         Expense updatedExpense = expenseService.update(id, updateDto);
         return ResponseEntity.ok(new ExpenseResponseDto(updatedExpense.getId(), updatedExpense.getDescription(), updatedExpense.getAmount()));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity delete(@PathVariable UUID id) throws NotFoundException {
         expenseService.deleteById(id);
         return ResponseEntity.ok().build();
     }

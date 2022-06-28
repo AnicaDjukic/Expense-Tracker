@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/expense-groups")
@@ -41,19 +42,19 @@ public class ExpenseGroupController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ExpenseGroupResponseDto> getById(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<ExpenseGroupResponseDto> getById(@PathVariable UUID id) throws NotFoundException {
         ExpenseGroup expenseGroup = expenseGroupService.getById(id);
         return ResponseEntity.ok(new ExpenseGroupResponseDto(expenseGroup.getId(), expenseGroup.getName(), expenseGroup.getDescription()));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable Long id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) throws NotFoundException {
+    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) throws NotFoundException {
         ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto);
         return ResponseEntity.ok(new ExpenseGroupResponseDto(updatedExpenseGroup.getId(), updatedExpenseGroup.getName(), updatedExpenseGroup.getDescription()));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity delete(@PathVariable UUID id) throws NotFoundException {
         expenseGroupService.deleteById(id);
         return ResponseEntity.ok().build();
     }
