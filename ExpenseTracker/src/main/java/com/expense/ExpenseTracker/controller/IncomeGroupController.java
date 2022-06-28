@@ -6,6 +6,7 @@ import com.expense.ExpenseTracker.dto.IncomeGroupResponseDto;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.IncomeGroup;
 import com.expense.ExpenseTracker.service.IncomeGroupService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +22,17 @@ public class IncomeGroupController {
 
     private final IncomeGroupService incomeGroupService;
 
+    private final ModelMapper modelMapper = new ModelMapper();
+
     public IncomeGroupController(IncomeGroupService incomeGroupService) {
         this.incomeGroupService = incomeGroupService;
     }
 
     @PostMapping
     public ResponseEntity<IncomeGroupResponseDto> create(@RequestBody @Valid IncomeGroupRequestDto newExpenseGroupDto) {
-        IncomeGroup expenseGroup = new IncomeGroup(newExpenseGroupDto.getName(), newExpenseGroupDto.getDescription());
+        IncomeGroup expenseGroup = modelMapper.map(newExpenseGroupDto, IncomeGroup.class);
         IncomeGroup savedIncomeGroup = incomeGroupService.addNew(expenseGroup);
-        return new ResponseEntity(new IncomeGroupResponseDto(savedIncomeGroup.getId(), savedIncomeGroup.getName(), savedIncomeGroup.getDescription()), HttpStatus.CREATED);
+        return new ResponseEntity(modelMapper.map(savedIncomeGroup, IncomeGroupResponseDto.class), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -37,7 +40,7 @@ public class IncomeGroupController {
         List<IncomeGroup> incomeGroups = incomeGroupService.getAll();
         List<IncomeGroupResponseDto> incomeGroupDtos = new ArrayList<>();
         for(IncomeGroup expenseGroup : incomeGroups) {
-            incomeGroupDtos.add(new IncomeGroupResponseDto(expenseGroup.getId(), expenseGroup.getName(), expenseGroup.getDescription()));
+            incomeGroupDtos.add(modelMapper.map(expenseGroup, IncomeGroupResponseDto.class));
         }
         return ResponseEntity.ok(incomeGroupDtos);
     }
@@ -45,13 +48,13 @@ public class IncomeGroupController {
     @GetMapping("{id}")
     public ResponseEntity<IncomeGroupResponseDto> getById(@PathVariable UUID id) throws NotFoundException {
         IncomeGroup incomeGroup = incomeGroupService.getById(id);
-        return ResponseEntity.ok(new IncomeGroupResponseDto(incomeGroup.getId(), incomeGroup.getName(), incomeGroup.getDescription()));
+        return ResponseEntity.ok(modelMapper.map(incomeGroup, IncomeGroupResponseDto.class));
     }
 
     @PutMapping("{id}")
     public ResponseEntity<IncomeGroupResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) throws NotFoundException {
         IncomeGroup updatedIncomeGroup = incomeGroupService.update(id, updateDto);
-        return ResponseEntity.ok(new IncomeGroupResponseDto(updatedIncomeGroup.getId(), updatedIncomeGroup.getName(), updatedIncomeGroup.getDescription()));
+        return ResponseEntity.ok(modelMapper.map(updatedIncomeGroup, IncomeGroupResponseDto.class));
     }
 
     @DeleteMapping("{id}")

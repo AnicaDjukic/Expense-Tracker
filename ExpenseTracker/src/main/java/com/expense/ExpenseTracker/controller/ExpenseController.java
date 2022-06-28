@@ -5,6 +5,7 @@ import com.expense.ExpenseTracker.dto.ExpenseResponseDto;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.service.ExpenseService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class ExpenseController {
 
     private final ExpenseService expenseService;
+    private final ModelMapper modelMapper = new ModelMapper();
 
     public ExpenseController(ExpenseService expenseService) {
         this.expenseService = expenseService;
@@ -26,9 +28,9 @@ public class ExpenseController {
 
     @PostMapping
     public ResponseEntity<ExpenseResponseDto> create(@RequestBody @Valid ExpenseRequestDto newExpenseDto) {
-        Expense expense = new Expense(newExpenseDto.getDescription(), newExpenseDto.getAmount());
+        Expense expense = modelMapper.map(newExpenseDto, Expense.class);
         Expense savedExpense = expenseService.addNew(expense);
-        return new ResponseEntity(new ExpenseResponseDto(savedExpense.getId(), savedExpense.getDescription(), savedExpense.getAmount()), HttpStatus.CREATED);
+        return new ResponseEntity(modelMapper.map(savedExpense, ExpenseResponseDto.class), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -36,7 +38,7 @@ public class ExpenseController {
         List<Expense> expenses = expenseService.getAll();
         List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
         for(Expense expense : expenses) {
-            expenseDtos.add(new ExpenseResponseDto(expense.getId(), expense.getDescription(), expense.getAmount()));
+            expenseDtos.add(modelMapper.map(expense, ExpenseResponseDto.class));
         }
         return ResponseEntity.ok(expenseDtos);
     }
@@ -44,13 +46,13 @@ public class ExpenseController {
     @GetMapping("{id}")
     public ResponseEntity<ExpenseResponseDto> getById(@PathVariable UUID id) throws NotFoundException {
         Expense expense = expenseService.getById(id);
-        return ResponseEntity.ok(new ExpenseResponseDto(expense.getId(), expense.getDescription(), expense.getAmount()));
+        return ResponseEntity.ok(modelMapper.map(expense, ExpenseResponseDto.class));
     }
 
     @PutMapping("{id}")
     public ResponseEntity<ExpenseResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDto updateDto) throws NotFoundException {
         Expense updatedExpense = expenseService.update(id, updateDto);
-        return ResponseEntity.ok(new ExpenseResponseDto(updatedExpense.getId(), updatedExpense.getDescription(), updatedExpense.getAmount()));
+        return ResponseEntity.ok(modelMapper.map(updatedExpense, ExpenseResponseDto.class));
     }
 
     @DeleteMapping("{id}")

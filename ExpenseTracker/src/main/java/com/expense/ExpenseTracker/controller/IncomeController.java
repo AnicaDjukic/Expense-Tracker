@@ -5,6 +5,7 @@ import com.expense.ExpenseTracker.dto.IncomeResponseDto;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.service.IncomeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,15 +21,17 @@ public class IncomeController {
 
     private final IncomeService incomeService;
 
+    private final ModelMapper modelMapper = new ModelMapper();
+
     public IncomeController(IncomeService incomeService) {
         this.incomeService = incomeService;
     }
 
     @PostMapping
     public ResponseEntity<IncomeResponseDto> create(@RequestBody @Valid IncomeRequestDto newDto) {
-        Income income = new Income(newDto.getDescription(), newDto.getAmount());
+        Income income = modelMapper.map(newDto, Income.class);
         Income savedIncome = incomeService.addNew(income);
-        return new ResponseEntity(new IncomeResponseDto(savedIncome.getId(), savedIncome.getDescription(), savedIncome.getAmount()), HttpStatus.CREATED);
+        return new ResponseEntity(modelMapper.map(savedIncome, IncomeResponseDto.class), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -36,7 +39,7 @@ public class IncomeController {
         List<Income> incomes = incomeService.getAll();
         List<IncomeResponseDto> incomeDtos = new ArrayList<>();
         for(Income income : incomes) {
-            incomeDtos.add(new IncomeResponseDto(income.getId(), income.getDescription(), income.getAmount()));
+            incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));
         }
         return ResponseEntity.ok(incomeDtos);
     }
@@ -44,13 +47,13 @@ public class IncomeController {
     @GetMapping("{id}")
     public ResponseEntity<IncomeResponseDto> getById(@PathVariable UUID id) throws NotFoundException {
         Income income = incomeService.getById(id);
-        return ResponseEntity.ok(new IncomeResponseDto(income.getId(), income.getDescription(), income.getAmount()));
+        return ResponseEntity.ok(modelMapper.map(income, IncomeResponseDto.class));
     }
 
     @PutMapping("{id}")
     public ResponseEntity<IncomeResponseDto> update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) throws NotFoundException {
         Income updatedIncome = incomeService.update(id, updateDto);
-        return ResponseEntity.ok(new IncomeResponseDto(updatedIncome.getId(), updatedIncome.getDescription(), updatedIncome.getAmount()));
+        return ResponseEntity.ok(modelMapper.map(updatedIncome, IncomeResponseDto.class));
     }
 
     @DeleteMapping("{id}")
