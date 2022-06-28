@@ -1,27 +1,15 @@
 package com.expense.ExpenseTracker.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
+@AllArgsConstructor
+@Getter
 public class IncomeRequestDto {
 
     @NotBlank
     private String description;
 
     private double amount;
-
-    public IncomeRequestDto() {
-    }
-
-    public IncomeRequestDto(String description, double amount) {
-        this.description = description;
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
 }
