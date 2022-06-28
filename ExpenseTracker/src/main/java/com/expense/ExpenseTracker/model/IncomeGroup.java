@@ -1,47 +1,31 @@
 package com.expense.ExpenseTracker.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
+@Getter
+@NoArgsConstructor
 public class IncomeGroup {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
+    @Setter
     private String name;
 
+    @Setter
     private String description;
-
-    public IncomeGroup() {
-
-    }
 
     public IncomeGroup(String name, String description) {
         this.name = name;
-        this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
     }
 }

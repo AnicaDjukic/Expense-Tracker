@@ -1,11 +1,11 @@
 package com.expense.ExpenseTracker.controller;
 
 import com.expense.ExpenseTracker.dto.IncomeRequestDto;
-import com.expense.ExpenseTracker.dto.ExpenseResponseDto;
 import com.expense.ExpenseTracker.dto.IncomeResponseDto;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.service.IncomeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/incomes")
@@ -21,15 +21,17 @@ public class IncomeController {
 
     private final IncomeService incomeService;
 
+    private final ModelMapper modelMapper = new ModelMapper();
+
     public IncomeController(IncomeService incomeService) {
         this.incomeService = incomeService;
     }
 
     @PostMapping
-    public ResponseEntity<IncomeRequestDto> create(@RequestBody @Valid IncomeRequestDto newDto) {
-        Income income = new Income(newDto.getDescription(), newDto.getAmount());
+    public ResponseEntity<IncomeResponseDto> create(@RequestBody @Valid IncomeRequestDto newDto) {
+        Income income = modelMapper.map(newDto, Income.class);
         Income savedIncome = incomeService.addNew(income);
-        return new ResponseEntity(new ExpenseResponseDto(savedIncome.getId(), savedIncome.getDescription(), savedIncome.getAmount()), HttpStatus.CREATED);
+        return new ResponseEntity(modelMapper.map(savedIncome, IncomeResponseDto.class), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -37,36 +39,26 @@ public class IncomeController {
         List<Income> incomes = incomeService.getAll();
         List<IncomeResponseDto> incomeDtos = new ArrayList<>();
         for(Income income : incomes) {
-            incomeDtos.add(new IncomeResponseDto(income.getId(), income.getDescription(), income.getAmount()));
+            incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));
         }
         return ResponseEntity.ok(incomeDtos);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<IncomeResponseDto> getById(@PathVariable Long id) {
-        Optional<Income> income = incomeService.getById(id);
-        if(income.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new IncomeResponseDto(income.get().getId(), income.get().getDescription(), income.get().getAmount()));
+    public ResponseEntity<IncomeResponseDto> getById(@PathVariable UUID id) throws NotFoundException {
+        Income income = incomeService.getById(id);
+        return ResponseEntity.ok(modelMapper.map(income, IncomeResponseDto.class));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<IncomeResponseDto> update(@PathVariable Long id, @RequestBody @Valid IncomeRequestDto updateDto) {
-        try {
-            Income updatedIncome = incomeService.update(id, updateDto);
-            return ResponseEntity.ok(new IncomeResponseDto(updatedIncome.getId(), updatedIncome.getDescription(), updatedIncome.getAmount()));
-        } catch (NotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<IncomeResponseDto> update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) throws NotFoundException {
+        Income updatedIncome = incomeService.update(id, updateDto);
+        return ResponseEntity.ok(modelMapper.map(updatedIncome, IncomeResponseDto.class));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
-        try {
-            incomeService.deleteById(id);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity delete(@PathVariable UUID id) throws NotFoundException {
+        incomeService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

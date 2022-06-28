@@ -1,56 +1,33 @@
 package com.expense.ExpenseTracker.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
+@Getter
+@NoArgsConstructor
 public class Expense {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
+    @Setter
     private String description;
 
+    @Setter
     private double amount;
 
     @ManyToOne
     @JoinColumn
     private ExpenseGroup expenseGroup;
 
-    public Expense() {
-
-    }
-
     public Expense(String description, double amount) {
         this.description = description;
         this.amount = amount;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public ExpenseGroup getExpenseGroup() {
-        return expenseGroup;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public void setExpenseGroup(ExpenseGroup expenseGroup) {
-        this.expenseGroup = expenseGroup;
     }
 }
