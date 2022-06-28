@@ -14,11 +14,15 @@ public class ExpenseService {
 
     private final ExpenseRepository repository;
 
-    public ExpenseService(ExpenseRepository repository) {
+    private final ExpenseGroupService expenseGroupService;
+
+    public ExpenseService(ExpenseRepository repository, ExpenseGroupService expenseGroupService) {
         this.repository = repository;
+        this.expenseGroupService = expenseGroupService;
     }
 
-    public Expense addNew(Expense expense) {
+    public Expense addNew(Expense expense, UUID expenseGroupId) throws NotFoundException {
+        expense.setExpenseGroup(expenseGroupService.getById(expenseGroupId));
         return repository.save(expense);
     }
 

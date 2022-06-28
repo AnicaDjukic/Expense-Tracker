@@ -14,11 +14,15 @@ public class IncomeService {
 
     private final IncomeRepository repository;
 
-    public IncomeService(IncomeRepository repository) {
+    private final IncomeGroupService incomeGroupService;
+
+    public IncomeService(IncomeRepository repository, IncomeGroupService incomeGroupService) {
         this.repository = repository;
+        this.incomeGroupService = incomeGroupService;
     }
 
-    public Income addNew(Income income) {
+    public Income addNew(Income income, UUID incomeGroupId) throws NotFoundException {
+        income.setIncomeGroup(incomeGroupService.getById(incomeGroupId));
         return repository.save(income);
     }
 
@@ -34,6 +38,7 @@ public class IncomeService {
         Income income = repository.findById(id).orElseThrow(NotFoundException::new);
         income.setDescription(updateDto.getDescription());
         income.setAmount(updateDto.getAmount());
+        income.setIncomeGroup(incomeGroupService.getById(updateDto.getIncomeGroupId()));
         return repository.save(income);
     }
 

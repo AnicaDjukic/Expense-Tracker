@@ -22,6 +22,7 @@ public class Expense {
     @Setter
     private double amount;
 
+    @Setter
     @ManyToOne
     @JoinColumn
     private ExpenseGroup expenseGroup;

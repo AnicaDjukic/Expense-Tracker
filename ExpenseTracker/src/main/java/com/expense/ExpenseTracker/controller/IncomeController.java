@@ -28,9 +28,9 @@ public class IncomeController {
     }
 
     @PostMapping
-    public ResponseEntity<IncomeResponseDto> create(@RequestBody @Valid IncomeRequestDto newDto) {
+    public ResponseEntity<IncomeResponseDto> create(@RequestBody @Valid IncomeRequestDto newDto) throws NotFoundException {
         Income income = modelMapper.map(newDto, Income.class);
-        Income savedIncome = incomeService.addNew(income);
+        Income savedIncome = incomeService.addNew(income, newDto.getIncomeGroupId());
         return new ResponseEntity(modelMapper.map(savedIncome, IncomeResponseDto.class), HttpStatus.CREATED);
     }
 
