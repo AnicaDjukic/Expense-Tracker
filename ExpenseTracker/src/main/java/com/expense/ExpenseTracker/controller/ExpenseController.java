@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/expenses")
+@RequestMapping("api/v1")
 public class ExpenseController {
 
     private final ExpenseService expenseService;
@@ -26,7 +26,7 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
-    @PostMapping
+    @PostMapping("expenses")
     @ResponseStatus(value = HttpStatus.CREATED)
     public ExpenseResponseDto create(@RequestBody @Valid ExpenseRequestDto newExpenseDto) {
         Expense expense = modelMapper.map(newExpenseDto, Expense.class);
@@ -34,7 +34,7 @@ public class ExpenseController {
         return modelMapper.map(savedExpense, ExpenseResponseDto.class);
     }
 
-    @GetMapping
+    @GetMapping("expenses")
     public ResponseEntity<List<ExpenseResponseDto>> getAll() {
         List<Expense> expenses = expenseService.getAll();
         List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
@@ -44,19 +44,29 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseDtos);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("expense-groups/{id}/expenses")
+    public ResponseEntity<List<ExpenseResponseDto>> getLastFiveForExpenseGroup(@PathVariable UUID id) {
+        List<Expense> expenses = expenseService.getByExpenseGroupId(id);
+        List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
+        for(Expense expense : expenses) {
+            expenseDtos.add(modelMapper.map(expense, ExpenseResponseDto.class));
+        }
+        return ResponseEntity.ok(expenseDtos);
+    }
+
+    @GetMapping("expenses/{id}")
     public ResponseEntity<ExpenseResponseDto> getById(@PathVariable UUID id) {
         Expense expense = expenseService.getById(id);
         return ResponseEntity.ok(modelMapper.map(expense, ExpenseResponseDto.class));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("expenses/{id}")
     public ResponseEntity<ExpenseResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDto updateDto) {
         Expense updatedExpense = expenseService.update(id, updateDto);
         return ResponseEntity.ok(modelMapper.map(updatedExpense, ExpenseResponseDto.class));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("expenses/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable UUID id) throws NotFoundException {
         expenseService.deleteById(id);
