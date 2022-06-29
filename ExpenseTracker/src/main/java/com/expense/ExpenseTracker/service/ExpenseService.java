@@ -22,7 +22,7 @@ public class ExpenseService {
 
     private final ExpenseGroupService expenseGroupService;
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -39,6 +39,11 @@ public class ExpenseService {
     }
 
     public List<Expense> getAll() {
+        return repository.findAll();
+    }
+
+    // TODO: call in DashboardController to get last five expenses
+    public List<Expense> getLastFive() {
         QExpense expense = QExpense.expense;
         JPAQuery<QExpense> query = new JPAQuery<>(entityManager);
         query.from(expense).orderBy(expense.creationTime.desc()).limit(5);

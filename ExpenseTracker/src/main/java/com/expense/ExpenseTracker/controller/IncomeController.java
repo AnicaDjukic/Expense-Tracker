@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/incomes")
+@RequestMapping("api/v1")
 public class IncomeController {
 
     private final IncomeService incomeService;
@@ -26,7 +26,7 @@ public class IncomeController {
         this.incomeService = incomeService;
     }
 
-    @PostMapping
+    @PostMapping("incomes")
     @ResponseStatus(value = HttpStatus.CREATED)
     public IncomeResponseDto create(@RequestBody @Valid IncomeRequestDto newDto) {
         Income income = modelMapper.map(newDto, Income.class);
@@ -34,7 +34,7 @@ public class IncomeController {
         return modelMapper.map(savedIncome, IncomeResponseDto.class);
     }
 
-    @GetMapping
+    @GetMapping("incomes")
     public ResponseEntity<List<IncomeResponseDto>> getAll() {
         List<Income> incomes = incomeService.getAll();
         List<IncomeResponseDto> incomeDtos = new ArrayList<>();
@@ -44,19 +44,29 @@ public class IncomeController {
         return ResponseEntity.ok(incomeDtos);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("income-groups/{id}/incomes")
+    public ResponseEntity<List<IncomeResponseDto>> getLastFiveForIncomeGroup(@PathVariable UUID id) {
+        List<Income> incomes = incomeService.getByIncomeGroupId(id);
+        List<IncomeResponseDto> incomeDtos = new ArrayList<>();
+        for(Income income : incomes) {
+            incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));
+        }
+        return ResponseEntity.ok(incomeDtos);
+    }
+
+    @GetMapping("incomes/{id}")
     public ResponseEntity<IncomeResponseDto> getById(@PathVariable UUID id) {
         Income income = incomeService.getById(id);
         return ResponseEntity.ok(modelMapper.map(income, IncomeResponseDto.class));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("incomes/{id}")
     public ResponseEntity<IncomeResponseDto> update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) {
         Income updatedIncome = incomeService.update(id, updateDto);
         return ResponseEntity.ok(modelMapper.map(updatedIncome, IncomeResponseDto.class));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable UUID id) {
         incomeService.deleteById(id);
