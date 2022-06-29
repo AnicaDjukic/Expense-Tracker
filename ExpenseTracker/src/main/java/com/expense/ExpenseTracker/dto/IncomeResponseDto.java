@@ -1,11 +1,13 @@
 package com.expense.ExpenseTracker.dto;
 
 import com.expense.ExpenseTracker.model.IncomeGroup;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -22,5 +24,6 @@ public class IncomeResponseDto {
 
     private IncomeGroupViewDto incomeGroup;
 
-    private String creationTime;
+    @JsonFormat(pattern = "dd/mm/yyyy HH:mm:ss")
+    private Date creationTime;
 }

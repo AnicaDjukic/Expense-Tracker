@@ -27,18 +27,18 @@ public class IncomeGroupService {
     }
 
     public IncomeGroup getById(UUID id) throws NotFoundException {
-        return repository.findById(id).orElseThrow(NotFoundException::new);
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(IncomeGroup.class.getSimpleName()));
     }
 
     public IncomeGroup update(UUID id, ExpenseGroupRequestDto updateDto) throws NotFoundException {
-        IncomeGroup incomeGroup = repository.findById(id).orElseThrow(NotFoundException::new);
+        IncomeGroup incomeGroup = repository.findById(id).orElseThrow(() -> new NotFoundException(IncomeGroup.class.getSimpleName()));
         incomeGroup.setName(updateDto.getName());
         incomeGroup.setDescription(updateDto.getDescription());
         return repository.save(incomeGroup);
     }
 
     public void deleteById(UUID id) throws NotFoundException {
-        IncomeGroup incomeGroup = repository.findById(id).orElseThrow(NotFoundException::new);
+        IncomeGroup incomeGroup = repository.findById(id).orElseThrow(() -> new NotFoundException(IncomeGroup.class.getSimpleName()));
         repository.delete(incomeGroup);
     }
 }

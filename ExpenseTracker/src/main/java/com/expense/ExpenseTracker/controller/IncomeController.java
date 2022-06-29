@@ -2,7 +2,6 @@ package com.expense.ExpenseTracker.controller;
 
 import com.expense.ExpenseTracker.dto.IncomeRequestDto;
 import com.expense.ExpenseTracker.dto.IncomeResponseDto;
-import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.service.IncomeService;
 import org.modelmapper.ModelMapper;
@@ -28,10 +27,11 @@ public class IncomeController {
     }
 
     @PostMapping
-    public ResponseEntity<IncomeResponseDto> create(@RequestBody @Valid IncomeRequestDto newDto) throws NotFoundException {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public IncomeResponseDto create(@RequestBody @Valid IncomeRequestDto newDto) {
         Income income = modelMapper.map(newDto, Income.class);
         Income savedIncome = incomeService.addNew(income, newDto.getIncomeGroupId());
-        return new ResponseEntity(modelMapper.map(savedIncome, IncomeResponseDto.class), HttpStatus.CREATED);
+        return modelMapper.map(savedIncome, IncomeResponseDto.class);
     }
 
     @GetMapping
@@ -45,20 +45,21 @@ public class IncomeController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<IncomeResponseDto> getById(@PathVariable UUID id) throws NotFoundException {
+    public ResponseEntity<IncomeResponseDto> getById(@PathVariable UUID id) {
         Income income = incomeService.getById(id);
         return ResponseEntity.ok(modelMapper.map(income, IncomeResponseDto.class));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<IncomeResponseDto> update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) throws NotFoundException {
+    public ResponseEntity<IncomeResponseDto> update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) {
         Income updatedIncome = incomeService.update(id, updateDto);
         return ResponseEntity.ok(modelMapper.map(updatedIncome, IncomeResponseDto.class));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable UUID id) throws NotFoundException {
+    @ResponseStatus(value = HttpStatus.OK)
+    public void delete(@PathVariable UUID id) {
         incomeService.deleteById(id);
-        return ResponseEntity.ok().build();
     }
+
 }

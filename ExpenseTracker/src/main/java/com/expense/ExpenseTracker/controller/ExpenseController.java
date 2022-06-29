@@ -27,10 +27,11 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<ExpenseResponseDto> create(@RequestBody @Valid ExpenseRequestDto newExpenseDto) throws NotFoundException {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public ExpenseResponseDto create(@RequestBody @Valid ExpenseRequestDto newExpenseDto) {
         Expense expense = modelMapper.map(newExpenseDto, Expense.class);
         Expense savedExpense = expenseService.addNew(expense, newExpenseDto.getExpenseGroupId());
-        return new ResponseEntity(modelMapper.map(savedExpense, ExpenseResponseDto.class), HttpStatus.CREATED);
+        return modelMapper.map(savedExpense, ExpenseResponseDto.class);
     }
 
     @GetMapping
@@ -44,21 +45,21 @@ public class ExpenseController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ExpenseResponseDto> getById(@PathVariable UUID id) throws NotFoundException {
+    public ResponseEntity<ExpenseResponseDto> getById(@PathVariable UUID id) {
         Expense expense = expenseService.getById(id);
         return ResponseEntity.ok(modelMapper.map(expense, ExpenseResponseDto.class));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ExpenseResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDto updateDto) throws NotFoundException {
+    public ResponseEntity<ExpenseResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDto updateDto) {
         Expense updatedExpense = expenseService.update(id, updateDto);
         return ResponseEntity.ok(modelMapper.map(updatedExpense, ExpenseResponseDto.class));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable UUID id) throws NotFoundException {
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable UUID id) throws NotFoundException {
         expenseService.deleteById(id);
-        return ResponseEntity.ok().build();
     }
 
 }

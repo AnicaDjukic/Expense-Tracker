@@ -1,25 +1,16 @@
 package com.expense.ExpenseTracker.exception;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
+@Getter
+@Setter
 public class ExceptionResponse {
 
     private String message;
+
+    @JsonFormat(pattern = "dd/mm/yyyy HH:mm:ss")
     private LocalDateTime dateTime;
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
 }

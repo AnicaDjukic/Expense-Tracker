@@ -33,11 +33,11 @@ public class ExpenseService {
     }
 
     public Expense getById(UUID id) throws NotFoundException {
-        return repository.findById(id).orElseThrow(NotFoundException::new);
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
     }
 
     public Expense update(UUID id, ExpenseRequestDto updateDto) throws NotFoundException {
-        Expense expense = repository.findById(id).orElseThrow(NotFoundException::new);
+        Expense expense = repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
         expense.setDescription(updateDto.getDescription());
         expense.setAmount(updateDto.getAmount());
         expense.setExpenseGroup(expenseGroupService.getById(updateDto.getExpenseGroupId()));
@@ -45,7 +45,7 @@ public class ExpenseService {
     }
 
     public void deleteById(UUID id) throws NotFoundException {
-        Expense expense = repository.findById(id).orElseThrow(NotFoundException::new);
+        Expense expense = repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
         repository.delete(expense);
     }
 }

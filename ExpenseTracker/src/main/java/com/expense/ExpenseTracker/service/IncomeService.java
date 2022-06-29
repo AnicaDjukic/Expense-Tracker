@@ -33,11 +33,11 @@ public class IncomeService {
     }
 
     public Income getById(UUID id) throws NotFoundException {
-        return repository.findById(id).orElseThrow(NotFoundException::new);
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
     }
 
     public Income update(UUID id, IncomeRequestDto updateDto) throws NotFoundException {
-        Income income = repository.findById(id).orElseThrow(NotFoundException::new);
+        Income income = repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
         income.setDescription(updateDto.getDescription());
         income.setAmount(updateDto.getAmount());
         income.setIncomeGroup(incomeGroupService.getById(updateDto.getIncomeGroupId()));
@@ -45,7 +45,7 @@ public class IncomeService {
     }
 
     public void deleteById(UUID id) throws NotFoundException {
-        Income income = repository.findById(id).orElseThrow(NotFoundException::new);
+        Income income = repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
         repository.delete(income);
     }
 }

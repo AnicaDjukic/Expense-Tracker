@@ -2,7 +2,6 @@ package com.expense.ExpenseTracker.controller;
 
 import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
 import com.expense.ExpenseTracker.dto.ExpenseGroupResponseDto;
-import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.ExpenseGroup;
 import com.expense.ExpenseTracker.service.ExpenseGroupService;
 import org.modelmapper.ModelMapper;
@@ -28,10 +27,11 @@ public class ExpenseGroupController {
     }
 
     @PostMapping
-    public ResponseEntity<ExpenseGroupResponseDto> create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto) {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public ExpenseGroupResponseDto create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto) {
         ExpenseGroup expenseGroup = modelMapper.map(newExpenseGroupDto, ExpenseGroup.class);
         ExpenseGroup savedExpenseGroup = expenseGroupService.addNew(expenseGroup);
-        return new ResponseEntity(modelMapper.map(savedExpenseGroup, ExpenseGroupResponseDto.class), HttpStatus.CREATED);
+        return modelMapper.map(savedExpenseGroup, ExpenseGroupResponseDto.class);
     }
 
     @GetMapping
@@ -45,20 +45,21 @@ public class ExpenseGroupController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ExpenseGroupResponseDto> getById(@PathVariable UUID id) throws NotFoundException {
+    public ResponseEntity<ExpenseGroupResponseDto> getById(@PathVariable UUID id) {
         ExpenseGroup expenseGroup = expenseGroupService.getById(id);
         return ResponseEntity.ok(modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) throws NotFoundException {
+    public ResponseEntity<ExpenseGroupResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
         ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto);
         return ResponseEntity.ok(modelMapper.map(updatedExpenseGroup, ExpenseGroupResponseDto.class));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable UUID id) throws NotFoundException {
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable UUID id) {
         expenseGroupService.deleteById(id);
-        return ResponseEntity.ok().build();
     }
+
 }
