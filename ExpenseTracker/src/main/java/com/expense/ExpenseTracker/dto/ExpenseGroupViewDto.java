@@ -5,17 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class IncomeGroupResponseDto {
-
-    private UUID id;
+public class ExpenseGroupViewDto {
 
     private String name;
-
-    private String description;
 }

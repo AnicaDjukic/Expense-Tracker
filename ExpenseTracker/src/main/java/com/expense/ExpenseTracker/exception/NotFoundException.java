@@ -1,8 +1,8 @@
 package com.expense.ExpenseTracker.exception;
 
-public class NotFoundException extends Exception {
+public class NotFoundException extends RuntimeException {
 
-    public NotFoundException() {
-        super("Not found");
+    public NotFoundException(String resource) {
+        super(resource + " not found!");
     }
 }

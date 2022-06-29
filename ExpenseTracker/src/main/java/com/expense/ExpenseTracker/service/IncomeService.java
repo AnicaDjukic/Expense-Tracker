@@ -6,19 +6,25 @@ import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.repository.IncomeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class IncomeService {
 
     private final IncomeRepository repository;
 
-    public IncomeService(IncomeRepository repository) {
+    private final IncomeGroupService incomeGroupService;
+
+    public IncomeService(IncomeRepository repository, IncomeGroupService incomeGroupService) {
         this.repository = repository;
+        this.incomeGroupService = incomeGroupService;
     }
 
-    public Income addNew(Income income) {
+    public Income addNew(Income income, UUID incomeGroupId) throws NotFoundException {
+        income.setCreationTime(new Date());
+        income.setIncomeGroup(incomeGroupService.getById(incomeGroupId));
         return repository.save(income);
     }
 
@@ -26,19 +32,20 @@ public class IncomeService {
         return repository.findAll();
     }
 
-    public Optional<Income> getById(Long id) {
-        return repository.findById(id);
+    public Income getById(UUID id) throws NotFoundException {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
     }
 
-    public Income update(Long id, IncomeRequestDto updateDto) throws NotFoundException {
-        Income income = getById(id).orElseThrow(NotFoundException::new);
+    public Income update(UUID id, IncomeRequestDto updateDto) throws NotFoundException {
+        Income income = repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
         income.setDescription(updateDto.getDescription());
         income.setAmount(updateDto.getAmount());
+        income.setIncomeGroup(incomeGroupService.getById(updateDto.getIncomeGroupId()));
         return repository.save(income);
     }
 
-    public void deleteById(Long id) throws NotFoundException {
-        Income income = getById(id).orElseThrow(NotFoundException::new);
+    public void deleteById(UUID id) throws NotFoundException {
+        Income income = repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
         repository.delete(income);
     }
 }

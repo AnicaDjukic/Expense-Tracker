@@ -7,7 +7,7 @@ import com.expense.ExpenseTracker.repository.IncomeGroupRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class IncomeGroupService {
@@ -26,19 +26,19 @@ public class IncomeGroupService {
         return repository.findAll();
     }
 
-    public Optional<IncomeGroup> getById(Long id) {
-        return repository.findById(id);
+    public IncomeGroup getById(UUID id) throws NotFoundException {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(IncomeGroup.class.getSimpleName()));
     }
 
-    public IncomeGroup update(Long id, ExpenseGroupRequestDto updateDto) throws NotFoundException {
-        IncomeGroup incomeGroup = getById(id).orElseThrow(NotFoundException::new);
+    public IncomeGroup update(UUID id, ExpenseGroupRequestDto updateDto) throws NotFoundException {
+        IncomeGroup incomeGroup = repository.findById(id).orElseThrow(() -> new NotFoundException(IncomeGroup.class.getSimpleName()));
         incomeGroup.setName(updateDto.getName());
         incomeGroup.setDescription(updateDto.getDescription());
         return repository.save(incomeGroup);
     }
 
-    public void deleteById(Long id) throws NotFoundException {
-        IncomeGroup incomeGroup = getById(id).orElseThrow(NotFoundException::new);
+    public void deleteById(UUID id) throws NotFoundException {
+        IncomeGroup incomeGroup = repository.findById(id).orElseThrow(() -> new NotFoundException(IncomeGroup.class.getSimpleName()));
         repository.delete(incomeGroup);
     }
 }

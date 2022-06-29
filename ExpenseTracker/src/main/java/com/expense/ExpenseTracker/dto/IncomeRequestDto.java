@@ -1,7 +1,12 @@
 package com.expense.ExpenseTracker.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import javax.validation.constraints.NotBlank;
+import java.util.UUID;
 
+@AllArgsConstructor
+@Getter
 public class IncomeRequestDto {
 
     @NotBlank
@@ -9,19 +14,5 @@ public class IncomeRequestDto {
 
     private double amount;
 
-    public IncomeRequestDto() {
-    }
-
-    public IncomeRequestDto(String description, double amount) {
-        this.description = description;
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
+    private UUID incomeGroupId;
 }

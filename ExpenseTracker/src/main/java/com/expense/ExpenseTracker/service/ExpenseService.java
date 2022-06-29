@@ -6,19 +6,25 @@ import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ExpenseService {
 
     private final ExpenseRepository repository;
 
-    public ExpenseService(ExpenseRepository repository) {
+    private final ExpenseGroupService expenseGroupService;
+
+    public ExpenseService(ExpenseRepository repository, ExpenseGroupService expenseGroupService) {
         this.repository = repository;
+        this.expenseGroupService = expenseGroupService;
     }
 
-    public Expense addNew(Expense expense) {
+    public Expense addNew(Expense expense, UUID expenseGroupId) throws NotFoundException {
+        expense.setCreationTime(new Date());
+        expense.setExpenseGroup(expenseGroupService.getById(expenseGroupId));
         return repository.save(expense);
     }
 
@@ -26,19 +32,20 @@ public class ExpenseService {
         return repository.findAll();
     }
 
-    public Optional<Expense> getById(Long id) {
-        return repository.findById(id);
+    public Expense getById(UUID id) throws NotFoundException {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
     }
 
-    public Expense update(Long id, ExpenseRequestDto updateDto) throws NotFoundException {
-        Expense expense = getById(id).orElseThrow(NotFoundException::new);
+    public Expense update(UUID id, ExpenseRequestDto updateDto) throws NotFoundException {
+        Expense expense = repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
         expense.setDescription(updateDto.getDescription());
         expense.setAmount(updateDto.getAmount());
+        expense.setExpenseGroup(expenseGroupService.getById(updateDto.getExpenseGroupId()));
         return repository.save(expense);
     }
 
-    public void deleteById(Long id) throws NotFoundException {
-        Expense expense = getById(id).orElseThrow(NotFoundException::new);
+    public void deleteById(UUID id) throws NotFoundException {
+        Expense expense = repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
         repository.delete(expense);
     }
 }
