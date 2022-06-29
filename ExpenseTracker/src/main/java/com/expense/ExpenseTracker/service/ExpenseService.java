@@ -39,7 +39,14 @@ public class ExpenseService {
     }
 
     public List<Expense> getAll() {
-        return repository.findAll();
+        QExpense expense = QExpense.expense;
+        JPAQuery<QExpense> query = new JPAQuery<>(entityManager);
+        query.from(expense).orderBy(expense.creationTime.desc()).limit(5);
+        List<Expense> expenses = new ArrayList<>();
+        for (int i = 0; i < query.fetch().size(); i++) {
+            expenses.add(modelMapper.map(query.fetch().get(i), Expense.class));
+        }
+        return expenses;
     }
 
     public Expense getById(UUID id) throws NotFoundException {
@@ -62,7 +69,7 @@ public class ExpenseService {
     public List<Expense> getByExpenseGroupId(UUID expenseGroupId) {
         QExpense expense = QExpense.expense;
         JPAQuery<QExpense> query = new JPAQuery<>(entityManager);
-        query.from(expense).where(expense.expenseGroup.id.eq(expenseGroupId));
+        query.from(expense).where(expense.expenseGroup.id.eq(expenseGroupId)).orderBy(expense.creationTime.desc()).limit(5);
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < query.fetch().size(); i++) {
             expenses.add(modelMapper.map(query.fetch().get(i), Expense.class));
