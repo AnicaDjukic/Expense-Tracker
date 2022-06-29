@@ -27,9 +27,9 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<ExpenseResponseDto> create(@RequestBody @Valid ExpenseRequestDto newExpenseDto) {
+    public ResponseEntity<ExpenseResponseDto> create(@RequestBody @Valid ExpenseRequestDto newExpenseDto) throws NotFoundException {
         Expense expense = modelMapper.map(newExpenseDto, Expense.class);
-        Expense savedExpense = expenseService.addNew(expense);
+        Expense savedExpense = expenseService.addNew(expense, newExpenseDto.getExpenseGroupId());
         return new ResponseEntity(modelMapper.map(savedExpense, ExpenseResponseDto.class), HttpStatus.CREATED);
     }
 
