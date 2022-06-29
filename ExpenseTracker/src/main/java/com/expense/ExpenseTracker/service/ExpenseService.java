@@ -48,4 +48,8 @@ public class ExpenseService {
         Expense expense = repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
         repository.delete(expense);
     }
+
+    public List<Expense> getByExpenseGroupId(UUID expenseGroupId) {
+        return repository.findByExpenseGroupOrderByCreationTimeDesc(expenseGroupService.getById(expenseGroupId));
+    }
 }
