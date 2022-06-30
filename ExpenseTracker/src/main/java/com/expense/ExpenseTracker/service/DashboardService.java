@@ -2,7 +2,6 @@ package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.Income;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,7 +46,5 @@ public class DashboardService {
             amount += income.getAmount();
         return amount;
     }
-
-
 
 }
