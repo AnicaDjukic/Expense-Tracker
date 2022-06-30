@@ -6,6 +6,7 @@ import com.expense.ExpenseTracker.dto.IncomeGroupResponseDto;
 import com.expense.ExpenseTracker.model.IncomeGroup;
 import com.expense.ExpenseTracker.service.IncomeGroupService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,10 +35,10 @@ public class IncomeGroupController {
         return modelMapper.map(savedIncomeGroup, IncomeGroupResponseDto.class);
     }
 
-    @GetMapping
+    @GetMapping("/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<IncomeGroupResponseDto> getAll() {
-        List<IncomeGroup> incomeGroups = incomeGroupService.getAll();
+    public List<IncomeGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
+        Page<IncomeGroup> incomeGroups = incomeGroupService.getAll(pageNo, size);
         List<IncomeGroupResponseDto> incomeGroupDtos = new ArrayList<>();
         for(IncomeGroup expenseGroup : incomeGroups) {
             incomeGroupDtos.add(modelMapper.map(expenseGroup, IncomeGroupResponseDto.class));

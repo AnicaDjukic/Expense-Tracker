@@ -5,9 +5,10 @@ import com.expense.ExpenseTracker.exception.NameAlreadyExistsException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.ExpenseGroup;
 import com.expense.ExpenseTracker.repository.ExpenseGroupRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,8 +26,8 @@ public class ExpenseGroupService {
         return repository.save(expenseGroup);
     }
 
-    public List<ExpenseGroup> getAll() {
-        return repository.findAll();
+    public Page<ExpenseGroup> getAll(int pageNo, int size) {
+        return repository.findAll(PageRequest.of(pageNo, size));
     }
 
     public ExpenseGroup getById(UUID id) throws NotFoundException {
