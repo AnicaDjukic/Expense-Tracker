@@ -1,12 +1,14 @@
 package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
+import com.expense.ExpenseTracker.exception.NameAlreadyExistsException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.ExpenseGroup;
 import com.expense.ExpenseTracker.repository.ExpenseGroupRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,6 +20,8 @@ public class ExpenseGroupService {
     }
 
     public ExpenseGroup addNew(ExpenseGroup expenseGroup) {
+        repository.findByName(expenseGroup.getName())
+                .ifPresent(existingExpenseGroup -> {throw new NameAlreadyExistsException(ExpenseGroup.class.getSimpleName(), expenseGroup.getName());});
         return repository.save(expenseGroup);
     }
 
@@ -30,6 +34,9 @@ public class ExpenseGroupService {
     }
 
     public ExpenseGroup update(UUID id, ExpenseGroupRequestDto updateDto) throws NotFoundException {
+        Optional<ExpenseGroup> existingExpGroup = repository.findByName(updateDto.getName());
+        if (existingExpGroup.isPresent() && !existingExpGroup.get().getId().equals(id))
+            throw new NameAlreadyExistsException(ExpenseGroup.class.getSimpleName(), updateDto.getName());
         ExpenseGroup expenseGroup = repository.findById(id).orElseThrow(() -> new NotFoundException(ExpenseGroup.class.getSimpleName()));
         expenseGroup.setName(updateDto.getName());
         expenseGroup.setDescription(updateDto.getDescription());

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +32,6 @@ public class IncomeService {
     }
 
     public Income addNew(Income income, UUID incomeGroupId) throws NotFoundException {
-        income.setCreationTime(new Date());
         income.setIncomeGroup(incomeGroupService.getById(incomeGroupId));
         return repository.save(income);
     }

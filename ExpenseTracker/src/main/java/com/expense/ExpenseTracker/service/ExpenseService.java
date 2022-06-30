@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +32,6 @@ public class ExpenseService {
     }
 
     public Expense addNew(Expense expense, UUID expenseGroupId) throws NotFoundException {
-        expense.setCreationTime(new Date());
         expense.setExpenseGroup(expenseGroupService.getById(expenseGroupId));
         return repository.save(expense);
     }

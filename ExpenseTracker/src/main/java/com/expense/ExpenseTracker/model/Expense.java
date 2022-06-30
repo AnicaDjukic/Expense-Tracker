@@ -27,7 +27,12 @@ public class Expense {
     private Date creationTime;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private ExpenseGroup expenseGroup;
+
+    @PrePersist
+    protected void onCreate() {
+        creationTime = new Date();
+    }
 }
