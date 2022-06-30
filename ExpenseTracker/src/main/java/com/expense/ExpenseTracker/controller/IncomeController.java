@@ -5,6 +5,7 @@ import com.expense.ExpenseTracker.dto.IncomeResponseDto;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.service.IncomeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,9 @@ public class IncomeController {
         return modelMapper.map(savedIncome, IncomeResponseDto.class);
     }
 
-    @GetMapping("incomes")
-    public ResponseEntity<List<IncomeResponseDto>> getAll() {
-        List<Income> incomes = incomeService.getAll();
+    @GetMapping("incomes/{pageNo}/{size}")
+    public ResponseEntity<List<IncomeResponseDto>> getAll(@PathVariable int pageNo, @PathVariable int size) {
+        Page<Income> incomes = incomeService.getAll(pageNo, size);
         List<IncomeResponseDto> incomeDtos = new ArrayList<>();
         for(Income income : incomes) {
             incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));

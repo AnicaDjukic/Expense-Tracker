@@ -7,6 +7,9 @@ import com.expense.ExpenseTracker.model.QIncome;
 import com.expense.ExpenseTracker.repository.IncomeRepository;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -34,6 +37,10 @@ public class IncomeService {
     public Income addNew(Income income, UUID incomeGroupId) throws NotFoundException {
         income.setIncomeGroup(incomeGroupService.getById(incomeGroupId));
         return repository.save(income);
+    }
+
+    public Page<Income> getAll(int pageNo, int size) {
+        return repository.findAll(PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
     }
 
     public List<Income> getAll() {

@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Proba\",\r\n    \"amount\": 10,\r\n    \"expenseGroupId\": \"efa6e0cd-1ea0-4b89-9c21-d25b8dcd4a50\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Proba\",\r\n    \"amount\": 10,\r\n    \"expenseGroupId\": \"fe1019a4-a44c-46c4-8679-2ecaedbef4c3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +44,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses",
+							"raw": "localhost:8080/api/v1/expenses/0/3",
 							"host": [
 								"localhost"
 							],
@@ -52,7 +52,9 @@
 							"path": [
 								"api",
 								"v1",
-								"expenses"
+								"expenses",
+								"0",
+								"3"
 							]
 						}
 					},
@@ -164,7 +166,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 40,\r\n    \"incomeGroupId\": \"554643b4-59c8-4acc-8e54-a816b0044d07\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 40,\r\n    \"incomeGroupId\": \"7d6f323e-8aa0-442a-80a6-5b797a95539c\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -192,7 +194,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes",
+							"raw": "localhost:8080/api/v1/incomes/0/3",
 							"host": [
 								"localhost"
 							],
@@ -200,7 +202,9 @@
 							"path": [
 								"api",
 								"v1",
-								"incomes"
+								"incomes",
+								"0",
+								"3"
 							]
 						}
 					},

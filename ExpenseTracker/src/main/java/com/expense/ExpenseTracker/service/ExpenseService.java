@@ -7,6 +7,10 @@ import com.expense.ExpenseTracker.model.QExpense;
 import com.expense.ExpenseTracker.repository.ExpenseRepository;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -34,6 +38,10 @@ public class ExpenseService {
     public Expense addNew(Expense expense, UUID expenseGroupId) throws NotFoundException {
         expense.setExpenseGroup(expenseGroupService.getById(expenseGroupId));
         return repository.save(expense);
+    }
+
+    public Page<Expense> getAll(int pageNo, int size) {
+        return repository.findAll(PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
     }
 
     public List<Expense> getAll() {

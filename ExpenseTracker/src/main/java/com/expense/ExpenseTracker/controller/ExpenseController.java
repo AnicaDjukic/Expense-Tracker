@@ -6,6 +6,7 @@ import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.service.ExpenseService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,9 @@ public class ExpenseController {
         return modelMapper.map(savedExpense, ExpenseResponseDto.class);
     }
 
-    @GetMapping("expenses")
-    public ResponseEntity<List<ExpenseResponseDto>> getAll() {
-        List<Expense> expenses = expenseService.getAll();
+    @GetMapping("expenses/{pageNo}/{size}")
+    public ResponseEntity<List<ExpenseResponseDto>> getAll(@PathVariable int pageNo, @PathVariable int size) {
+        Page<Expense> expenses = expenseService.getAll(pageNo, size);
         List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
         for(Expense expense : expenses) {
             expenseDtos.add(modelMapper.map(expense, ExpenseResponseDto.class));
