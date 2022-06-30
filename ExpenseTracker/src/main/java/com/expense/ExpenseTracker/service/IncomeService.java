@@ -42,7 +42,6 @@ public class IncomeService {
         return repository.findAll();
     }
 
-    // TODO: call in DashboardController to get last five incomes
     public List<Income> getLastFive() {
         QIncome income = QIncome.income;
         JPAQuery<QIncome> query = new JPAQuery<>(entityManager);

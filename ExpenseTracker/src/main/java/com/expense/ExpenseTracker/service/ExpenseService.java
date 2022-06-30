@@ -42,7 +42,6 @@ public class ExpenseService {
         return repository.findAll();
     }
 
-    // TODO: call in DashboardController to get last five expenses
     public List<Expense> getLastFive() {
         QExpense expense = QExpense.expense;
         JPAQuery<QExpense> query = new JPAQuery<>(entityManager);
