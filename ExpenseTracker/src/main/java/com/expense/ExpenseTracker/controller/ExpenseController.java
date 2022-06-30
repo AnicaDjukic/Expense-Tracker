@@ -8,7 +8,6 @@ import com.expense.ExpenseTracker.service.ExpenseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,35 +35,39 @@ public class ExpenseController {
     }
 
     @GetMapping("expenses/{pageNo}/{size}")
-    public ResponseEntity<List<ExpenseResponseDto>> getAll(@PathVariable int pageNo, @PathVariable int size) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<ExpenseResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
         Page<Expense> expenses = expenseService.getAll(pageNo, size);
         List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
         for(Expense expense : expenses) {
             expenseDtos.add(modelMapper.map(expense, ExpenseResponseDto.class));
         }
-        return ResponseEntity.ok(expenseDtos);
+        return expenseDtos;
     }
 
     @GetMapping("expense-groups/{id}/expenses")
-    public ResponseEntity<List<ExpenseResponseDto>> getLastFiveForExpenseGroup(@PathVariable UUID id) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<ExpenseResponseDto> getLastFiveForExpenseGroup(@PathVariable UUID id) {
         List<Expense> expenses = expenseService.getByExpenseGroupId(id);
         List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
         for(Expense expense : expenses) {
             expenseDtos.add(modelMapper.map(expense, ExpenseResponseDto.class));
         }
-        return ResponseEntity.ok(expenseDtos);
+        return expenseDtos;
     }
 
     @GetMapping("expenses/{id}")
-    public ResponseEntity<ExpenseResponseDto> getById(@PathVariable UUID id) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public ExpenseResponseDto getById(@PathVariable UUID id) {
         Expense expense = expenseService.getById(id);
-        return ResponseEntity.ok(modelMapper.map(expense, ExpenseResponseDto.class));
+        return modelMapper.map(expense, ExpenseResponseDto.class);
     }
 
     @PutMapping("expenses/{id}")
-    public ResponseEntity<ExpenseResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDto updateDto) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public ExpenseResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDto updateDto) {
         Expense updatedExpense = expenseService.update(id, updateDto);
-        return ResponseEntity.ok(modelMapper.map(updatedExpense, ExpenseResponseDto.class));
+        return modelMapper.map(updatedExpense, ExpenseResponseDto.class);
     }
 
     @DeleteMapping("expenses/{id}")

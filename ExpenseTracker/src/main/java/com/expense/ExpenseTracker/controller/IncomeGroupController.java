@@ -7,7 +7,6 @@ import com.expense.ExpenseTracker.model.IncomeGroup;
 import com.expense.ExpenseTracker.service.IncomeGroupService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,25 +35,28 @@ public class IncomeGroupController {
     }
 
     @GetMapping
-    public ResponseEntity<List<IncomeGroupResponseDto>> getAll() {
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<IncomeGroupResponseDto> getAll() {
         List<IncomeGroup> incomeGroups = incomeGroupService.getAll();
         List<IncomeGroupResponseDto> incomeGroupDtos = new ArrayList<>();
         for(IncomeGroup expenseGroup : incomeGroups) {
             incomeGroupDtos.add(modelMapper.map(expenseGroup, IncomeGroupResponseDto.class));
         }
-        return ResponseEntity.ok(incomeGroupDtos);
+        return incomeGroupDtos;
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<IncomeGroupResponseDto> getById(@PathVariable UUID id) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public IncomeGroupResponseDto getById(@PathVariable UUID id) {
         IncomeGroup incomeGroup = incomeGroupService.getById(id);
-        return ResponseEntity.ok(modelMapper.map(incomeGroup, IncomeGroupResponseDto.class));
+        return modelMapper.map(incomeGroup, IncomeGroupResponseDto.class);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<IncomeGroupResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public IncomeGroupResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
         IncomeGroup updatedIncomeGroup = incomeGroupService.update(id, updateDto);
-        return ResponseEntity.ok(modelMapper.map(updatedIncomeGroup, IncomeGroupResponseDto.class));
+        return modelMapper.map(updatedIncomeGroup, IncomeGroupResponseDto.class);
     }
 
     @DeleteMapping("{id}")
