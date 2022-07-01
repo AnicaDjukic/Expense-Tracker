@@ -1,5 +1,7 @@
 package com.expense.ExpenseTracker.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Getter
+@NoArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -25,6 +29,11 @@ public class User implements UserDetails {
     @JoinColumn
     private Role role;
 
+    public User(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
