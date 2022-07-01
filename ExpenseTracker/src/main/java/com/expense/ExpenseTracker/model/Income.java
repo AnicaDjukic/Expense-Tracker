@@ -25,8 +25,14 @@ public class Income {
 
     @Setter
     private Date creationTime;
+
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private IncomeGroup incomeGroup;
+
+    @PrePersist
+    protected void onCreate() {
+        creationTime = new Date();
+    }
 }

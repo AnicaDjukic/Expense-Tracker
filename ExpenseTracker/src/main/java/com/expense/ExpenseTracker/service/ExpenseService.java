@@ -4,14 +4,15 @@ import com.expense.ExpenseTracker.dto.ExpenseRequestDto;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.QExpense;
+import com.expense.ExpenseTracker.repository.QExpenseRepository;
 import com.expense.ExpenseTracker.repository.ExpenseRepository;
-import com.querydsl.jpa.impl.JPAQuery;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,34 +23,34 @@ public class ExpenseService {
 
     private final ExpenseGroupService expenseGroupService;
 
-    private final EntityManager entityManager;
+    private final QExpenseRepository qRepository;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public ExpenseService(ExpenseRepository repository, ExpenseGroupService expenseGroupService, EntityManager entityManager) {
+    public ExpenseService(ExpenseRepository repository, ExpenseGroupService expenseGroupService, QExpenseRepository qRepository) {
         this.repository = repository;
         this.expenseGroupService = expenseGroupService;
-        this.entityManager = entityManager;
+        this.qRepository = qRepository;
     }
 
     public Expense addNew(Expense expense, UUID expenseGroupId) throws NotFoundException {
-        expense.setCreationTime(new Date());
         expense.setExpenseGroup(expenseGroupService.getById(expenseGroupId));
         return repository.save(expense);
+    }
+
+    public Page<Expense> getAll(int pageNo, int size) {
+        return repository.findAll(PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
     }
 
     public List<Expense> getAll() {
         return repository.findAll();
     }
 
-    // TODO: call in DashboardController to get last five expenses
-    public List<Expense> getLastFive() {
-        QExpense expense = QExpense.expense;
-        JPAQuery<QExpense> query = new JPAQuery<>(entityManager);
-        query.from(expense).orderBy(expense.creationTime.desc()).limit(5);
+    public List<Expense> getLastFew(int size) {
+        List<QExpense> qExpenses = qRepository.getLastFew(size);
         List<Expense> expenses = new ArrayList<>();
-        for (int i = 0; i < query.fetch().size(); i++) {
-            expenses.add(modelMapper.map(query.fetch().get(i), Expense.class));
+        for (int i = 0; i < qExpenses.size(); i++) {
+            expenses.add(modelMapper.map(qExpenses.get(i), Expense.class));
         }
         return expenses;
     }
@@ -71,13 +72,11 @@ public class ExpenseService {
         repository.delete(expense);
     }
 
-    public List<Expense> getByExpenseGroupId(UUID expenseGroupId) {
-        QExpense expense = QExpense.expense;
-        JPAQuery<QExpense> query = new JPAQuery<>(entityManager);
-        query.from(expense).where(expense.expenseGroup.id.eq(expenseGroupId)).orderBy(expense.creationTime.desc()).limit(5);
+    public List<Expense> getByExpenseGroupId(UUID expenseGroupId, int size) {
+        List<QExpense> qExpenses = qRepository.getLastFewByExpenseGroupId(expenseGroupId, size);
         List<Expense> expenses = new ArrayList<>();
-        for (int i = 0; i < query.fetch().size(); i++) {
-            expenses.add(modelMapper.map(query.fetch().get(i), Expense.class));
+        for (int i = 0; i < qExpenses.size(); i++) {
+            expenses.add(modelMapper.map(qExpenses.get(i), Expense.class));
         }
         return expenses;
     }

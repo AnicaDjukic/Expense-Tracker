@@ -5,8 +5,8 @@ import com.expense.ExpenseTracker.dto.IncomeResponseDto;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.service.IncomeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,36 +34,40 @@ public class IncomeController {
         return modelMapper.map(savedIncome, IncomeResponseDto.class);
     }
 
-    @GetMapping("incomes")
-    public ResponseEntity<List<IncomeResponseDto>> getAll() {
-        List<Income> incomes = incomeService.getAll();
+    @GetMapping("incomes/{pageNo}/{size}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<IncomeResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
+        Page<Income> incomes = incomeService.getAll(pageNo, size);
         List<IncomeResponseDto> incomeDtos = new ArrayList<>();
         for(Income income : incomes) {
             incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));
         }
-        return ResponseEntity.ok(incomeDtos);
+        return incomeDtos;
     }
 
-    @GetMapping("income-groups/{id}/incomes")
-    public ResponseEntity<List<IncomeResponseDto>> getLastFiveForIncomeGroup(@PathVariable UUID id) {
-        List<Income> incomes = incomeService.getByIncomeGroupId(id);
+    @GetMapping("income-groups/{id}/incomes/{size}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @PathVariable int size) {
+        List<Income> incomes = incomeService.getByIncomeGroupId(id, size);
         List<IncomeResponseDto> incomeDtos = new ArrayList<>();
         for(Income income : incomes) {
             incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));
         }
-        return ResponseEntity.ok(incomeDtos);
+        return incomeDtos;
     }
 
     @GetMapping("incomes/{id}")
-    public ResponseEntity<IncomeResponseDto> getById(@PathVariable UUID id) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public IncomeResponseDto getById(@PathVariable UUID id) {
         Income income = incomeService.getById(id);
-        return ResponseEntity.ok(modelMapper.map(income, IncomeResponseDto.class));
+        return modelMapper.map(income, IncomeResponseDto.class);
     }
 
     @PutMapping("incomes/{id}")
-    public ResponseEntity<IncomeResponseDto> update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public IncomeResponseDto update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) {
         Income updatedIncome = incomeService.update(id, updateDto);
-        return ResponseEntity.ok(modelMapper.map(updatedIncome, IncomeResponseDto.class));
+        return modelMapper.map(updatedIncome, IncomeResponseDto.class);
     }
 
     @DeleteMapping("incomes/{id}")

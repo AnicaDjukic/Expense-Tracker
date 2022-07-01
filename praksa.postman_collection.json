@@ -1,0 +1,589 @@
+{
+	"info": {
+		"_postman_id": "da0bdbc1-e2b7-44db-a607-2d3d6531e291",
+		"name": "praksa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18149942"
+	},
+	"item": [
+		{
+			"name": "Expenses",
+			"item": [
+				{
+					"name": "Create Expense",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Proba\",\r\n    \"amount\": 10,\r\n    \"expenseGroupId\": \"f3a7af1c-27b2-4758-a5e6-96c763bd6e5d\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/expenses",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Expenses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/expenses/0/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expenses",
+								"0",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Expense By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/expenses/f43ff7ef-3599-46c9-85e6-522da05824b5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expenses",
+								"f43ff7ef-3599-46c9-85e6-522da05824b5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Expense",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Novo Novo\",\r\n    \"amount\": 1000.5,\r\n    \"expenseGroupId\": \"efa6e0cd-1ea0-4b89-9c21-d25b8dcd4a50\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/expenses/f43ff7ef-3599-46c9-85e6-522da05824b5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expenses",
+								"f43ff7ef-3599-46c9-85e6-522da05824b5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Expense",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/expenses/f6ea2a13-bd89-4664-a7e9-b97c6a385e20",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expenses",
+								"f6ea2a13-bd89-4664-a7e9-b97c6a385e20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Expenses for ExpGroup",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/expense-groups/063d28a5-dc7c-4419-bac8-65581c1bd791/expenses/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expense-groups",
+								"063d28a5-dc7c-4419-bac8-65581c1bd791",
+								"expenses",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Incomes",
+			"item": [
+				{
+					"name": "Create Income",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 40,\r\n    \"incomeGroupId\": \"d63abde2-19d3-4dad-943f-b5de55be9ee5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/incomes",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"incomes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Incomes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/incomes/0/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"incomes",
+								"0",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Income By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/incomes/3105b469-e1a9-4245-8a4f-9e82ed253170",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"incomes",
+								"3105b469-e1a9-4245-8a4f-9e82ed253170"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Income",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 1000.5,\r\n    \"incomeGroupId\": \"d7f62434-8d15-4999-aa23-063d8e66952f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/incomes/3105b469-e1a9-4245-8a4f-9e82ed253170",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"incomes",
+								"3105b469-e1a9-4245-8a4f-9e82ed253170"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Income",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/incomes/84d1cc84-38f9-4777-b217-d182c25a4d8e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"incomes",
+								"84d1cc84-38f9-4777-b217-d182c25a4d8e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Incomes for IncGroup Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/income-groups/d63abde2-19d3-4dad-943f-b5de55be9ee5/incomes/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"income-groups",
+								"d63abde2-19d3-4dad-943f-b5de55be9ee5",
+								"incomes",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Expense Groups",
+			"item": [
+				{
+					"name": "Create Expense Group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Trosak\",\r\n    \"description\": \"Troskovi neki\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/expense-groups",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expense-groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Expense Groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/expense-groups/0/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expense-groups",
+								"0",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Expense Group By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/expense-groups/71d359da-6fe4-47d7-89df-5032a02bf09c",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expense-groups",
+								"71d359da-6fe4-47d7-89df-5032a02bf09c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Expense Group",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Trosak\",\r\n    \"description\": \"Novo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/expense-groups/6b495ade-0837-4996-b916-9f9e999c6976",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expense-groups",
+								"6b495ade-0837-4996-b916-9f9e999c6976"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Expense Group",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/expense-groups/afe5a068-1eab-4f41-9ba4-8392be7067e9",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"expense-groups",
+								"afe5a068-1eab-4f41-9ba4-8392be7067e9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Income Groups",
+			"item": [
+				{
+					"name": "Create Income Group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Prihod\",\r\n    \"description\": \"Prihod neki\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/income-groups",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"income-groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Income Groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/income-groups/1/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"income-groups",
+								"1",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Income Group By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/income-groups/6ebddb04-63f1-40d5-8a26-bc5b2bfa1172",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"income-groups",
+								"6ebddb04-63f1-40d5-8a26-bc5b2bfa1172"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Income Group",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Novo\",\r\n    \"description\": \"Novo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/income-groups/016a6d21-01bf-4f1d-bdac-de0dc4364865",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"income-groups",
+								"016a6d21-01bf-4f1d-bdac-de0dc4364865"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Income Group",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/income-groups/71d13db7-7e7e-41c8-8f82-c23339d1b213",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"income-groups",
+								"71d13db7-7e7e-41c8-8f82-c23339d1b213"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/dashboard/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"dashboard",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

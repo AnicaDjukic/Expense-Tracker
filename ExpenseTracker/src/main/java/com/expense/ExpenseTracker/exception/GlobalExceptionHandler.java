@@ -12,10 +12,18 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> handleNotFoundException(NotFoundException notFoundException) {
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException exception) {
         ExceptionResponse response = new ExceptionResponse();
         response.setDateTime(LocalDateTime.now());
-        response.setMessage(notFoundException.getMessage());
+        response.setMessage(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NameAlreadyExistsException.class)
+    public ResponseEntity<Object> handleNameAlreadyExistsException(NameAlreadyExistsException exception) {
+        ExceptionResponse response = new ExceptionResponse();
+        response.setDateTime(LocalDateTime.now());
+        response.setMessage(exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 }
