@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1")
@@ -36,24 +36,16 @@ public class IncomeController {
 
     @GetMapping("incomes/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<IncomeResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
+    public Page<IncomeResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
         Page<Income> incomes = incomeService.getAll(pageNo, size);
-        List<IncomeResponseDto> incomeDtos = new ArrayList<>();
-        for(Income income : incomes) {
-            incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));
-        }
-        return incomeDtos;
+        return incomes.map(income -> modelMapper.map(income, IncomeResponseDto.class));
     }
 
     @GetMapping("income-groups/{id}/incomes/{size}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @PathVariable int size) {
         List<Income> incomes = incomeService.getByIncomeGroupId(id, size);
-        List<IncomeResponseDto> incomeDtos = new ArrayList<>();
-        for(Income income : incomes) {
-            incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));
-        }
-        return incomeDtos;
+        return incomes.stream().map(income -> modelMapper.map(income, IncomeResponseDto.class)).collect(Collectors.toList());
     }
 
     @GetMapping("incomes/{id}")
@@ -75,5 +67,4 @@ public class IncomeController {
     public void delete(@PathVariable UUID id) {
         incomeService.deleteById(id);
     }
-
 }

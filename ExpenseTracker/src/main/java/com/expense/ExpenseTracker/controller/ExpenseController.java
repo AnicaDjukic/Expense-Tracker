@@ -11,9 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1")
@@ -36,24 +36,16 @@ public class ExpenseController {
 
     @GetMapping("expenses/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<ExpenseResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
+    public Page<ExpenseResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
         Page<Expense> expenses = expenseService.getAll(pageNo, size);
-        List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
-        for(Expense expense : expenses) {
-            expenseDtos.add(modelMapper.map(expense, ExpenseResponseDto.class));
-        }
-        return expenseDtos;
+        return expenses.map(expense -> modelMapper.map(expense, ExpenseResponseDto.class));
     }
 
     @GetMapping("expense-groups/{id}/expenses/{size}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<ExpenseResponseDto> getLastFewForExpenseGroup(@PathVariable UUID id, @PathVariable int size) {
         List<Expense> expenses = expenseService.getByExpenseGroupId(id, size);
-        List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
-        for(Expense expense : expenses) {
-            expenseDtos.add(modelMapper.map(expense, ExpenseResponseDto.class));
-        }
-        return expenseDtos;
+        return expenses.stream().map(expense -> modelMapper.map(expense, ExpenseResponseDto.class)).collect(Collectors.toList());
     }
 
     @GetMapping("expenses/{id}")
