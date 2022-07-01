@@ -45,10 +45,10 @@ public class ExpenseController {
         return expenseDtos;
     }
 
-    @GetMapping("expense-groups/{id}/expenses")
+    @GetMapping("expense-groups/{id}/expenses/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<ExpenseResponseDto> getLastFiveForExpenseGroup(@PathVariable UUID id) {
-        List<Expense> expenses = expenseService.getByExpenseGroupId(id);
+    public List<ExpenseResponseDto> getLastFewForExpenseGroup(@PathVariable UUID id, @PathVariable int size) {
+        List<Expense> expenses = expenseService.getByExpenseGroupId(id, size);
         List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
         for(Expense expense : expenses) {
             expenseDtos.add(modelMapper.map(expense, ExpenseResponseDto.class));

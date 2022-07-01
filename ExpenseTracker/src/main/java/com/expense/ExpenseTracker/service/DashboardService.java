@@ -25,12 +25,12 @@ public class DashboardService {
         return incomeAmount - expenseAmount;
     }
 
-    public List<Expense> getLastFiveExpenses() {
-        return expenseService.getLastFive();
+    public List<Expense> getLastFewExpenses(int size) {
+        return expenseService.getLastFew(size);
     }
 
-    public List<Income> getLastFiveIncomes() {
-       return incomeService.getLastFive();
+    public List<Income> getLastFewIncomes(int size) {
+       return incomeService.getLastFew(size);
     }
 
     private double calculateExpenseAmount() {

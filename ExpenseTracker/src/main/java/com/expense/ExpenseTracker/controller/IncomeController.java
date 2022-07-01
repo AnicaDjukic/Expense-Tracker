@@ -45,10 +45,10 @@ public class IncomeController {
         return incomeDtos;
     }
 
-    @GetMapping("income-groups/{id}/incomes")
+    @GetMapping("income-groups/{id}/incomes/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<IncomeResponseDto> getLastFiveForIncomeGroup(@PathVariable UUID id) {
-        List<Income> incomes = incomeService.getByIncomeGroupId(id);
+    public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @PathVariable int size) {
+        List<Income> incomes = incomeService.getByIncomeGroupId(id, size);
         List<IncomeResponseDto> incomeDtos = new ArrayList<>();
         for(Income income : incomes) {
             incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));

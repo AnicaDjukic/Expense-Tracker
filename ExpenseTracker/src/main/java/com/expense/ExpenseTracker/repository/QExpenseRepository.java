@@ -17,17 +17,17 @@ public class QExpenseRepository {
         this.entityManager = entityManager;
     }
 
-    public List<QExpense> getLastFive() {
+    public List<QExpense> getLastFew(int size) {
         QExpense expense = QExpense.expense;
         JPAQuery<QExpense> query = new JPAQuery<>(entityManager);
-        query.from(expense).orderBy(expense.creationTime.desc()).limit(5);
+        query.from(expense).orderBy(expense.creationTime.desc()).limit(size);
         return query.fetch();
     }
 
-    public List<QExpense> getLastFiveByExpenseGroupId(UUID expenseGroupId) {
+    public List<QExpense> getLastFewByExpenseGroupId(UUID expenseGroupId, int size) {
         QExpense expense = QExpense.expense;
         JPAQuery<QExpense> query = new JPAQuery<>(entityManager);
-        query.from(expense).where(expense.expenseGroup.id.eq(expenseGroupId)).orderBy(expense.creationTime.desc()).limit(5);
+        query.from(expense).where(expense.expenseGroup.id.eq(expenseGroupId)).orderBy(expense.creationTime.desc()).limit(size);
         return query.fetch();
     }
 }

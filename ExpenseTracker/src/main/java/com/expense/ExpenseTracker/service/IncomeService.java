@@ -46,8 +46,8 @@ public class IncomeService {
         return repository.findAll();
     }
 
-    public List<Income> getLastFive() {
-        List<QIncome> qExpenses = customRepository.getLastFive();
+    public List<Income> getLastFew(int size) {
+        List<QIncome> qExpenses = customRepository.getLastFew(size);
         List<Income> incomes = new ArrayList<>();
         for (int i = 0; i < qExpenses.size(); i++) {
             incomes.add(modelMapper.map(qExpenses.get(i), Income.class));
@@ -72,8 +72,8 @@ public class IncomeService {
         repository.delete(income);
     }
 
-    public List<Income> getByIncomeGroupId(UUID incomeGroupId) {
-        List<QIncome> qIncomes = customRepository.getLastFiveByIncomeGroupId(incomeGroupId);
+    public List<Income> getByIncomeGroupId(UUID incomeGroupId, int size) {
+        List<QIncome> qIncomes = customRepository.getLastFewByIncomeGroupId(incomeGroupId, size);
         List<Income> incomes = new ArrayList<>();
         for (int i = 0; i < qIncomes.size(); i++) {
             incomes.add(modelMapper.map(qIncomes.get(i), Income.class));

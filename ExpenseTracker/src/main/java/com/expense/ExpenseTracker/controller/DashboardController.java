@@ -8,10 +8,7 @@ import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.service.DashboardService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +25,12 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    @GetMapping
+    @GetMapping("/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public DashboardDto getDashboard() {
+    public DashboardDto getDashboard(@PathVariable int size) {
         double totalAmount = dashboardService.getTotalAmount();
-        List<Expense> expenses = dashboardService.getLastFiveExpenses();
-        List<Income> incomes = dashboardService.getLastFiveIncomes();
+        List<Expense> expenses = dashboardService.getLastFewExpenses(size);
+        List<Income> incomes = dashboardService.getLastFewIncomes(size);
         return createDashboard(totalAmount, expenses, incomes);
     }
 

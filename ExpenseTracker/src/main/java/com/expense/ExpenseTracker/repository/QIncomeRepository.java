@@ -16,17 +16,17 @@ public class QIncomeRepository {
         this.entityManager = entityManager;
     }
 
-    public List<QIncome> getLastFive() {
+    public List<QIncome> getLastFew(int size) {
         QIncome income = QIncome.income;
         JPAQuery<QIncome> query = new JPAQuery<>(entityManager);
-        query.from(income).orderBy(income.creationTime.desc()).limit(5);
+        query.from(income).orderBy(income.creationTime.desc()).limit(size);
         return query.fetch();
     }
 
-    public List<QIncome> getLastFiveByIncomeGroupId(UUID incomeGroupId) {
+    public List<QIncome> getLastFewByIncomeGroupId(UUID incomeGroupId, int size) {
         QIncome income = QIncome.income;
         JPAQuery<QIncome> query = new JPAQuery<>(entityManager);
-        query.from(income).where(income.incomeGroup.id.eq(incomeGroupId)).orderBy(income.creationTime.desc()).limit(5);
+        query.from(income).where(income.incomeGroup.id.eq(incomeGroupId)).orderBy(income.creationTime.desc()).limit(size);
         return query.fetch();
     }
 }

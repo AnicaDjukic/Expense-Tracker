@@ -46,8 +46,8 @@ public class ExpenseService {
         return repository.findAll();
     }
 
-    public List<Expense> getLastFive() {
-        List<QExpense> qExpenses = qRepository.getLastFive();
+    public List<Expense> getLastFew(int size) {
+        List<QExpense> qExpenses = qRepository.getLastFew(size);
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < qExpenses.size(); i++) {
             expenses.add(modelMapper.map(qExpenses.get(i), Expense.class));
@@ -72,8 +72,8 @@ public class ExpenseService {
         repository.delete(expense);
     }
 
-    public List<Expense> getByExpenseGroupId(UUID expenseGroupId) {
-        List<QExpense> qExpenses = qRepository.getLastFiveByExpenseGroupId(expenseGroupId);
+    public List<Expense> getByExpenseGroupId(UUID expenseGroupId, int size) {
+        List<QExpense> qExpenses = qRepository.getLastFewByExpenseGroupId(expenseGroupId, size);
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < qExpenses.size(); i++) {
             expenses.add(modelMapper.map(qExpenses.get(i), Expense.class));
