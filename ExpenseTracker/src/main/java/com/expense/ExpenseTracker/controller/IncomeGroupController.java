@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -37,13 +35,9 @@ public class IncomeGroupController {
 
     @GetMapping("/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<IncomeGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
+    public Page<IncomeGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
         Page<IncomeGroup> incomeGroups = incomeGroupService.getAll(pageNo, size);
-        List<IncomeGroupResponseDto> incomeGroupDtos = new ArrayList<>();
-        for(IncomeGroup expenseGroup : incomeGroups) {
-            incomeGroupDtos.add(modelMapper.map(expenseGroup, IncomeGroupResponseDto.class));
-        }
-        return incomeGroupDtos;
+        return incomeGroups.map(incomeGroup -> modelMapper.map(incomeGroup, IncomeGroupResponseDto.class));
     }
 
     @GetMapping("{id}")

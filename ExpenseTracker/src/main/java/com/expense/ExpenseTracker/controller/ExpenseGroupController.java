@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,13 +34,9 @@ public class ExpenseGroupController {
 
     @GetMapping("/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<ExpenseGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
+    public Page<ExpenseGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
         Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(pageNo, size);
-        List<ExpenseGroupResponseDto> expenseGroupDtos = new ArrayList<>();
-        for(ExpenseGroup expenseGroup : expenseGroups) {
-            expenseGroupDtos.add(modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class));
-        }
-        return expenseGroupDtos;
+        return expenseGroups.map(expenseGroup -> modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class));
     }
 
     @GetMapping("{id}")
