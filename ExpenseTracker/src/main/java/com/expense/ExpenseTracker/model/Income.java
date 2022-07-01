@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class Income {
     private double amount;
 
     @Setter
-    private Date creationTime;
+    private LocalDateTime creationTime;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,6 +34,6 @@ public class Income {
 
     @PrePersist
     protected void onCreate() {
-        creationTime = new Date();
+        creationTime = LocalDateTime.now();
     }
 }
