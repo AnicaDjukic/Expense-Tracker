@@ -21,25 +21,29 @@ public class ExpenseService {
 
     private final ExpenseRepository repository;
 
+    private final QExpenseRepository qRepository;
+
     private final ExpenseGroupService expenseGroupService;
 
-    private final QExpenseRepository qRepository;
+    private final UserService userService;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public ExpenseService(ExpenseRepository repository, ExpenseGroupService expenseGroupService, QExpenseRepository qRepository) {
+    public ExpenseService(ExpenseRepository repository, QExpenseRepository qRepository, ExpenseGroupService expenseGroupService, UserService userService) {
         this.repository = repository;
-        this.expenseGroupService = expenseGroupService;
         this.qRepository = qRepository;
+        this.expenseGroupService = expenseGroupService;
+        this.userService = userService;
     }
 
-    public Expense addNew(Expense expense, UUID expenseGroupId) throws NotFoundException {
+    public Expense addNew(Expense expense, UUID expenseGroupId, UUID userId) throws NotFoundException {
         expense.setExpenseGroup(expenseGroupService.getById(expenseGroupId));
+        expense.setUser(userService.getById(userId));
         return repository.save(expense);
     }
 
-    public Page<Expense> getAll(int pageNo, int size) {
-        return repository.findAll(PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
+    public Page<Expense> getAll(int pageNo, int size, UUID userId) {
+        return repository.findByUser(userService.getById(userId), PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
     }
 
     public List<Expense> getAll() {

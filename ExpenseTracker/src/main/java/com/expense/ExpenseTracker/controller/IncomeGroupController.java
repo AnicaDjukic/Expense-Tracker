@@ -8,6 +8,7 @@ import com.expense.ExpenseTracker.service.IncomeGroupService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ public class IncomeGroupController {
         this.incomeGroupService = incomeGroupService;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public IncomeGroupResponseDto create(@RequestBody @Valid IncomeGroupRequestDto newExpenseGroupDto) {
@@ -33,6 +35,7 @@ public class IncomeGroupController {
         return modelMapper.map(savedIncomeGroup, IncomeGroupResponseDto.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
     public Page<IncomeGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
@@ -40,6 +43,7 @@ public class IncomeGroupController {
         return incomeGroups.map(incomeGroup -> modelMapper.map(incomeGroup, IncomeGroupResponseDto.class));
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeGroupResponseDto getById(@PathVariable UUID id) {
@@ -47,6 +51,7 @@ public class IncomeGroupController {
         return modelMapper.map(incomeGroup, IncomeGroupResponseDto.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeGroupResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
@@ -54,6 +59,7 @@ public class IncomeGroupController {
         return modelMapper.map(updatedIncomeGroup, IncomeGroupResponseDto.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable UUID id) {

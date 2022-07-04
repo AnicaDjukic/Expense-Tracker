@@ -8,6 +8,7 @@ import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.service.DashboardService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{size}")
     @ResponseStatus(value = HttpStatus.OK)
     public DashboardDto getDashboard(@PathVariable int size) {

@@ -7,6 +7,7 @@ import com.expense.ExpenseTracker.service.IncomeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ public class IncomeController {
         this.incomeService = incomeService;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("incomes")
     @ResponseStatus(value = HttpStatus.CREATED)
     public IncomeResponseDto create(@RequestBody @Valid IncomeRequestDto newDto) {
@@ -34,6 +36,7 @@ public class IncomeController {
         return modelMapper.map(savedIncome, IncomeResponseDto.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("incomes/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
     public Page<IncomeResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
@@ -41,6 +44,7 @@ public class IncomeController {
         return incomes.map(income -> modelMapper.map(income, IncomeResponseDto.class));
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("income-groups/{id}/incomes/{size}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @PathVariable int size) {
@@ -48,6 +52,7 @@ public class IncomeController {
         return incomes.stream().map(income -> modelMapper.map(income, IncomeResponseDto.class)).collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeResponseDto getById(@PathVariable UUID id) {
@@ -55,6 +60,7 @@ public class IncomeController {
         return modelMapper.map(income, IncomeResponseDto.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeResponseDto update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) {
@@ -62,6 +68,7 @@ public class IncomeController {
         return modelMapper.map(updatedIncome, IncomeResponseDto.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable UUID id) {
