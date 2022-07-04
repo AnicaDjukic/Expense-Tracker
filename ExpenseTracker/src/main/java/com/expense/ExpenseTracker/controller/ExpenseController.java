@@ -50,32 +50,32 @@ public class ExpenseController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("expense-groups/{id}/expenses/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<ExpenseResponseDto> getLastFewForExpenseGroup(@PathVariable UUID id, @PathVariable int size) {
-        List<Expense> expenses = expenseService.getByExpenseGroupId(id, size);
+    public List<ExpenseResponseDto> getLastFewForExpenseGroup(@PathVariable UUID id, @PathVariable int size, @AuthenticationPrincipal User authDto) {
+        List<Expense> expenses = expenseService.getByExpenseGroupId(id, size, authDto.getId());
         return expenses.stream().map(expense -> modelMapper.map(expense, ExpenseResponseDto.class)).collect(Collectors.toList());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("expenses/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ExpenseResponseDto getById(@PathVariable UUID id) {
-        Expense expense = expenseService.getById(id);
+    public ExpenseResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        Expense expense = expenseService.getById(id, authDto.getId());
         return modelMapper.map(expense, ExpenseResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("expenses/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ExpenseResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDto updateDto) {
-        Expense updatedExpense = expenseService.update(id, updateDto);
+    public ExpenseResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDto updateDto, @AuthenticationPrincipal User authDto) {
+        Expense updatedExpense = expenseService.update(id, updateDto, authDto.getId());
         return modelMapper.map(updatedExpense, ExpenseResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("expenses/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable UUID id) throws NotFoundException {
-        expenseService.deleteById(id);
+    public void delete(@PathVariable UUID id, @AuthenticationPrincipal User authDto) throws NotFoundException {
+        expenseService.deleteById(id, authDto.getId());
     }
 
 }

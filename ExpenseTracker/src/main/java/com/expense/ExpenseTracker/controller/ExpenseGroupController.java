@@ -47,24 +47,24 @@ public class ExpenseGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ExpenseGroupResponseDto getById(@PathVariable UUID id) {
-        ExpenseGroup expenseGroup = expenseGroupService.getById(id);
+    public ExpenseGroupResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        ExpenseGroup expenseGroup = expenseGroupService.getById(id, authDto.getId());
         return modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ExpenseGroupResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
-        ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto);
+    public ExpenseGroupResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto, @AuthenticationPrincipal User authDto) {
+        ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto, authDto.getId());
         return modelMapper.map(updatedExpenseGroup, ExpenseGroupResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable UUID id) {
-        expenseGroupService.deleteById(id);
+    public void delete(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        expenseGroupService.deleteById(id, authDto.getId());
     }
 
 }
