@@ -37,28 +37,26 @@ public class ExpenseGroupService {
     }
 
     public ExpenseGroup getById(UUID id, UUID userId) throws NotFoundException {
-        repository.findById(id).orElseThrow(() -> new NotFoundException(ExpenseGroup.class.getSimpleName()));
-        return getByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(ExpenseGroup.class.getSimpleName()));
+        return getByIdAndUser(id, userService.getById(userId));
     }
 
     public ExpenseGroup update(UUID id, ExpenseGroupRequestDto updateDto, UUID userId) throws NotFoundException {
         Optional<ExpenseGroup> existingExpGroup = repository.findByNameAndUser(updateDto.getName(), userService.getById(userId));
         if (existingExpGroup.isPresent() && !existingExpGroup.get().getId().equals(id))
             throw new NameAlreadyExistsException(ExpenseGroup.class.getSimpleName(), updateDto.getName());
-        repository.findById(id).orElseThrow(() -> new NotFoundException(ExpenseGroup.class.getSimpleName()));
-        ExpenseGroup expenseGroup = getByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(ExpenseGroup.class.getSimpleName()));
+        ExpenseGroup expenseGroup = getByIdAndUser(id, userService.getById(userId));
         expenseGroup.setName(updateDto.getName());
         expenseGroup.setDescription(updateDto.getDescription());
         return repository.save(expenseGroup);
     }
 
     public void deleteById(UUID id, UUID userId) throws NotFoundException {
-        repository.findById(id).orElseThrow(() -> new NotFoundException(ExpenseGroup.class.getSimpleName()));
-        ExpenseGroup expenseGroup = getByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(ExpenseGroup.class.getSimpleName()));
+        ExpenseGroup expenseGroup = getByIdAndUser(id, userService.getById(userId));
         repository.delete(expenseGroup);
     }
 
-    public Optional<ExpenseGroup> getByIdAndUser(UUID expenseGroupId, User user) {
-        return repository.findByIdAndUser(expenseGroupId, user);
+    public ExpenseGroup getByIdAndUser(UUID id, User user) {
+        repository.findById(id).orElseThrow(() -> new NotFoundException(ExpenseGroup.class.getSimpleName()));
+        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessDeniedException(ExpenseGroup.class.getSimpleName()));
     }
 }

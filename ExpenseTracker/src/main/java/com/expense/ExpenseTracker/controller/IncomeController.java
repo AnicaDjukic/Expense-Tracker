@@ -49,31 +49,31 @@ public class IncomeController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("income-groups/{id}/incomes/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @PathVariable int size) {
-        List<Income> incomes = incomeService.getByIncomeGroupId(id, size);
+    public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @PathVariable int size, @AuthenticationPrincipal User authDto) {
+        List<Income> incomes = incomeService.getByIncomeGroupId(id, size, authDto.getId());
         return incomes.stream().map(income -> modelMapper.map(income, IncomeResponseDto.class)).collect(Collectors.toList());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public IncomeResponseDto getById(@PathVariable UUID id) {
-        Income income = incomeService.getById(id);
+    public IncomeResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        Income income = incomeService.getById(id, authDto.getId());
         return modelMapper.map(income, IncomeResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public IncomeResponseDto update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) {
-        Income updatedIncome = incomeService.update(id, updateDto);
+    public IncomeResponseDto update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto, @AuthenticationPrincipal User authDto) {
+        Income updatedIncome = incomeService.update(id, updateDto, authDto.getId());
         return modelMapper.map(updatedIncome, IncomeResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void delete(@PathVariable UUID id) {
-        incomeService.deleteById(id);
+    public void delete(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        incomeService.deleteById(id, authDto.getId());
     }
 }

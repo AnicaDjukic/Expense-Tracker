@@ -15,4 +15,6 @@ public interface IncomeGroupRepository extends JpaRepository<IncomeGroup, UUID> 
     Optional<IncomeGroup> findByNameAndUser(String name, User user);
 
     Page<IncomeGroup> findByUser(User user, PageRequest of);
+
+    Optional<IncomeGroup> findByIdAndUser(UUID incomeGroupId, User user);
 }

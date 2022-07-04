@@ -48,24 +48,24 @@ public class IncomeGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public IncomeGroupResponseDto getById(@PathVariable UUID id) {
-        IncomeGroup incomeGroup = incomeGroupService.getById(id);
+    public IncomeGroupResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        IncomeGroup incomeGroup = incomeGroupService.getById(id, authDto.getId());
         return modelMapper.map(incomeGroup, IncomeGroupResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public IncomeGroupResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
-        IncomeGroup updatedIncomeGroup = incomeGroupService.update(id, updateDto);
+    public IncomeGroupResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto, @AuthenticationPrincipal User authDto) {
+        IncomeGroup updatedIncomeGroup = incomeGroupService.update(id, updateDto, authDto.getId());
         return modelMapper.map(updatedIncomeGroup, IncomeGroupResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void delete(@PathVariable UUID id) {
-        incomeGroupService.deleteById(id);
+    public void delete(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        incomeGroupService.deleteById(id, authDto.getId());
     }
 
 }

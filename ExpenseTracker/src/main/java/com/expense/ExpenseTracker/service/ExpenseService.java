@@ -82,7 +82,7 @@ public class ExpenseService {
     }
 
     public List<Expense> getByExpenseGroupId(UUID expenseGroupId, int size, UUID userId) {
-        expenseGroupService.getByIdAndUser(expenseGroupId, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(ExpenseGroup.class.getSimpleName()));
+        expenseGroupService.getById(expenseGroupId, userId);
         List<QExpense> qExpenses = qRepository.getLastFewByExpenseGroupId(expenseGroupId, size);
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < qExpenses.size(); i++) {
