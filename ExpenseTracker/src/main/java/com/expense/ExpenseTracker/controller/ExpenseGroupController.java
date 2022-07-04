@@ -3,11 +3,14 @@ package com.expense.ExpenseTracker.controller;
 import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
 import com.expense.ExpenseTracker.dto.ExpenseGroupResponseDto;
 import com.expense.ExpenseTracker.model.ExpenseGroup;
+import com.expense.ExpenseTracker.model.User;
+import com.expense.ExpenseTracker.security.JwtTokenUtil;
 import com.expense.ExpenseTracker.service.ExpenseGroupService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,17 +31,17 @@ public class ExpenseGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ExpenseGroupResponseDto create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto) {
+    public ExpenseGroupResponseDto create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto, @AuthenticationPrincipal User authDto) {
         ExpenseGroup expenseGroup = modelMapper.map(newExpenseGroupDto, ExpenseGroup.class);
-        ExpenseGroup savedExpenseGroup = expenseGroupService.addNew(expenseGroup);
+        ExpenseGroup savedExpenseGroup = expenseGroupService.addNew(expenseGroup, authDto.getId());
         return modelMapper.map(savedExpenseGroup, ExpenseGroupResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public Page<ExpenseGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
-        Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(pageNo, size);
+    public Page<ExpenseGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size, @AuthenticationPrincipal User authDto) {
+        Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(pageNo, size, authDto.getId());
         return expenseGroups.map(expenseGroup -> modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class));
     }
 

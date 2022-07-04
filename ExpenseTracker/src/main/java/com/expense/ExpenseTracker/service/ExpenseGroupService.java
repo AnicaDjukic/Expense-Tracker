@@ -16,18 +16,22 @@ import java.util.UUID;
 public class ExpenseGroupService {
     private final ExpenseGroupRepository repository;
 
-    public ExpenseGroupService(ExpenseGroupRepository repository) {
+    private final UserService userService;
+
+    public ExpenseGroupService(ExpenseGroupRepository repository, UserService userService) {
         this.repository = repository;
+        this.userService = userService;
     }
 
-    public ExpenseGroup addNew(ExpenseGroup expenseGroup) {
-        repository.findByName(expenseGroup.getName())
+    public ExpenseGroup addNew(ExpenseGroup expenseGroup, UUID userId) {
+        repository.findByNameAndUser(expenseGroup.getName(), userService.getById(userId))
                 .ifPresent(existingExpenseGroup -> {throw new NameAlreadyExistsException(ExpenseGroup.class.getSimpleName(), expenseGroup.getName());});
+        expenseGroup.setUser(userService.getById(userId));
         return repository.save(expenseGroup);
     }
 
-    public Page<ExpenseGroup> getAll(int pageNo, int size) {
-        return repository.findAll(PageRequest.of(pageNo, size));
+    public Page<ExpenseGroup> getAll(int pageNo, int size, UUID userId) {
+        return repository.findByUser(userService.getById(userId), PageRequest.of(pageNo, size));
     }
 
     public ExpenseGroup getById(UUID id) throws NotFoundException {

@@ -1,11 +1,14 @@
 package com.expense.ExpenseTracker.service;
 
+import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.exception.UsernameAlreadyExistsException;
 import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.RoleRepository;
 import com.expense.ExpenseTracker.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -28,5 +31,9 @@ public class UserService {
                 .ifPresent(existingExpenseGroup -> {throw new UsernameAlreadyExistsException(username);});
         User newUser = new User(username, passwordEncoder.encode(password), roleRepository.findByName("ROLE_USER"));
         return repository.save(newUser);
+    }
+
+    public User getById(UUID userId) {
+        return repository.findById(userId).orElseThrow(() -> new NotFoundException(User.class.getSimpleName()));
     }
 }

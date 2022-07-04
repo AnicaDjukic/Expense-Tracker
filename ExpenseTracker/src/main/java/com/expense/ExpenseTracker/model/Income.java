@@ -32,6 +32,11 @@ public class Income {
     @JoinColumn
     private IncomeGroup incomeGroup;
 
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private User user;
+
     @PrePersist
     protected void onCreate() {
         creationTime = LocalDateTime.now();
