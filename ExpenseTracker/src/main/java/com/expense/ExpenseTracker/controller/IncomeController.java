@@ -3,11 +3,13 @@ package com.expense.ExpenseTracker.controller;
 import com.expense.ExpenseTracker.dto.IncomeRequestDto;
 import com.expense.ExpenseTracker.dto.IncomeResponseDto;
 import com.expense.ExpenseTracker.model.Income;
+import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.service.IncomeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,17 +32,17 @@ public class IncomeController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("incomes")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public IncomeResponseDto create(@RequestBody @Valid IncomeRequestDto newDto) {
+    public IncomeResponseDto create(@RequestBody @Valid IncomeRequestDto newDto, @AuthenticationPrincipal User authDto) {
         Income income = modelMapper.map(newDto, Income.class);
-        Income savedIncome = incomeService.addNew(income, newDto.getIncomeGroupId());
+        Income savedIncome = incomeService.addNew(income, newDto.getIncomeGroupId(), authDto.getId());
         return modelMapper.map(savedIncome, IncomeResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("incomes/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public Page<IncomeResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
-        Page<Income> incomes = incomeService.getAll(pageNo, size);
+    public Page<IncomeResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size, @AuthenticationPrincipal User authDto) {
+        Page<Income> incomes = incomeService.getAll(pageNo, size, authDto.getId());
         return incomes.map(income -> modelMapper.map(income, IncomeResponseDto.class));
     }
 

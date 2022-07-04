@@ -17,18 +17,22 @@ public class IncomeGroupService {
 
     private final IncomeGroupRepository repository;
 
-    public IncomeGroupService(IncomeGroupRepository repository) {
+    private final UserService userService;
+
+    public IncomeGroupService(IncomeGroupRepository repository, UserService userService) {
         this.repository = repository;
+        this.userService = userService;
     }
 
-    public IncomeGroup addNew(IncomeGroup incomeGroup) {
-        repository.findByName(incomeGroup.getName())
+    public IncomeGroup addNew(IncomeGroup incomeGroup, UUID userId) {
+        repository.findByNameAndUser(incomeGroup.getName(), userService.getById(userId))
                 .ifPresent(existingIncomeGroup -> {throw new NameAlreadyExistsException(IncomeGroup.class.getSimpleName(), incomeGroup.getName());});
+        incomeGroup.setUser(userService.getById(userId));
         return repository.save(incomeGroup);
     }
 
-    public Page<IncomeGroup> getAll(int pageNo, int size) {
-        return repository.findAll(PageRequest.of(pageNo, size));
+    public Page<IncomeGroup> getAll(int pageNo, int size, UUID userId) {
+        return repository.findByUser(userService.getById(userId), PageRequest.of(pageNo, size));
     }
 
     public IncomeGroup getById(UUID id) throws NotFoundException {

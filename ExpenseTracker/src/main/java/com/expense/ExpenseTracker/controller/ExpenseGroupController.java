@@ -4,7 +4,6 @@ import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
 import com.expense.ExpenseTracker.dto.ExpenseGroupResponseDto;
 import com.expense.ExpenseTracker.model.ExpenseGroup;
 import com.expense.ExpenseTracker.model.User;
-import com.expense.ExpenseTracker.security.JwtTokenUtil;
 import com.expense.ExpenseTracker.service.ExpenseGroupService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;

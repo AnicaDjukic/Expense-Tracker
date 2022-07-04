@@ -17,7 +17,6 @@ public class IncomeGroup {
     private UUID id;
 
     @Setter
-    @Column(unique = true)
     private String name;
 
     @Setter
