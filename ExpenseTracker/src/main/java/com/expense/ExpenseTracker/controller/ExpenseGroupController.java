@@ -37,10 +37,10 @@ public class ExpenseGroupController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/{pageNo}/{size}")
+    @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public Page<ExpenseGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size, @AuthenticationPrincipal User authDto) {
-        Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(pageNo, size, authDto.getId());
+    public Page<ExpenseGroupResponseDto> getAll(@RequestParam int page, @RequestParam int size, @AuthenticationPrincipal User authDto) {
+        Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(page, size, authDto.getId());
         return expenseGroups.map(expenseGroup -> modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class));
     }
 

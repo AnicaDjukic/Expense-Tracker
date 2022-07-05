@@ -40,17 +40,17 @@ public class ExpenseController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("expenses/{pageNo}/{size}")
+    @GetMapping("expenses")
     @ResponseStatus(value = HttpStatus.OK)
-    public Page<ExpenseResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size, @AuthenticationPrincipal User authDto) {
-        Page<Expense> expenses = expenseService.getAll(pageNo, size, authDto.getId());
+    public Page<ExpenseResponseDto> getAll(@RequestParam int page, @RequestParam int size, @AuthenticationPrincipal User authDto) {
+        Page<Expense> expenses = expenseService.getAll(page, size, authDto.getId());
         return expenses.map(expense -> modelMapper.map(expense, ExpenseResponseDto.class));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("expense-groups/{id}/expenses/{size}")
+    @GetMapping("expense-groups/{id}/expenses")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<ExpenseResponseDto> getLastFewForExpenseGroup(@PathVariable UUID id, @PathVariable int size, @AuthenticationPrincipal User authDto) {
+    public List<ExpenseResponseDto> getLastFewForExpenseGroup(@PathVariable UUID id, @RequestParam int size, @AuthenticationPrincipal User authDto) {
         List<Expense> expenses = expenseService.getByExpenseGroupId(id, size, authDto.getId());
         return expenses.stream().map(expense -> modelMapper.map(expense, ExpenseResponseDto.class)).collect(Collectors.toList());
     }

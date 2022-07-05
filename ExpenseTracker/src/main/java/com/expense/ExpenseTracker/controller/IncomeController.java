@@ -39,17 +39,17 @@ public class IncomeController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("incomes/{pageNo}/{size}")
+    @GetMapping("incomes")
     @ResponseStatus(value = HttpStatus.OK)
-    public Page<IncomeResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size, @AuthenticationPrincipal User authDto) {
-        Page<Income> incomes = incomeService.getAll(pageNo, size, authDto.getId());
+    public Page<IncomeResponseDto> getAll(@RequestParam int page, @RequestParam int size, @AuthenticationPrincipal User authDto) {
+        Page<Income> incomes = incomeService.getAll(page, size, authDto.getId());
         return incomes.map(income -> modelMapper.map(income, IncomeResponseDto.class));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("income-groups/{id}/incomes/{size}")
+    @GetMapping("income-groups/{id}/incomes")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @PathVariable int size, @AuthenticationPrincipal User authDto) {
+    public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @RequestParam int size, @AuthenticationPrincipal User authDto) {
         List<Income> incomes = incomeService.getByIncomeGroupId(id, size, authDto.getId());
         return incomes.stream().map(income -> modelMapper.map(income, IncomeResponseDto.class)).collect(Collectors.toList());
     }

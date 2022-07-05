@@ -38,10 +38,10 @@ public class IncomeGroupController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/{pageNo}/{size}")
+    @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public Page<IncomeGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size, @AuthenticationPrincipal User authDto) {
-        Page<IncomeGroup> incomeGroups = incomeGroupService.getAll(pageNo, size, authDto.getId());
+    public Page<IncomeGroupResponseDto> getAll(@RequestParam int page, @RequestParam int size, @AuthenticationPrincipal User authDto) {
+        Page<IncomeGroup> incomeGroups = incomeGroupService.getAll(page, size, authDto.getId());
         return incomeGroups.map(incomeGroup -> modelMapper.map(incomeGroup, IncomeGroupResponseDto.class));
     }
 
