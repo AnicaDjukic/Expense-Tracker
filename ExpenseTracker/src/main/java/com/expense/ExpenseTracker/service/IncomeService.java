@@ -2,6 +2,7 @@ package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.IncomeRequestDto;
 import com.expense.ExpenseTracker.exception.NotFoundException;
+import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.model.QIncome;
 import com.expense.ExpenseTracker.repository.QIncomeRepository;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,25 +23,29 @@ public class IncomeService {
 
     private final IncomeRepository repository;
 
+    private final QIncomeRepository qRepository;
+
     private final IncomeGroupService incomeGroupService;
 
-    private final QIncomeRepository customRepository;
+    private final UserService userService;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public IncomeService(IncomeRepository repository, IncomeGroupService incomeGroupService, QIncomeRepository customRepository) {
+    public IncomeService(IncomeRepository repository, QIncomeRepository qRepository, IncomeGroupService incomeGroupService, UserService userService) {
         this.repository = repository;
+        this.qRepository = qRepository;
         this.incomeGroupService = incomeGroupService;
-        this.customRepository = customRepository;
+        this.userService = userService;
     }
 
-    public Income addNew(Income income, UUID incomeGroupId) throws NotFoundException {
-        income.setIncomeGroup(incomeGroupService.getById(incomeGroupId));
+    public Income addNew(Income income, UUID incomeGroupId, UUID userId) throws NotFoundException {
+        income.setIncomeGroup(incomeGroupService.getById(incomeGroupId, userId));
+        income.setUser(userService.getById(userId));
         return repository.save(income);
     }
 
-    public Page<Income> getAll(int pageNo, int size) {
-        return repository.findAll(PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
+    public Page<Income> getAll(int pageNo, int size, UUID userId) {
+        return repository.findByUser(userService.getById(userId), PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
     }
 
     public List<Income> getAll() {
@@ -47,7 +53,7 @@ public class IncomeService {
     }
 
     public List<Income> getLastFew(int size) {
-        List<QIncome> qExpenses = customRepository.getLastFew(size);
+        List<QIncome> qExpenses = qRepository.getLastFew(size);
         List<Income> incomes = new ArrayList<>();
         for (int i = 0; i < qExpenses.size(); i++) {
             incomes.add(modelMapper.map(qExpenses.get(i), Income.class));
@@ -55,25 +61,29 @@ public class IncomeService {
         return incomes;
     }
 
-    public Income getById(UUID id) throws NotFoundException {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
+    public Income getById(UUID id, UUID userId) throws NotFoundException {
+        repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
+        return repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(Expense.class.getSimpleName()));
     }
 
-    public Income update(UUID id, IncomeRequestDto updateDto) throws NotFoundException {
-        Income income = repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
+    public Income update(UUID id, IncomeRequestDto updateDto, UUID userId) throws NotFoundException {
+        repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
+        Income income = repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(Expense.class.getSimpleName()));
         income.setDescription(updateDto.getDescription());
         income.setAmount(updateDto.getAmount());
-        income.setIncomeGroup(incomeGroupService.getById(updateDto.getIncomeGroupId()));
+        income.setIncomeGroup(incomeGroupService.getById(updateDto.getIncomeGroupId(), userId));
         return repository.save(income);
     }
 
-    public void deleteById(UUID id) throws NotFoundException {
-        Income income = repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
+    public void deleteById(UUID id, UUID userId) throws NotFoundException {
+        repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
+        Income income = repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(Expense.class.getSimpleName()));
         repository.delete(income);
     }
 
-    public List<Income> getByIncomeGroupId(UUID incomeGroupId, int size) {
-        List<QIncome> qIncomes = customRepository.getLastFewByIncomeGroupId(incomeGroupId, size);
+    public List<Income> getByIncomeGroupId(UUID incomeGroupId, int size, UUID userId) {
+        incomeGroupService.getById(incomeGroupId, userId);
+        List<QIncome> qIncomes = qRepository.getLastFewByIncomeGroupId(incomeGroupId, size);
         List<Income> incomes = new ArrayList<>();
         for (int i = 0; i < qIncomes.size(); i++) {
             incomes.add(modelMapper.map(qIncomes.get(i), Income.class));

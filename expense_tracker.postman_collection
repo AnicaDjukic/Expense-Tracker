@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Proba\",\r\n    \"amount\": 10,\r\n    \"expenseGroupId\": \"f3a7af1c-27b2-4758-a5e6-96c763bd6e5d\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Proba\",\r\n    \"amount\": 10,\r\n    \"expenseGroupId\": \"25a2db86-649c-47a8-9c4d-fdbb7a3dfeb6\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -66,7 +66,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/f43ff7ef-3599-46c9-85e6-522da05824b5",
+							"raw": "localhost:8080/api/v1/expenses/9ae370d4-6702-42e1-9df7-34abe8a363ea",
 							"host": [
 								"localhost"
 							],
@@ -75,7 +75,7 @@
 								"api",
 								"v1",
 								"expenses",
-								"f43ff7ef-3599-46c9-85e6-522da05824b5"
+								"9ae370d4-6702-42e1-9df7-34abe8a363ea"
 							]
 						}
 					},
@@ -88,7 +88,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo Novo\",\r\n    \"amount\": 1000.5,\r\n    \"expenseGroupId\": \"efa6e0cd-1ea0-4b89-9c21-d25b8dcd4a50\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo Novo\",\r\n    \"amount\": 1000.5,\r\n    \"expenseGroupId\": \"25a2db86-649c-47a8-9c4d-fdbb7a3dfeb6\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -96,7 +96,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/f43ff7ef-3599-46c9-85e6-522da05824b5",
+							"raw": "localhost:8080/api/v1/expenses/9ae370d4-6702-42e1-9df7-34abe8a363ea",
 							"host": [
 								"localhost"
 							],
@@ -105,7 +105,7 @@
 								"api",
 								"v1",
 								"expenses",
-								"f43ff7ef-3599-46c9-85e6-522da05824b5"
+								"9ae370d4-6702-42e1-9df7-34abe8a363ea"
 							]
 						}
 					},
@@ -117,7 +117,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/f6ea2a13-bd89-4664-a7e9-b97c6a385e20",
+							"raw": "localhost:8080/api/v1/expenses/9ae370d4-6702-42e1-9df7-34abe8a363ea",
 							"host": [
 								"localhost"
 							],
@@ -126,7 +126,7 @@
 								"api",
 								"v1",
 								"expenses",
-								"f6ea2a13-bd89-4664-a7e9-b97c6a385e20"
+								"9ae370d4-6702-42e1-9df7-34abe8a363ea"
 							]
 						}
 					},
@@ -138,7 +138,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/063d28a5-dc7c-4419-bac8-65581c1bd791/expenses/3",
+							"raw": "localhost:8080/api/v1/expense-groups/36e66784-077d-425a-8509-91785e9a8e48/expenses/3",
 							"host": [
 								"localhost"
 							],
@@ -147,7 +147,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"063d28a5-dc7c-4419-bac8-65581c1bd791",
+								"36e66784-077d-425a-8509-91785e9a8e48",
 								"expenses",
 								"3"
 							]
@@ -167,7 +167,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 40,\r\n    \"incomeGroupId\": \"d63abde2-19d3-4dad-943f-b5de55be9ee5\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 40,\r\n    \"incomeGroupId\": \"aa3e8b4f-6ed0-4775-a4b6-b812338082ea\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -217,7 +217,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/3105b469-e1a9-4245-8a4f-9e82ed253170",
+							"raw": "localhost:8080/api/v1/incomes/a1c3adf4-4e7d-47d4-b917-96337b2de492",
 							"host": [
 								"localhost"
 							],
@@ -226,7 +226,7 @@
 								"api",
 								"v1",
 								"incomes",
-								"3105b469-e1a9-4245-8a4f-9e82ed253170"
+								"a1c3adf4-4e7d-47d4-b917-96337b2de492"
 							]
 						}
 					},
@@ -239,7 +239,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 1000.5,\r\n    \"incomeGroupId\": \"d7f62434-8d15-4999-aa23-063d8e66952f\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 1000.5,\r\n    \"incomeGroupId\": \"aa3e8b4f-6ed0-4775-a4b6-b812338082ea\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -247,7 +247,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/3105b469-e1a9-4245-8a4f-9e82ed253170",
+							"raw": "localhost:8080/api/v1/incomes/a1c3adf4-4e7d-47d4-b917-96337b2de492",
 							"host": [
 								"localhost"
 							],
@@ -256,7 +256,7 @@
 								"api",
 								"v1",
 								"incomes",
-								"3105b469-e1a9-4245-8a4f-9e82ed253170"
+								"a1c3adf4-4e7d-47d4-b917-96337b2de492"
 							]
 						}
 					},
@@ -268,7 +268,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/84d1cc84-38f9-4777-b217-d182c25a4d8e",
+							"raw": "localhost:8080/api/v1/incomes/a1c3adf4-4e7d-47d4-b917-96337b2de492",
 							"host": [
 								"localhost"
 							],
@@ -277,7 +277,7 @@
 								"api",
 								"v1",
 								"incomes",
-								"84d1cc84-38f9-4777-b217-d182c25a4d8e"
+								"a1c3adf4-4e7d-47d4-b917-96337b2de492"
 							]
 						}
 					},
@@ -289,7 +289,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/d63abde2-19d3-4dad-943f-b5de55be9ee5/incomes/2",
+							"raw": "localhost:8080/api/v1/income-groups/aa3e8b4f-6ed0-4775-a4b6-b812338082ea/incomes/2",
 							"host": [
 								"localhost"
 							],
@@ -298,7 +298,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"d63abde2-19d3-4dad-943f-b5de55be9ee5",
+								"aa3e8b4f-6ed0-4775-a4b6-b812338082ea",
 								"incomes",
 								"2"
 							]
@@ -368,7 +368,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/71d359da-6fe4-47d7-89df-5032a02bf09c",
+							"raw": "localhost:8080/api/v1/expense-groups/5d9d04c8-da5b-4e8b-831f-9d1482794188",
 							"host": [
 								"localhost"
 							],
@@ -377,7 +377,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"71d359da-6fe4-47d7-89df-5032a02bf09c"
+								"5d9d04c8-da5b-4e8b-831f-9d1482794188"
 							]
 						}
 					},
@@ -398,7 +398,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/6b495ade-0837-4996-b916-9f9e999c6976",
+							"raw": "localhost:8080/api/v1/expense-groups/5d9d04c8-da5b-4e8b-831f-9d1482794188",
 							"host": [
 								"localhost"
 							],
@@ -407,7 +407,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"6b495ade-0837-4996-b916-9f9e999c6976"
+								"5d9d04c8-da5b-4e8b-831f-9d1482794188"
 							]
 						}
 					},
@@ -419,7 +419,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/afe5a068-1eab-4f41-9ba4-8392be7067e9",
+							"raw": "localhost:8080/api/v1/expense-groups/5d9d04c8-da5b-4e8b-831f-9d1482794188",
 							"host": [
 								"localhost"
 							],
@@ -428,7 +428,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"afe5a068-1eab-4f41-9ba4-8392be7067e9"
+								"5d9d04c8-da5b-4e8b-831f-9d1482794188"
 							]
 						}
 					},
@@ -474,7 +474,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/1/2",
+							"raw": "localhost:8080/api/v1/income-groups/0/2",
 							"host": [
 								"localhost"
 							],
@@ -483,7 +483,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"1",
+								"0",
 								"2"
 							]
 						}
@@ -496,7 +496,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/6ebddb04-63f1-40d5-8a26-bc5b2bfa1172",
+							"raw": "localhost:8080/api/v1/income-groups/ef90c89e-6a7d-4ad6-ab7e-ae12a154cf16",
 							"host": [
 								"localhost"
 							],
@@ -505,7 +505,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"6ebddb04-63f1-40d5-8a26-bc5b2bfa1172"
+								"ef90c89e-6a7d-4ad6-ab7e-ae12a154cf16"
 							]
 						}
 					},
@@ -526,7 +526,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/016a6d21-01bf-4f1d-bdac-de0dc4364865",
+							"raw": "localhost:8080/api/v1/income-groups/ef90c89e-6a7d-4ad6-ab7e-ae12a154cf16",
 							"host": [
 								"localhost"
 							],
@@ -535,7 +535,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"016a6d21-01bf-4f1d-bdac-de0dc4364865"
+								"ef90c89e-6a7d-4ad6-ab7e-ae12a154cf16"
 							]
 						}
 					},
@@ -547,7 +547,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/71d13db7-7e7e-41c8-8f82-c23339d1b213",
+							"raw": "localhost:8080/api/v1/income-groups/ef90c89e-6a7d-4ad6-ab7e-ae12a154cf16",
 							"host": [
 								"localhost"
 							],
@@ -556,7 +556,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"71d13db7-7e7e-41c8-8f82-c23339d1b213"
+								"ef90c89e-6a7d-4ad6-ab7e-ae12a154cf16"
 							]
 						}
 					},
@@ -584,6 +584,96 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mikamikic\",\r\n    \"password\": \"pass\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mikamikic\",\r\n    \"password\": \"pass123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJFeHBlbnNlVHJhY2tlciIsInN1YiI6Im1pa2FtaWtpYyIsInJvbGUiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjU2OTM1NDg5LCJleHAiOjE2NTY5MzcyODl9.FDrrOca6HmjrLDlq9aisJ_AH-um_sUw5mvWo5hNNU8CxD-PgQtBg6u9HjmhDQTgwv3HlAD-VZ7socsuzeMuB0A",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

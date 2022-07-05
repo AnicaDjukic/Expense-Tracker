@@ -3,11 +3,13 @@ package com.expense.ExpenseTracker.controller;
 import com.expense.ExpenseTracker.dto.IncomeRequestDto;
 import com.expense.ExpenseTracker.dto.IncomeResponseDto;
 import com.expense.ExpenseTracker.model.Income;
+import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.service.IncomeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,48 +32,48 @@ public class IncomeController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("incomes")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public IncomeResponseDto create(@RequestBody @Valid IncomeRequestDto newDto) {
+    public IncomeResponseDto create(@RequestBody @Valid IncomeRequestDto newDto, @AuthenticationPrincipal User authDto) {
         Income income = modelMapper.map(newDto, Income.class);
-        Income savedIncome = incomeService.addNew(income, newDto.getIncomeGroupId());
+        Income savedIncome = incomeService.addNew(income, newDto.getIncomeGroupId(), authDto.getId());
         return modelMapper.map(savedIncome, IncomeResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("incomes/{pageNo}/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public Page<IncomeResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
-        Page<Income> incomes = incomeService.getAll(pageNo, size);
+    public Page<IncomeResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size, @AuthenticationPrincipal User authDto) {
+        Page<Income> incomes = incomeService.getAll(pageNo, size, authDto.getId());
         return incomes.map(income -> modelMapper.map(income, IncomeResponseDto.class));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("income-groups/{id}/incomes/{size}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @PathVariable int size) {
-        List<Income> incomes = incomeService.getByIncomeGroupId(id, size);
+    public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id, @PathVariable int size, @AuthenticationPrincipal User authDto) {
+        List<Income> incomes = incomeService.getByIncomeGroupId(id, size, authDto.getId());
         return incomes.stream().map(income -> modelMapper.map(income, IncomeResponseDto.class)).collect(Collectors.toList());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public IncomeResponseDto getById(@PathVariable UUID id) {
-        Income income = incomeService.getById(id);
+    public IncomeResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        Income income = incomeService.getById(id, authDto.getId());
         return modelMapper.map(income, IncomeResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public IncomeResponseDto update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto) {
-        Income updatedIncome = incomeService.update(id, updateDto);
+    public IncomeResponseDto update(@PathVariable UUID id, @RequestBody @Valid IncomeRequestDto updateDto, @AuthenticationPrincipal User authDto) {
+        Income updatedIncome = incomeService.update(id, updateDto, authDto.getId());
         return modelMapper.map(updatedIncome, IncomeResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void delete(@PathVariable UUID id) {
-        incomeService.deleteById(id);
+    public void delete(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        incomeService.deleteById(id, authDto.getId());
     }
 }

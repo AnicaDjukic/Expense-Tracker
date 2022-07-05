@@ -16,4 +16,6 @@ public interface ExpenseGroupRepository extends JpaRepository<ExpenseGroup, UUID
     Optional<ExpenseGroup> findByNameAndUser(String name, User user);
 
     Page<ExpenseGroup> findByUser(User user, PageRequest of);
+
+    Optional<ExpenseGroup> findByIdAndUser(UUID expenseGroupId, User user);
 }
