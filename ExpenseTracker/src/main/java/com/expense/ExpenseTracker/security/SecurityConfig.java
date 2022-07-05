@@ -2,10 +2,13 @@ package com.expense.ExpenseTracker.security;
 
 import com.expense.ExpenseTracker.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -61,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         // Enable CORS and disable CSRF
         http = http.cors().and().csrf().disable();
 
@@ -92,6 +96,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/book/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/book/search").permitAll()*/
                 // Our private endpoints
+                .antMatchers("/api/test/**").permitAll() // permit the class of test
+                .antMatchers("/**").permitAll() // permit all the routers after swagger-ui.html
                 .anyRequest().authenticated();
 
         // Add JWT token filter
@@ -113,6 +119,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        // Autentifikacija ce biti ignorisana ispod navedenih putanja (kako bismo ubrzali pristup resursima)
+        // Zahtevi koji se mecuju za web.ignoring().antMatchers() nemaju pristup SecurityContext-u
+
+        // Dozvoljena POST metoda na ruti /auth/login, za svaki drugi tip HTTP metode greska je 401 Unauthorized
+        //web.ignoring().antMatchers(HttpMethod.POST, "/api/v1/auth/*");
+        //web.ignoring().antMatchers(HttpMethod.PUT, "/api/v1/users/*");
+
+        // Ovim smo dozvolili pristup statickim resursima aplikacije
+        web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico", "/**/*.html",
+                "/**/*.css", "/**/*.js");
     }
 
 }
