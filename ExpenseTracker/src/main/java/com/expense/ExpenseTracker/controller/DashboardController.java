@@ -27,9 +27,9 @@ public class DashboardController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/{size}")
+    @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public DashboardDto getDashboard(@PathVariable int size) {
+    public DashboardDto getDashboard(@RequestParam int size) {
         double totalAmount = dashboardService.getTotalAmount();
         List<Expense> expenses = dashboardService.getLastFewExpenses(size);
         List<Income> incomes = dashboardService.getLastFewIncomes(size);

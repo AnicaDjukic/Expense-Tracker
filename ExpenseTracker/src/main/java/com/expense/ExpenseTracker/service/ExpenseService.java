@@ -5,6 +5,7 @@ import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.QExpense;
+import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.QExpenseRepository;
 import com.expense.ExpenseTracker.repository.ExpenseRepository;
 import org.modelmapper.ModelMapper;
@@ -44,7 +45,8 @@ public class ExpenseService {
     }
 
     public Page<Expense> getAll(int pageNo, int size, UUID userId) {
-        return repository.findByUser(userService.getById(userId), PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
+        User user = userService.getById(userId);
+        return repository.findByUser(user, PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
     }
 
     public List<Expense> getAll() {
@@ -61,8 +63,9 @@ public class ExpenseService {
     }
 
     public Expense getByIdAndUserId(UUID id, UUID userId) throws NotFoundException {
+        User user = userService.getById(userId);
         repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
-        return repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
+        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
     }
 
     public Expense update(UUID id, ExpenseRequestDto updateDto, UUID userId) throws NotFoundException {

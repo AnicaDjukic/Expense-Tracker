@@ -49,7 +49,7 @@ public class IncomeGroupController {
     @GetMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeGroupResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
-        IncomeGroup incomeGroup = incomeGroupService.getById(id, authDto.getId());
+        IncomeGroup incomeGroup = incomeGroupService.getByIdAndUserId(id, authDto.getId());
         return modelMapper.map(incomeGroup, IncomeGroupResponseDto.class);
     }
 

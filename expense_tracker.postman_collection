@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Proba\",\r\n    \"amount\": 10,\r\n    \"expenseGroupId\": \"80b9b4aa-bfc9-420d-9d1d-fd7a9210c865\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Proba\",\r\n    \"amount\": 10,\r\n    \"expenseGroupId\": \"38d43afb-0f0e-4f44-8ae1-3c09cac1117a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -74,7 +74,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/508e7f2d-1687-4f6f-8666-7a273d1e1fae",
+							"raw": "localhost:8080/api/v1/expenses/f6dc4bd9-49a6-4837-b618-b88a89237239",
 							"host": [
 								"localhost"
 							],
@@ -83,7 +83,7 @@
 								"api",
 								"v1",
 								"expenses",
-								"508e7f2d-1687-4f6f-8666-7a273d1e1fae"
+								"f6dc4bd9-49a6-4837-b618-b88a89237239"
 							]
 						}
 					},
@@ -96,7 +96,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo Novo\",\r\n    \"amount\": 1000.5,\r\n    \"expenseGroupId\": \"25a2db86-649c-47a8-9c4d-fdbb7a3dfeb6\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo Novo\",\r\n    \"amount\": 1000.5,\r\n    \"expenseGroupId\": \"5287b0ab-d63f-48be-9eb7-64e0f3d54b1a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -104,7 +104,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/9ae370d4-6702-42e1-9df7-34abe8a363ea",
+							"raw": "localhost:8080/api/v1/expenses/09f09508-f311-4042-ad14-fa4d73d274ba",
 							"host": [
 								"localhost"
 							],
@@ -113,7 +113,7 @@
 								"api",
 								"v1",
 								"expenses",
-								"9ae370d4-6702-42e1-9df7-34abe8a363ea"
+								"09f09508-f311-4042-ad14-fa4d73d274ba"
 							]
 						}
 					},
@@ -125,7 +125,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/9ae370d4-6702-42e1-9df7-34abe8a363ea",
+							"raw": "localhost:8080/api/v1/expenses/09f09508-f311-4042-ad14-fa4d73d274ba",
 							"host": [
 								"localhost"
 							],
@@ -134,7 +134,7 @@
 								"api",
 								"v1",
 								"expenses",
-								"9ae370d4-6702-42e1-9df7-34abe8a363ea"
+								"09f09508-f311-4042-ad14-fa4d73d274ba"
 							]
 						}
 					},
@@ -146,7 +146,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/80b9b4aa-bfc9-420d-9d1d-fd7a9210c865/expenses?size=3",
+							"raw": "localhost:8080/api/v1/expense-groups/5287b0ab-d63f-48be-9eb7-64e0f3d54b1a/expenses?size=3",
 							"host": [
 								"localhost"
 							],
@@ -155,7 +155,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"80b9b4aa-bfc9-420d-9d1d-fd7a9210c865",
+								"5287b0ab-d63f-48be-9eb7-64e0f3d54b1a",
 								"expenses"
 							],
 							"query": [
@@ -180,7 +180,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 40,\r\n    \"incomeGroupId\": \"53c93e8c-b5fc-4168-8fb9-64f2c1fbf7b1\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 40,\r\n    \"incomeGroupId\": \"b4060729-c892-4b98-b750-28321b02e070\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -238,7 +238,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/a1c3adf4-4e7d-47d4-b917-96337b2de492",
+							"raw": "localhost:8080/api/v1/incomes/c5421651-4381-44dc-9a5d-b6808449d375",
 							"host": [
 								"localhost"
 							],
@@ -247,7 +247,7 @@
 								"api",
 								"v1",
 								"incomes",
-								"a1c3adf4-4e7d-47d4-b917-96337b2de492"
+								"c5421651-4381-44dc-9a5d-b6808449d375"
 							]
 						}
 					},
@@ -260,7 +260,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 1000.5,\r\n    \"incomeGroupId\": \"aa3e8b4f-6ed0-4775-a4b6-b812338082ea\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 1000.5,\r\n    \"incomeGroupId\": \"b9a08f96-fc72-472d-a6bf-41cfebc5a619\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -268,7 +268,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/a1c3adf4-4e7d-47d4-b917-96337b2de492",
+							"raw": "localhost:8080/api/v1/incomes/c5421651-4381-44dc-9a5d-b6808449d375",
 							"host": [
 								"localhost"
 							],
@@ -277,7 +277,7 @@
 								"api",
 								"v1",
 								"incomes",
-								"a1c3adf4-4e7d-47d4-b917-96337b2de492"
+								"c5421651-4381-44dc-9a5d-b6808449d375"
 							]
 						}
 					},
@@ -289,7 +289,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/a1c3adf4-4e7d-47d4-b917-96337b2de492",
+							"raw": "localhost:8080/api/v1/incomes/c5421651-4381-44dc-9a5d-b6808449d375",
 							"host": [
 								"localhost"
 							],
@@ -298,7 +298,7 @@
 								"api",
 								"v1",
 								"incomes",
-								"a1c3adf4-4e7d-47d4-b917-96337b2de492"
+								"c5421651-4381-44dc-9a5d-b6808449d375"
 							]
 						}
 					},
@@ -310,7 +310,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/53c93e8c-b5fc-4168-8fb9-64f2c1fbf7b1/incomes?size=3",
+							"raw": "localhost:8080/api/v1/income-groups/b9a08f96-fc72-472d-a6bf-41cfebc5a619/incomes?size=3",
 							"host": [
 								"localhost"
 							],
@@ -319,7 +319,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"53c93e8c-b5fc-4168-8fb9-64f2c1fbf7b1",
+								"b9a08f96-fc72-472d-a6bf-41cfebc5a619",
 								"incomes"
 							],
 							"query": [
@@ -402,7 +402,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/5d2486d1-017d-4d9e-adf8-28a9113e1233",
+							"raw": "localhost:8080/api/v1/expense-groups/b7e9527c-1c48-427a-a892-f39d067ea4b3",
 							"host": [
 								"localhost"
 							],
@@ -411,7 +411,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"5d2486d1-017d-4d9e-adf8-28a9113e1233"
+								"b7e9527c-1c48-427a-a892-f39d067ea4b3"
 							]
 						}
 					},
@@ -424,7 +424,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Trosak\",\r\n    \"description\": \"Novo\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Novo\",\r\n    \"description\": \"Novo\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -432,7 +432,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/5d2486d1-017d-4d9e-adf8-28a9113e1233",
+							"raw": "localhost:8080/api/v1/expense-groups/2e501d5b-972f-454f-aa2c-17ca5b524b7c",
 							"host": [
 								"localhost"
 							],
@@ -441,7 +441,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"5d2486d1-017d-4d9e-adf8-28a9113e1233"
+								"2e501d5b-972f-454f-aa2c-17ca5b524b7c"
 							]
 						}
 					},
@@ -453,7 +453,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/5d2486d1-017d-4d9e-adf8-28a9113e1233",
+							"raw": "localhost:8080/api/v1/expense-groups/b7e9527c-1c48-427a-a892-f39d067ea4b3",
 							"host": [
 								"localhost"
 							],
@@ -462,7 +462,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"5d2486d1-017d-4d9e-adf8-28a9113e1233"
+								"b7e9527c-1c48-427a-a892-f39d067ea4b3"
 							]
 						}
 					},
@@ -538,7 +538,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/3a7835c3-a67c-474c-8493-6351b381e25d",
+							"raw": "localhost:8080/api/v1/income-groups/3281ae67-35be-43fa-b124-b06f5af0693f",
 							"host": [
 								"localhost"
 							],
@@ -547,7 +547,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"3a7835c3-a67c-474c-8493-6351b381e25d"
+								"3281ae67-35be-43fa-b124-b06f5af0693f"
 							]
 						}
 					},
@@ -568,7 +568,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/3a7835c3-a67c-474c-8493-6351b381e25d",
+							"raw": "localhost:8080/api/v1/income-groups/1843d7a3-0d3d-4f48-85c0-53fd30a4d479",
 							"host": [
 								"localhost"
 							],
@@ -577,7 +577,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"3a7835c3-a67c-474c-8493-6351b381e25d"
+								"1843d7a3-0d3d-4f48-85c0-53fd30a4d479"
 							]
 						}
 					},
@@ -589,7 +589,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/3a7835c3-a67c-474c-8493-6351b381e25d",
+							"raw": "localhost:8080/api/v1/income-groups/dc867e78-e42d-489c-90d6-eb937e65bf4b",
 							"host": [
 								"localhost"
 							],
@@ -598,7 +598,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"3a7835c3-a67c-474c-8493-6351b381e25d"
+								"dc867e78-e42d-489c-90d6-eb937e65bf4b"
 							]
 						}
 					},
@@ -612,7 +612,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/dashboard/3",
+					"raw": "localhost:8080/api/v1/dashboard?size=3",
 					"host": [
 						"localhost"
 					],
@@ -620,8 +620,13 @@
 					"path": [
 						"api",
 						"v1",
-						"dashboard",
-						"3"
+						"dashboard"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "3"
+						}
 					]
 				}
 			},
@@ -693,7 +698,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJFeHBlbnNlVHJhY2tlciIsInN1YiI6Im1pa2FtaWtpYyIsInJvbGUiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjU3MDEwMjk5LCJleHAiOjE2NTcwMTIwOTl9.bFpnC0RLQpW7E6YaG5yhFNtJTb7GagUfdQouQCtjFLvu3WpHe0Ao1ochxpwZF3zgG8VtJO2wJ7A1Tbk50UWwig",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJFeHBlbnNlVHJhY2tlciIsInN1YiI6Im1pa2FtaWtpYyIsInJvbGUiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjU3MDE1ODA3LCJleHAiOjE2NTcwMTc2MDd9.Mm-FOXiLWJwzSoVhrHqjkYlwRy9eM8EJbmzPYpCUbEoCsreuZXnForn1Vkakajxb3i2keXCg7VZo_rqXfoQZPQ",
 				"type": "string"
 			}
 		]

@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @Service
 public class ExpenseGroupService {
+
     private final ExpenseGroupRepository repository;
 
     private final UserService userService;
@@ -26,36 +27,40 @@ public class ExpenseGroupService {
     }
 
     public ExpenseGroup addNew(ExpenseGroup expenseGroup, UUID userId) {
-        repository.findByNameAndUser(expenseGroup.getName(), userService.getById(userId))
-                .ifPresent(existingExpenseGroup -> {throw new NameAlreadyExistsException(ExpenseGroup.class.getSimpleName(), expenseGroup.getName());});
-        expenseGroup.setUser(userService.getById(userId));
+        User user = userService.getById(userId);
+        repository.findByNameAndUser(expenseGroup.getName(), user)
+                .ifPresent(expGroup -> {throw new NameAlreadyExistsException(ExpenseGroup.class.getSimpleName(), expenseGroup.getName());});
+        expenseGroup.setUser(user);
         return repository.save(expenseGroup);
     }
 
     public Page<ExpenseGroup> getAll(int pageNo, int size, UUID userId) {
-        return repository.findByUser(userService.getById(userId), PageRequest.of(pageNo, size));
-    }
-
-    public ExpenseGroup getByIdAndUserId(UUID id, UUID userId) throws NotFoundException {
-        return getByIdAndUser(id, userService.getById(userId));
+        User user = userService.getById(userId);
+        return repository.findByUser(user, PageRequest.of(pageNo, size));
     }
 
     public ExpenseGroup update(UUID id, ExpenseGroupRequestDto updateDto, UUID userId) throws NotFoundException {
-        Optional<ExpenseGroup> existingExpGroup = repository.findByNameAndUser(updateDto.getName(), userService.getById(userId));
+        Optional<ExpenseGroup> existingExpGroup = findByNameAndUserId(updateDto.getName(), userId);
         if (existingExpGroup.isPresent() && !existingExpGroup.get().getId().equals(id))
             throw new NameAlreadyExistsException(ExpenseGroup.class.getSimpleName(), updateDto.getName());
-        ExpenseGroup expenseGroup = getByIdAndUser(id, userService.getById(userId));
+        ExpenseGroup expenseGroup = getByIdAndUserId(id, userId);
         expenseGroup.setName(updateDto.getName());
         expenseGroup.setDescription(updateDto.getDescription());
         return repository.save(expenseGroup);
     }
 
     public void deleteById(UUID id, UUID userId) throws NotFoundException {
-        ExpenseGroup expenseGroup = getByIdAndUser(id, userService.getById(userId));
+        ExpenseGroup expenseGroup = getByIdAndUserId(id, userId);
         repository.delete(expenseGroup);
     }
 
-    public ExpenseGroup getByIdAndUser(UUID id, User user) {
+    private Optional<ExpenseGroup> findByNameAndUserId(String name, UUID userId) {
+        User user = userService.getById(userId);
+        return repository.findByNameAndUser(name, user);
+    }
+
+    public ExpenseGroup getByIdAndUserId(UUID id, UUID userId) {
+        User user = userService.getById(userId);
         repository.findById(id).orElseThrow(() -> new NotFoundException(ExpenseGroup.class.getSimpleName()));
         return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(ExpenseGroup.class.getSimpleName()));
     }

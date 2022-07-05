@@ -6,6 +6,7 @@ import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.model.QIncome;
+import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.QIncomeRepository;
 import com.expense.ExpenseTracker.repository.IncomeRepository;
 import org.modelmapper.ModelMapper;
@@ -39,7 +40,7 @@ public class IncomeService {
     }
 
     public Income addNew(Income income, UUID incomeGroupId, UUID userId) throws NotFoundException {
-        income.setIncomeGroup(incomeGroupService.getById(incomeGroupId, userId));
+        income.setIncomeGroup(incomeGroupService.getByIdAndUserId(incomeGroupId, userId));
         income.setUser(userService.getById(userId));
         return repository.save(income);
     }
@@ -65,7 +66,7 @@ public class IncomeService {
         Income income = getByIdAndUserId(id, userId);
         income.setDescription(updateDto.getDescription());
         income.setAmount(updateDto.getAmount());
-        income.setIncomeGroup(incomeGroupService.getById(updateDto.getIncomeGroupId(), userId));
+        income.setIncomeGroup(incomeGroupService.getByIdAndUserId(updateDto.getIncomeGroupId(), userId));
         return repository.save(income);
     }
 
@@ -75,7 +76,7 @@ public class IncomeService {
     }
 
     public List<Income> getByIncomeGroupId(UUID incomeGroupId, int size, UUID userId) {
-        incomeGroupService.getById(incomeGroupId, userId);
+        incomeGroupService.getByIdAndUserId(incomeGroupId, userId);
         List<QIncome> qIncomes = qRepository.getLastFewByIncomeGroupId(incomeGroupId, size);
         List<Income> incomes = new ArrayList<>();
         for (int i = 0; i < qIncomes.size(); i++) {
@@ -85,7 +86,8 @@ public class IncomeService {
     }
 
     public Income getByIdAndUserId(UUID id, UUID userId) {
+        User user = userService.getById(userId);
         repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
-        return repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
+        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
     }
 }
