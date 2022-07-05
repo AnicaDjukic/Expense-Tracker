@@ -59,7 +59,7 @@ public class ExpenseController {
     @GetMapping("expenses/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public ExpenseResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
-        Expense expense = expenseService.getById(id, authDto.getId());
+        Expense expense = expenseService.getByIdAndUserId(id, authDto.getId());
         return modelMapper.map(expense, ExpenseResponseDto.class);
     }
 

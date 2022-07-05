@@ -32,9 +32,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException exception) {
-        ExceptionResponse response = getExceptionResponse("Access denied to: " + exception.getMessage());
+    @ExceptionHandler(AccessResourceDeniedException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessResourceDeniedException exception) {
+        ExceptionResponse response = getExceptionResponse(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 

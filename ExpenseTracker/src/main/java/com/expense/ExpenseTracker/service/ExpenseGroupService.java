@@ -1,6 +1,7 @@
 package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
+import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NameAlreadyExistsException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.ExpenseGroup;
@@ -8,7 +9,6 @@ import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.ExpenseGroupRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -36,7 +36,7 @@ public class ExpenseGroupService {
         return repository.findByUser(userService.getById(userId), PageRequest.of(pageNo, size));
     }
 
-    public ExpenseGroup getById(UUID id, UUID userId) throws NotFoundException {
+    public ExpenseGroup getByIdAndUserId(UUID id, UUID userId) throws NotFoundException {
         return getByIdAndUser(id, userService.getById(userId));
     }
 
@@ -57,6 +57,6 @@ public class ExpenseGroupService {
 
     public ExpenseGroup getByIdAndUser(UUID id, User user) {
         repository.findById(id).orElseThrow(() -> new NotFoundException(ExpenseGroup.class.getSimpleName()));
-        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessDeniedException(ExpenseGroup.class.getSimpleName()));
+        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(ExpenseGroup.class.getSimpleName()));
     }
 }

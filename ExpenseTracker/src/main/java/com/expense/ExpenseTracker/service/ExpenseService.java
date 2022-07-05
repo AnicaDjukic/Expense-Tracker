@@ -1,9 +1,9 @@
 package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.ExpenseRequestDto;
+import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
-import com.expense.ExpenseTracker.model.ExpenseGroup;
 import com.expense.ExpenseTracker.model.QExpense;
 import com.expense.ExpenseTracker.repository.QExpenseRepository;
 import com.expense.ExpenseTracker.repository.ExpenseRepository;
@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class ExpenseService {
     }
 
     public Expense addNew(Expense expense, UUID expenseGroupId, UUID userId) throws NotFoundException {
-        expense.setExpenseGroup(expenseGroupService.getById(expenseGroupId, userId));
+        expense.setExpenseGroup(expenseGroupService.getByIdAndUserId(expenseGroupId, userId));
         expense.setUser(userService.getById(userId));
         return repository.save(expense);
     }
@@ -61,28 +60,26 @@ public class ExpenseService {
         return expenses;
     }
 
-    public Expense getById(UUID id, UUID userId) throws NotFoundException {
+    public Expense getByIdAndUserId(UUID id, UUID userId) throws NotFoundException {
         repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
-        return repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(Expense.class.getSimpleName()));
+        return repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
     }
 
     public Expense update(UUID id, ExpenseRequestDto updateDto, UUID userId) throws NotFoundException {
-        repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
-        Expense expense = repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(Expense.class.getSimpleName()));
+        Expense expense = getByIdAndUserId(id, userId);
         expense.setDescription(updateDto.getDescription());
         expense.setAmount(updateDto.getAmount());
-        expense.setExpenseGroup(expenseGroupService.getById(updateDto.getExpenseGroupId(), userId));
+        expense.setExpenseGroup(expenseGroupService.getByIdAndUserId(updateDto.getExpenseGroupId(), userId));
         return repository.save(expense);
     }
 
     public void deleteById(UUID id, UUID userId) throws NotFoundException {
-        repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
-        Expense expense = repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(Expense.class.getSimpleName()));
+        Expense expense = getByIdAndUserId(id, userId);
         repository.delete(expense);
     }
 
     public List<Expense> getByExpenseGroupId(UUID expenseGroupId, int size, UUID userId) {
-        expenseGroupService.getById(expenseGroupId, userId);
+        expenseGroupService.getByIdAndUserId(expenseGroupId, userId);
         List<QExpense> qExpenses = qRepository.getLastFewByExpenseGroupId(expenseGroupId, size);
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < qExpenses.size(); i++) {

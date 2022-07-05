@@ -1,6 +1,7 @@
 package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
+import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NameAlreadyExistsException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.IncomeGroup;
@@ -37,10 +38,6 @@ public class IncomeGroupService {
         return repository.findByUser(userService.getById(userId), PageRequest.of(pageNo, size));
     }
 
-    public IncomeGroup getById(UUID id, UUID userId) throws NotFoundException {
-        return getByIdAndUser(id, userService.getById(userId));
-    }
-
     public IncomeGroup update(UUID id, ExpenseGroupRequestDto updateDto, UUID userId) throws NotFoundException {
         Optional<IncomeGroup> existingIncGroup = repository.findByNameAndUser(updateDto.getName(), userService.getById(userId));
         if (existingIncGroup.isPresent() && !existingIncGroup.get().getId().equals(id))
@@ -56,8 +53,12 @@ public class IncomeGroupService {
         repository.delete(incomeGroup);
     }
 
+    public IncomeGroup getById(UUID id, UUID userId) throws NotFoundException {
+        return getByIdAndUser(id, userService.getById(userId));
+    }
+
     public IncomeGroup getByIdAndUser(UUID id, User user) {
         repository.findById(id).orElseThrow(() -> new NotFoundException(IncomeGroup.class.getSimpleName()));
-        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessDeniedException(IncomeGroup.class.getSimpleName()));
+        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(IncomeGroup.class.getSimpleName()));
     }
 }

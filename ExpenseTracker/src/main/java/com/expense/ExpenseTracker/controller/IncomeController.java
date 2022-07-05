@@ -58,7 +58,7 @@ public class IncomeController {
     @GetMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
-        Income income = incomeService.getById(id, authDto.getId());
+        Income income = incomeService.getByIdAndUserId(id, authDto.getId());
         return modelMapper.map(income, IncomeResponseDto.class);
     }
 

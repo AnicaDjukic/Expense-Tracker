@@ -1,6 +1,7 @@
 package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.IncomeRequestDto;
+import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.Income;
@@ -11,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -61,14 +61,8 @@ public class IncomeService {
         return incomes;
     }
 
-    public Income getById(UUID id, UUID userId) throws NotFoundException {
-        repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
-        return repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(Expense.class.getSimpleName()));
-    }
-
     public Income update(UUID id, IncomeRequestDto updateDto, UUID userId) throws NotFoundException {
-        repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
-        Income income = repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(Expense.class.getSimpleName()));
+        Income income = getByIdAndUserId(id, userId);
         income.setDescription(updateDto.getDescription());
         income.setAmount(updateDto.getAmount());
         income.setIncomeGroup(incomeGroupService.getById(updateDto.getIncomeGroupId(), userId));
@@ -76,8 +70,7 @@ public class IncomeService {
     }
 
     public void deleteById(UUID id, UUID userId) throws NotFoundException {
-        repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
-        Income income = repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessDeniedException(Expense.class.getSimpleName()));
+        Income income = getByIdAndUserId(id, userId);
         repository.delete(income);
     }
 
@@ -89,5 +82,10 @@ public class IncomeService {
             incomes.add(modelMapper.map(qIncomes.get(i), Income.class));
         }
         return incomes;
+    }
+
+    public Income getByIdAndUserId(UUID id, UUID userId) {
+        repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
+        return repository.findByIdAndUser(id, userService.getById(userId)).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
     }
 }
