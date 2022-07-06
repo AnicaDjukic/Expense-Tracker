@@ -32,9 +32,9 @@ public class IncomeController {
     @PostMapping("incomes")
     @ResponseStatus(value = HttpStatus.CREATED)
     public IncomeResponseDto create(@RequestBody @Valid IncomeRequestDto newDto) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
+        String username = SecurityUtil.getLoggedIn().getName();
         Income income = modelMapper.map(newDto, Income.class);
-        Income savedIncome = incomeService.addNew(income, newDto.getIncomeGroupId(), userId);
+        Income savedIncome = incomeService.addNew(income, newDto.getIncomeGroupId(), username);
         return modelMapper.map(savedIncome, IncomeResponseDto.class);
     }
 
@@ -43,8 +43,8 @@ public class IncomeController {
     @ResponseStatus(value = HttpStatus.OK)
     public Page<IncomeResponseDto> getAll(@RequestParam(required = false, defaultValue = "0") int page,
                                           @RequestParam(required = false, defaultValue = "5") int size) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        Page<Income> incomes = incomeService.getAll(page, size, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        Page<Income> incomes = incomeService.getAll(page, size, username);
         return incomes.map(income -> modelMapper.map(income, IncomeResponseDto.class));
     }
 
@@ -53,8 +53,8 @@ public class IncomeController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<IncomeResponseDto> getLastFewForIncomeGroup(@PathVariable UUID id,
                                                             @RequestParam(required = false, defaultValue = "5") int size) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        List<Income> incomes = incomeService.getByIncomeGroupId(id, size, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        List<Income> incomes = incomeService.getByIncomeGroupId(id, size, username);
         return incomes.stream().map(income -> modelMapper.map(income, IncomeResponseDto.class)).collect(Collectors.toList());
     }
 
@@ -62,8 +62,8 @@ public class IncomeController {
     @GetMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeResponseDto getById(@PathVariable UUID id) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        Income income = incomeService.getByIdAndUserId(id, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        Income income = incomeService.getByIdAndUserUsername(id, username);
         return modelMapper.map(income, IncomeResponseDto.class);
     }
 
@@ -72,8 +72,8 @@ public class IncomeController {
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeResponseDto update(@PathVariable UUID id,
                                     @RequestBody @Valid IncomeRequestDto updateDto) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        Income updatedIncome = incomeService.update(id, updateDto, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        Income updatedIncome = incomeService.update(id, updateDto, username);
         return modelMapper.map(updatedIncome, IncomeResponseDto.class);
     }
 
@@ -81,7 +81,7 @@ public class IncomeController {
     @DeleteMapping("incomes/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable UUID id) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        incomeService.deleteById(id, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        incomeService.deleteById(id, username);
     }
 }

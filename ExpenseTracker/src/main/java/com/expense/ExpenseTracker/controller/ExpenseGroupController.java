@@ -30,9 +30,9 @@ public class ExpenseGroupController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public ExpenseGroupResponseDto create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
+        String username = SecurityUtil.getLoggedIn().getName();
         ExpenseGroup expenseGroup = modelMapper.map(newExpenseGroupDto, ExpenseGroup.class);
-        ExpenseGroup savedExpenseGroup = expenseGroupService.addNew(expenseGroup, userId);
+        ExpenseGroup savedExpenseGroup = expenseGroupService.addNew(expenseGroup, username);
         return modelMapper.map(savedExpenseGroup, ExpenseGroupResponseDto.class);
     }
 
@@ -41,8 +41,8 @@ public class ExpenseGroupController {
     @ResponseStatus(value = HttpStatus.OK)
     public Page<ExpenseGroupResponseDto> getAll(@RequestParam(required = false, defaultValue = "0") int page,
                                                 @RequestParam(required = false, defaultValue = "5") int size) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(page, size, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(page, size, username);
         return expenseGroups.map(expenseGroup -> modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class));
     }
 
@@ -50,8 +50,8 @@ public class ExpenseGroupController {
     @GetMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public ExpenseGroupResponseDto getById(@PathVariable UUID id) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        ExpenseGroup expenseGroup = expenseGroupService.getByIdAndUserId(id, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        ExpenseGroup expenseGroup = expenseGroupService.getByIdAndUserUsername(id, username);
         return modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class);
     }
 
@@ -60,8 +60,8 @@ public class ExpenseGroupController {
     @ResponseStatus(value = HttpStatus.OK)
     public ExpenseGroupResponseDto update(@PathVariable UUID id,
                                           @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto, username);
         return modelMapper.map(updatedExpenseGroup, ExpenseGroupResponseDto.class);
     }
 
@@ -69,8 +69,8 @@ public class ExpenseGroupController {
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable UUID id) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        expenseGroupService.deleteById(id, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        expenseGroupService.deleteById(id, username);
     }
 
 }

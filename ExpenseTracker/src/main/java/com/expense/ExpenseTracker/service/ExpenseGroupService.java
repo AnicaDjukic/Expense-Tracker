@@ -26,41 +26,41 @@ public class ExpenseGroupService {
         this.userService = userService;
     }
 
-    public ExpenseGroup addNew(ExpenseGroup expenseGroup, UUID userId) {
-        User user = userService.getById(userId);
+    public ExpenseGroup addNew(ExpenseGroup expenseGroup, String username) {
+        User user = userService.getByUsername(username);
         repository.findByNameAndUser(expenseGroup.getName(), user)
                 .ifPresent(expGroup -> {throw new NameAlreadyExistsException(ExpenseGroup.class.getSimpleName(), expenseGroup.getName());});
         expenseGroup.setUser(user);
         return repository.save(expenseGroup);
     }
 
-    public Page<ExpenseGroup> getAll(int pageNo, int size, UUID userId) {
-        User user = userService.getById(userId);
+    public Page<ExpenseGroup> getAll(int pageNo, int size, String username) {
+        User user = userService.getByUsername(username);
         return repository.findByUser(user, PageRequest.of(pageNo, size));
     }
 
-    public ExpenseGroup update(UUID id, ExpenseGroupRequestDto updateDto, UUID userId) throws NotFoundException {
-        Optional<ExpenseGroup> existingExpGroup = findByNameAndUserId(updateDto.getName(), userId);
+    public ExpenseGroup update(UUID id, ExpenseGroupRequestDto updateDto, String username) throws NotFoundException {
+        Optional<ExpenseGroup> existingExpGroup = findByNameAndUserUsername(updateDto.getName(), username);
         if (existingExpGroup.isPresent() && !existingExpGroup.get().getId().equals(id))
             throw new NameAlreadyExistsException(ExpenseGroup.class.getSimpleName(), updateDto.getName());
-        ExpenseGroup expenseGroup = getByIdAndUserId(id, userId);
+        ExpenseGroup expenseGroup = getByIdAndUserUsername(id, username);
         expenseGroup.setName(updateDto.getName());
         expenseGroup.setDescription(updateDto.getDescription());
         return repository.save(expenseGroup);
     }
 
-    public void deleteById(UUID id, UUID userId) throws NotFoundException {
-        ExpenseGroup expenseGroup = getByIdAndUserId(id, userId);
+    public void deleteById(UUID id, String username) throws NotFoundException {
+        ExpenseGroup expenseGroup = getByIdAndUserUsername(id, username);
         repository.delete(expenseGroup);
     }
 
-    private Optional<ExpenseGroup> findByNameAndUserId(String name, UUID userId) {
-        User user = userService.getById(userId);
+    private Optional<ExpenseGroup> findByNameAndUserUsername(String name, String username) {
+        User user = userService.getByUsername(username);
         return repository.findByNameAndUser(name, user);
     }
 
-    public ExpenseGroup getByIdAndUserId(UUID id, UUID userId) {
-        User user = userService.getById(userId);
+    public ExpenseGroup getByIdAndUserUsername(UUID id, String username) {
+        User user = userService.getByUsername(username);
         repository.findById(id).orElseThrow(() -> new NotFoundException(ExpenseGroup.class.getSimpleName()));
         return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(ExpenseGroup.class.getSimpleName()));
     }
