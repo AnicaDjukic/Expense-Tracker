@@ -3,15 +3,16 @@ package com.expense.ExpenseTracker.controller;
 import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
 import com.expense.ExpenseTracker.dto.ExpenseGroupResponseDto;
 import com.expense.ExpenseTracker.model.ExpenseGroup;
+import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.service.ExpenseGroupService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,43 +27,49 @@ public class ExpenseGroupController {
         this.expenseGroupService = expenseGroupService;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ExpenseGroupResponseDto create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto) {
+    public ExpenseGroupResponseDto create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto,
+                                          @AuthenticationPrincipal User authDto) {
         ExpenseGroup expenseGroup = modelMapper.map(newExpenseGroupDto, ExpenseGroup.class);
-        ExpenseGroup savedExpenseGroup = expenseGroupService.addNew(expenseGroup);
+        ExpenseGroup savedExpenseGroup = expenseGroupService.addNew(expenseGroup, authDto.getId());
         return modelMapper.map(savedExpenseGroup, ExpenseGroupResponseDto.class);
     }
 
-    @GetMapping("/{pageNo}/{size}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<ExpenseGroupResponseDto> getAll(@PathVariable int pageNo, @PathVariable int size) {
-        Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(pageNo, size);
-        List<ExpenseGroupResponseDto> expenseGroupDtos = new ArrayList<>();
-        for(ExpenseGroup expenseGroup : expenseGroups) {
-            expenseGroupDtos.add(modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class));
-        }
-        return expenseGroupDtos;
+    public Page<ExpenseGroupResponseDto> getAll(@RequestParam(required = false, defaultValue = "0") int page,
+                                                @RequestParam(required = false, defaultValue = "5") int size,
+                                                @AuthenticationPrincipal User authDto) {
+        Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(page, size, authDto.getId());
+        return expenseGroups.map(expenseGroup -> modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class));
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ExpenseGroupResponseDto getById(@PathVariable UUID id) {
-        ExpenseGroup expenseGroup = expenseGroupService.getById(id);
+    public ExpenseGroupResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        ExpenseGroup expenseGroup = expenseGroupService.getByIdAndUserId(id, authDto.getId());
         return modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ExpenseGroupResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
-        ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto);
+    public ExpenseGroupResponseDto update(@PathVariable UUID id,
+                                          @RequestBody @Valid ExpenseGroupRequestDto updateDto,
+                                          @AuthenticationPrincipal User authDto) {
+        ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto, authDto.getId());
         return modelMapper.map(updatedExpenseGroup, ExpenseGroupResponseDto.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable UUID id) {
-        expenseGroupService.deleteById(id);
+    public void delete(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
+        expenseGroupService.deleteById(id, authDto.getId());
     }
 
 }

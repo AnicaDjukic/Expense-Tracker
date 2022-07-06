@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -20,11 +17,15 @@ public class IncomeGroup {
     private UUID id;
 
     @Setter
-    @Column(unique = true)
     private String name;
 
     @Setter
     private String description;
+
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private User user;
 
     public IncomeGroup(String name, String description) {
         this.name = name;

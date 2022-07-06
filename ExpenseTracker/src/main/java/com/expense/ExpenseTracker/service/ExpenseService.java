@@ -1,9 +1,11 @@
 package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.ExpenseRequestDto;
+import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.QExpense;
+import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.QExpenseRepository;
 import com.expense.ExpenseTracker.repository.ExpenseRepository;
 import org.modelmapper.ModelMapper;
@@ -21,25 +23,30 @@ public class ExpenseService {
 
     private final ExpenseRepository repository;
 
+    private final QExpenseRepository qRepository;
+
     private final ExpenseGroupService expenseGroupService;
 
-    private final QExpenseRepository qRepository;
+    private final UserService userService;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public ExpenseService(ExpenseRepository repository, ExpenseGroupService expenseGroupService, QExpenseRepository qRepository) {
+    public ExpenseService(ExpenseRepository repository, QExpenseRepository qRepository, ExpenseGroupService expenseGroupService, UserService userService) {
         this.repository = repository;
-        this.expenseGroupService = expenseGroupService;
         this.qRepository = qRepository;
+        this.expenseGroupService = expenseGroupService;
+        this.userService = userService;
     }
 
-    public Expense addNew(Expense expense, UUID expenseGroupId) throws NotFoundException {
-        expense.setExpenseGroup(expenseGroupService.getById(expenseGroupId));
+    public Expense addNew(Expense expense, UUID expenseGroupId, UUID userId) throws NotFoundException {
+        expense.setExpenseGroup(expenseGroupService.getByIdAndUserId(expenseGroupId, userId));
+        expense.setUser(userService.getById(userId));
         return repository.save(expense);
     }
 
-    public Page<Expense> getAll(int pageNo, int size) {
-        return repository.findAll(PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
+    public Page<Expense> getAll(int pageNo, int size, UUID userId) {
+        User user = userService.getById(userId);
+        return repository.findByUser(user, PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
     }
 
     public List<Expense> getAll() {
@@ -55,24 +62,27 @@ public class ExpenseService {
         return expenses;
     }
 
-    public Expense getById(UUID id) throws NotFoundException {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
+    public Expense getByIdAndUserId(UUID id, UUID userId) throws NotFoundException {
+        User user = userService.getById(userId);
+        repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
+        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
     }
 
-    public Expense update(UUID id, ExpenseRequestDto updateDto) throws NotFoundException {
-        Expense expense = repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
+    public Expense update(UUID id, ExpenseRequestDto updateDto, UUID userId) throws NotFoundException {
+        Expense expense = getByIdAndUserId(id, userId);
         expense.setDescription(updateDto.getDescription());
         expense.setAmount(updateDto.getAmount());
-        expense.setExpenseGroup(expenseGroupService.getById(updateDto.getExpenseGroupId()));
+        expense.setExpenseGroup(expenseGroupService.getByIdAndUserId(updateDto.getExpenseGroupId(), userId));
         return repository.save(expense);
     }
 
-    public void deleteById(UUID id) throws NotFoundException {
-        Expense expense = repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
+    public void deleteById(UUID id, UUID userId) throws NotFoundException {
+        Expense expense = getByIdAndUserId(id, userId);
         repository.delete(expense);
     }
 
-    public List<Expense> getByExpenseGroupId(UUID expenseGroupId, int size) {
+    public List<Expense> getByExpenseGroupId(UUID expenseGroupId, int size, UUID userId) {
+        expenseGroupService.getByIdAndUserId(expenseGroupId, userId);
         List<QExpense> qExpenses = qRepository.getLastFewByExpenseGroupId(expenseGroupId, size);
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < qExpenses.size(); i++) {

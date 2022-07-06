@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Proba\",\r\n    \"amount\": 10,\r\n    \"expenseGroupId\": \"f3a7af1c-27b2-4758-a5e6-96c763bd6e5d\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Proba\",\r\n    \"amount\": 10,\r\n    \"expenseGroupId\": \"38d43afb-0f0e-4f44-8ae1-3c09cac1117a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +44,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/0/3",
+							"raw": "localhost:8080/api/v1/expenses?page=0&size=3",
 							"host": [
 								"localhost"
 							],
@@ -52,9 +52,17 @@
 							"path": [
 								"api",
 								"v1",
-								"expenses",
-								"0",
-								"3"
+								"expenses"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -66,7 +74,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/f43ff7ef-3599-46c9-85e6-522da05824b5",
+							"raw": "localhost:8080/api/v1/expenses/f6dc4bd9-49a6-4837-b618-b88a89237239",
 							"host": [
 								"localhost"
 							],
@@ -75,7 +83,7 @@
 								"api",
 								"v1",
 								"expenses",
-								"f43ff7ef-3599-46c9-85e6-522da05824b5"
+								"f6dc4bd9-49a6-4837-b618-b88a89237239"
 							]
 						}
 					},
@@ -88,7 +96,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo Novo\",\r\n    \"amount\": 1000.5,\r\n    \"expenseGroupId\": \"efa6e0cd-1ea0-4b89-9c21-d25b8dcd4a50\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo Novo\",\r\n    \"amount\": 1000.5,\r\n    \"expenseGroupId\": \"5287b0ab-d63f-48be-9eb7-64e0f3d54b1a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -96,7 +104,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/f43ff7ef-3599-46c9-85e6-522da05824b5",
+							"raw": "localhost:8080/api/v1/expenses/09f09508-f311-4042-ad14-fa4d73d274ba",
 							"host": [
 								"localhost"
 							],
@@ -105,7 +113,7 @@
 								"api",
 								"v1",
 								"expenses",
-								"f43ff7ef-3599-46c9-85e6-522da05824b5"
+								"09f09508-f311-4042-ad14-fa4d73d274ba"
 							]
 						}
 					},
@@ -117,7 +125,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expenses/f6ea2a13-bd89-4664-a7e9-b97c6a385e20",
+							"raw": "localhost:8080/api/v1/expenses/09f09508-f311-4042-ad14-fa4d73d274ba",
 							"host": [
 								"localhost"
 							],
@@ -126,7 +134,7 @@
 								"api",
 								"v1",
 								"expenses",
-								"f6ea2a13-bd89-4664-a7e9-b97c6a385e20"
+								"09f09508-f311-4042-ad14-fa4d73d274ba"
 							]
 						}
 					},
@@ -138,7 +146,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/063d28a5-dc7c-4419-bac8-65581c1bd791/expenses/3",
+							"raw": "localhost:8080/api/v1/expense-groups/5287b0ab-d63f-48be-9eb7-64e0f3d54b1a/expenses?size=3",
 							"host": [
 								"localhost"
 							],
@@ -147,9 +155,14 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"063d28a5-dc7c-4419-bac8-65581c1bd791",
-								"expenses",
-								"3"
+								"5287b0ab-d63f-48be-9eb7-64e0f3d54b1a",
+								"expenses"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -167,7 +180,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 40,\r\n    \"incomeGroupId\": \"d63abde2-19d3-4dad-943f-b5de55be9ee5\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 40,\r\n    \"incomeGroupId\": \"b4060729-c892-4b98-b750-28321b02e070\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -195,7 +208,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/0/3",
+							"raw": "localhost:8080/api/v1/incomes?page=0&size=3",
 							"host": [
 								"localhost"
 							],
@@ -203,9 +216,17 @@
 							"path": [
 								"api",
 								"v1",
-								"incomes",
-								"0",
-								"3"
+								"incomes"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -217,7 +238,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/3105b469-e1a9-4245-8a4f-9e82ed253170",
+							"raw": "localhost:8080/api/v1/incomes/c5421651-4381-44dc-9a5d-b6808449d375",
 							"host": [
 								"localhost"
 							],
@@ -226,7 +247,7 @@
 								"api",
 								"v1",
 								"incomes",
-								"3105b469-e1a9-4245-8a4f-9e82ed253170"
+								"c5421651-4381-44dc-9a5d-b6808449d375"
 							]
 						}
 					},
@@ -239,7 +260,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 1000.5,\r\n    \"incomeGroupId\": \"d7f62434-8d15-4999-aa23-063d8e66952f\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Novo\",\r\n    \"amount\": 1000.5,\r\n    \"incomeGroupId\": \"b9a08f96-fc72-472d-a6bf-41cfebc5a619\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -247,7 +268,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/3105b469-e1a9-4245-8a4f-9e82ed253170",
+							"raw": "localhost:8080/api/v1/incomes/c5421651-4381-44dc-9a5d-b6808449d375",
 							"host": [
 								"localhost"
 							],
@@ -256,7 +277,7 @@
 								"api",
 								"v1",
 								"incomes",
-								"3105b469-e1a9-4245-8a4f-9e82ed253170"
+								"c5421651-4381-44dc-9a5d-b6808449d375"
 							]
 						}
 					},
@@ -268,7 +289,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/incomes/84d1cc84-38f9-4777-b217-d182c25a4d8e",
+							"raw": "localhost:8080/api/v1/incomes/c5421651-4381-44dc-9a5d-b6808449d375",
 							"host": [
 								"localhost"
 							],
@@ -277,7 +298,7 @@
 								"api",
 								"v1",
 								"incomes",
-								"84d1cc84-38f9-4777-b217-d182c25a4d8e"
+								"c5421651-4381-44dc-9a5d-b6808449d375"
 							]
 						}
 					},
@@ -289,7 +310,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/d63abde2-19d3-4dad-943f-b5de55be9ee5/incomes/2",
+							"raw": "localhost:8080/api/v1/income-groups/b9a08f96-fc72-472d-a6bf-41cfebc5a619/incomes?size=3",
 							"host": [
 								"localhost"
 							],
@@ -298,9 +319,14 @@
 								"api",
 								"v1",
 								"income-groups",
-								"d63abde2-19d3-4dad-943f-b5de55be9ee5",
-								"incomes",
-								"2"
+								"b9a08f96-fc72-472d-a6bf-41cfebc5a619",
+								"incomes"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -346,7 +372,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/0/2",
+							"raw": "localhost:8080/api/v1/expense-groups?page=0&size=2",
 							"host": [
 								"localhost"
 							],
@@ -354,9 +380,17 @@
 							"path": [
 								"api",
 								"v1",
-								"expense-groups",
-								"0",
-								"2"
+								"expense-groups"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -368,7 +402,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/71d359da-6fe4-47d7-89df-5032a02bf09c",
+							"raw": "localhost:8080/api/v1/expense-groups/b7e9527c-1c48-427a-a892-f39d067ea4b3",
 							"host": [
 								"localhost"
 							],
@@ -377,7 +411,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"71d359da-6fe4-47d7-89df-5032a02bf09c"
+								"b7e9527c-1c48-427a-a892-f39d067ea4b3"
 							]
 						}
 					},
@@ -390,7 +424,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Trosak\",\r\n    \"description\": \"Novo\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Novo\",\r\n    \"description\": \"Novo\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -398,7 +432,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/6b495ade-0837-4996-b916-9f9e999c6976",
+							"raw": "localhost:8080/api/v1/expense-groups/2e501d5b-972f-454f-aa2c-17ca5b524b7c",
 							"host": [
 								"localhost"
 							],
@@ -407,7 +441,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"6b495ade-0837-4996-b916-9f9e999c6976"
+								"2e501d5b-972f-454f-aa2c-17ca5b524b7c"
 							]
 						}
 					},
@@ -419,7 +453,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/expense-groups/afe5a068-1eab-4f41-9ba4-8392be7067e9",
+							"raw": "localhost:8080/api/v1/expense-groups/b7e9527c-1c48-427a-a892-f39d067ea4b3",
 							"host": [
 								"localhost"
 							],
@@ -428,7 +462,7 @@
 								"api",
 								"v1",
 								"expense-groups",
-								"afe5a068-1eab-4f41-9ba4-8392be7067e9"
+								"b7e9527c-1c48-427a-a892-f39d067ea4b3"
 							]
 						}
 					},
@@ -474,7 +508,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/1/2",
+							"raw": "localhost:8080/api/v1/income-groups?page=0&size=2",
 							"host": [
 								"localhost"
 							],
@@ -482,9 +516,17 @@
 							"path": [
 								"api",
 								"v1",
-								"income-groups",
-								"1",
-								"2"
+								"income-groups"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -496,7 +538,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/6ebddb04-63f1-40d5-8a26-bc5b2bfa1172",
+							"raw": "localhost:8080/api/v1/income-groups/3281ae67-35be-43fa-b124-b06f5af0693f",
 							"host": [
 								"localhost"
 							],
@@ -505,7 +547,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"6ebddb04-63f1-40d5-8a26-bc5b2bfa1172"
+								"3281ae67-35be-43fa-b124-b06f5af0693f"
 							]
 						}
 					},
@@ -526,7 +568,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/016a6d21-01bf-4f1d-bdac-de0dc4364865",
+							"raw": "localhost:8080/api/v1/income-groups/1843d7a3-0d3d-4f48-85c0-53fd30a4d479",
 							"host": [
 								"localhost"
 							],
@@ -535,7 +577,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"016a6d21-01bf-4f1d-bdac-de0dc4364865"
+								"1843d7a3-0d3d-4f48-85c0-53fd30a4d479"
 							]
 						}
 					},
@@ -547,7 +589,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/income-groups/71d13db7-7e7e-41c8-8f82-c23339d1b213",
+							"raw": "localhost:8080/api/v1/income-groups/dc867e78-e42d-489c-90d6-eb937e65bf4b",
 							"host": [
 								"localhost"
 							],
@@ -556,7 +598,7 @@
 								"api",
 								"v1",
 								"income-groups",
-								"71d13db7-7e7e-41c8-8f82-c23339d1b213"
+								"dc867e78-e42d-489c-90d6-eb937e65bf4b"
 							]
 						}
 					},
@@ -570,7 +612,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/dashboard/3",
+					"raw": "localhost:8080/api/v1/dashboard?size=3",
 					"host": [
 						"localhost"
 					],
@@ -578,12 +620,107 @@
 					"path": [
 						"api",
 						"v1",
-						"dashboard",
-						"3"
+						"dashboard"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "3"
+						}
 					]
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mikamikic\",\r\n    \"password\": \"pass\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mikamikic\",\r\n    \"password\": \"pass123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJFeHBlbnNlVHJhY2tlciIsInN1YiI6Im1pa2FtaWtpYyIsInJvbGUiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjU3MDE1ODA3LCJleHAiOjE2NTcwMTc2MDd9.Mm-FOXiLWJwzSoVhrHqjkYlwRy9eM8EJbmzPYpCUbEoCsreuZXnForn1Vkakajxb3i2keXCg7VZo_rqXfoQZPQ",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
