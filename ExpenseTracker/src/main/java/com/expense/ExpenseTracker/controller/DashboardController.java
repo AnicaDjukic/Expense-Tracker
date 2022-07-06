@@ -10,6 +10,7 @@ import com.expense.ExpenseTracker.service.DashboardService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,10 +33,10 @@ public class DashboardController {
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     public DashboardDto getDashboard(@RequestParam(required = false, defaultValue = "5") int size) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        double totalAmount = dashboardService.getTotalAmount(userId);
-        List<Expense> expenses = dashboardService.getLastFewExpenses(size, userId);
-        List<Income> incomes = dashboardService.getLastFewIncomes(size, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        double totalAmount = dashboardService.getTotalAmount(username);
+        List<Expense> expenses = dashboardService.getLastFewExpenses(size, username);
+        List<Income> incomes = dashboardService.getLastFewIncomes(size, username);
         return createDashboard(totalAmount, expenses, incomes);
     }
 
