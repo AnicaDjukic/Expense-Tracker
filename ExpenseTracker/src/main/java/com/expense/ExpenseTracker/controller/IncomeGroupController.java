@@ -31,7 +31,8 @@ public class IncomeGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public IncomeGroupResponseDto create(@RequestBody @Valid IncomeGroupRequestDto newExpenseGroupDto, @AuthenticationPrincipal User authDto) {
+    public IncomeGroupResponseDto create(@RequestBody @Valid IncomeGroupRequestDto newExpenseGroupDto,
+                                         @AuthenticationPrincipal User authDto) {
         IncomeGroup expenseGroup = modelMapper.map(newExpenseGroupDto, IncomeGroup.class);
         IncomeGroup savedIncomeGroup = incomeGroupService.addNew(expenseGroup, authDto.getId());
         return modelMapper.map(savedIncomeGroup, IncomeGroupResponseDto.class);
@@ -40,7 +41,9 @@ public class IncomeGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public Page<IncomeGroupResponseDto> getAll(@RequestParam int page, @RequestParam int size, @AuthenticationPrincipal User authDto) {
+    public Page<IncomeGroupResponseDto> getAll(@RequestParam(required = false, defaultValue = "0") int page,
+                                               @RequestParam(required = false, defaultValue = "5") int size,
+                                               @AuthenticationPrincipal User authDto) {
         Page<IncomeGroup> incomeGroups = incomeGroupService.getAll(page, size, authDto.getId());
         return incomeGroups.map(incomeGroup -> modelMapper.map(incomeGroup, IncomeGroupResponseDto.class));
     }
@@ -56,7 +59,9 @@ public class IncomeGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public IncomeGroupResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto, @AuthenticationPrincipal User authDto) {
+    public IncomeGroupResponseDto update(@PathVariable UUID id,
+                                         @RequestBody @Valid ExpenseGroupRequestDto updateDto,
+                                         @AuthenticationPrincipal User authDto) {
         IncomeGroup updatedIncomeGroup = incomeGroupService.update(id, updateDto, authDto.getId());
         return modelMapper.map(updatedIncomeGroup, IncomeGroupResponseDto.class);
     }

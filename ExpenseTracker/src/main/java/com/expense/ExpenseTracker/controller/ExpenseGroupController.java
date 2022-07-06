@@ -30,7 +30,8 @@ public class ExpenseGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ExpenseGroupResponseDto create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto, @AuthenticationPrincipal User authDto) {
+    public ExpenseGroupResponseDto create(@RequestBody @Valid ExpenseGroupRequestDto newExpenseGroupDto,
+                                          @AuthenticationPrincipal User authDto) {
         ExpenseGroup expenseGroup = modelMapper.map(newExpenseGroupDto, ExpenseGroup.class);
         ExpenseGroup savedExpenseGroup = expenseGroupService.addNew(expenseGroup, authDto.getId());
         return modelMapper.map(savedExpenseGroup, ExpenseGroupResponseDto.class);
@@ -39,7 +40,9 @@ public class ExpenseGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public Page<ExpenseGroupResponseDto> getAll(@RequestParam int page, @RequestParam int size, @AuthenticationPrincipal User authDto) {
+    public Page<ExpenseGroupResponseDto> getAll(@RequestParam(required = false, defaultValue = "0") int page,
+                                                @RequestParam(required = false, defaultValue = "5") int size,
+                                                @AuthenticationPrincipal User authDto) {
         Page<ExpenseGroup> expenseGroups = expenseGroupService.getAll(page, size, authDto.getId());
         return expenseGroups.map(expenseGroup -> modelMapper.map(expenseGroup, ExpenseGroupResponseDto.class));
     }
@@ -55,7 +58,9 @@ public class ExpenseGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ExpenseGroupResponseDto update(@PathVariable UUID id, @RequestBody @Valid ExpenseGroupRequestDto updateDto, @AuthenticationPrincipal User authDto) {
+    public ExpenseGroupResponseDto update(@PathVariable UUID id,
+                                          @RequestBody @Valid ExpenseGroupRequestDto updateDto,
+                                          @AuthenticationPrincipal User authDto) {
         ExpenseGroup updatedExpenseGroup = expenseGroupService.update(id, updateDto, authDto.getId());
         return modelMapper.map(updatedExpenseGroup, ExpenseGroupResponseDto.class);
     }
