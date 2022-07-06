@@ -49,12 +49,13 @@ public class ExpenseService {
         return repository.findByUser(user, PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
     }
 
-    public List<Expense> getAll() {
-        return repository.findAll();
+    public List<Expense> getAll(UUID userId) {
+        User user = userService.getById(userId);
+        return repository.findByUser(user);
     }
 
-    public List<Expense> getLastFew(int size) {
-        List<QExpense> qExpenses = qRepository.getLastFew(size);
+    public List<Expense> getLastFew(int size, UUID userId) {
+        List<QExpense> qExpenses = qRepository.getLastFew(size, userId);
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < qExpenses.size(); i++) {
             expenses.add(modelMapper.map(qExpenses.get(i), Expense.class));

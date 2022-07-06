@@ -16,10 +16,10 @@ public class QIncomeRepository {
         this.entityManager = entityManager;
     }
 
-    public List<QIncome> getLastFew(int size) {
+    public List<QIncome> getLastFew(int size, UUID userId) {
         QIncome income = QIncome.income;
         JPAQuery<QIncome> query = new JPAQuery<>(entityManager);
-        query.from(income).orderBy(income.creationTime.desc()).limit(size);
+        query.from(income).where(income.user.id.eq(userId)).orderBy(income.creationTime.desc()).limit(size);
         return query.fetch();
     }
 

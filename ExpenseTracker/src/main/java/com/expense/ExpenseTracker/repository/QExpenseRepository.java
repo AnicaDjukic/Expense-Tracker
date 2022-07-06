@@ -17,10 +17,10 @@ public class QExpenseRepository {
         this.entityManager = entityManager;
     }
 
-    public List<QExpense> getLastFew(int size) {
+    public List<QExpense> getLastFew(int size, UUID userId) {
         QExpense expense = QExpense.expense;
         JPAQuery<QExpense> query = new JPAQuery<>(entityManager);
-        query.from(expense).orderBy(expense.creationTime.desc()).limit(size);
+        query.from(expense).where(expense.user.id.eq(userId)).orderBy(expense.creationTime.desc()).limit(size);
         return query.fetch();
     }
 

@@ -5,6 +5,7 @@ import com.expense.ExpenseTracker.model.Income;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -19,30 +20,30 @@ public class DashboardService {
         this.incomeService = incomeService;
     }
 
-    public double getTotalAmount() {
-        double expenseAmount = calculateExpenseAmount();
-        double incomeAmount = calculateIncomeAmount();
+    public double getTotalAmount(UUID userId) {
+        double expenseAmount = calculateExpenseAmount(userId);
+        double incomeAmount = calculateIncomeAmount(userId);
         return incomeAmount - expenseAmount;
     }
 
-    public List<Expense> getLastFewExpenses(int size) {
-        return expenseService.getLastFew(size);
+    public List<Expense> getLastFewExpenses(int size, UUID userId) {
+        return expenseService.getLastFew(size, userId);
     }
 
-    public List<Income> getLastFewIncomes(int size) {
-       return incomeService.getLastFew(size);
+    public List<Income> getLastFewIncomes(int size, UUID userId) {
+       return incomeService.getLastFew(size, userId);
     }
 
-    private double calculateExpenseAmount() {
+    private double calculateExpenseAmount(UUID userId) {
         double amount = 0.0;
-        for(Expense expense : expenseService.getAll())
+        for(Expense expense : expenseService.getAll(userId))
             amount += expense.getAmount();
         return amount;
     }
 
-    private double calculateIncomeAmount() {
+    private double calculateIncomeAmount(UUID userId) {
         double amount = 0.0;
-        for(Income income : incomeService.getAll())
+        for(Income income : incomeService.getAll(userId))
             amount += income.getAmount();
         return amount;
     }
