@@ -45,8 +45,10 @@ public class ExpenseGroupControllerTest {
         mockMvc.perform(get("/api/v1/expense-groups"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content", hasSize(1)))
-                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content.[*].name").value(hasItem("Pera Expense group")));
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.content.[*].name").value(hasItem("Pera Expense group")));
     }
 
     @Test
@@ -56,9 +58,21 @@ public class ExpenseGroupControllerTest {
         mockMvc.perform(get("/api/v1/expense-groups"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content", hasSize(1)))
-                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content.[*].name").value(hasItem("Mika Expense group")));
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.content.[*].name").value(hasItem("Mika Expense group")));
     }
+
+    @Test
+    public void get_all_expense_groups_unauthorized() throws Exception {
+
+        mockMvc.perform(get("/api/v1/expense-groups"))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
+    }
+
+
 
 
 }
