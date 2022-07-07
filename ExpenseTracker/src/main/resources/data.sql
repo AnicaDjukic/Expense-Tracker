@@ -9,3 +9,6 @@ VALUES ('a8e2f208-b667-44e7-ae3a-9d0e044658b2', '$2a$10$28MUwyYgna28OIxoUnE7VOpj
 
 INSERT INTO users (ID, PASSWORD, USERNAME, ROLE_ID)
 VALUES ('a8e2f208-b667-44e7-ae3a-9d0e044658b3', '$2a$10$28MUwyYgna28OIxoUnE7VOpjby0JRJUU0WQV0UZdMX5XA46XAvBCK', 'mikamikic', 1);
+
+INSERT INTO expense_group (ID, DESCRIPTION, NAME, USER_ID)
+VALUES ('46f8f3fa-e285-4895-8b9f-29391c46321f', 'Pera expense group description', 'Expense group name', 'a8e2f208-b667-44e7-ae3a-9d0e044658b2');
