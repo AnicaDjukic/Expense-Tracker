@@ -5,14 +5,16 @@ import com.expense.ExpenseTracker.dto.ExpenseResponseDto;
 import com.expense.ExpenseTracker.dto.IncomeResponseDto;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.Income;
+import com.expense.ExpenseTracker.security.SecurityUtil;
 import com.expense.ExpenseTracker.service.DashboardService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/dashboard")
@@ -29,20 +31,19 @@ public class DashboardController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public DashboardDto getDashboard(@RequestParam int size) {
-        double totalAmount = dashboardService.getTotalAmount();
-        List<Expense> expenses = dashboardService.getLastFewExpenses(size);
-        List<Income> incomes = dashboardService.getLastFewIncomes(size);
+    public DashboardDto getDashboard(@RequestParam(required = false, defaultValue = "5") int size) {
+        UUID userId = SecurityUtil.getLoggedUser().getId();
+        double totalAmount = dashboardService.getTotalAmount(userId);
+        List<Expense> expenses = dashboardService.getLastFewExpenses(size, userId);
+        List<Income> incomes = dashboardService.getLastFewIncomes(size, userId);
         return createDashboard(totalAmount, expenses, incomes);
     }
 
     private DashboardDto createDashboard(double totalAmount, List<Expense> expenses, List<Income> incomes) {
-        List<ExpenseResponseDto> expenseDtos = new ArrayList<>();
-        for (Expense expense : expenses)
-            expenseDtos.add(modelMapper.map(expense, ExpenseResponseDto.class));
-        List<IncomeResponseDto> incomeDtos = new ArrayList<>();
-        for(Income income : incomes)
-            incomeDtos.add(modelMapper.map(income, IncomeResponseDto.class));
+        List<ExpenseResponseDto> expenseDtos = expenses.stream().map(expense -> modelMapper
+                .map(expense, ExpenseResponseDto.class)).collect(Collectors.toList());
+        List<IncomeResponseDto> incomeDtos = incomes.stream().map(income -> modelMapper
+                .map(income, IncomeResponseDto.class)).collect(Collectors.toList());
         return new DashboardDto(totalAmount, expenseDtos, incomeDtos);
     }
 }

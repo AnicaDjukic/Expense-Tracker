@@ -4,13 +4,12 @@ import com.expense.ExpenseTracker.dto.ExpenseRequestDto;
 import com.expense.ExpenseTracker.dto.ExpenseResponseDto;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.Expense;
-import com.expense.ExpenseTracker.model.User;
+import com.expense.ExpenseTracker.security.SecurityUtil;
 import com.expense.ExpenseTracker.service.ExpenseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,10 +32,10 @@ public class ExpenseController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("expenses")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ExpenseResponseDto create(@RequestBody @Valid ExpenseRequestDto newExpenseDto,
-                                     @AuthenticationPrincipal User authDto) {
+    public ExpenseResponseDto create(@RequestBody @Valid ExpenseRequestDto newExpenseDto) {
+        UUID userId = SecurityUtil.getLoggedUser().getId();
         Expense expense = modelMapper.map(newExpenseDto, Expense.class);
-        Expense savedExpense = expenseService.addNew(expense, newExpenseDto.getExpenseGroupId(), authDto.getId());
+        Expense savedExpense = expenseService.addNew(expense, newExpenseDto.getExpenseGroupId(), userId);
         return modelMapper.map(savedExpense, ExpenseResponseDto.class);
     }
 
@@ -44,9 +43,9 @@ public class ExpenseController {
     @GetMapping("expenses")
     @ResponseStatus(value = HttpStatus.OK)
     public Page<ExpenseResponseDto> getAll(@RequestParam(required = false, defaultValue = "0") int page,
-                                           @RequestParam(required = false, defaultValue = "5") int size,
-                                           @AuthenticationPrincipal User authDto) {
-        Page<Expense> expenses = expenseService.getAll(page, size, authDto.getId());
+                                           @RequestParam(required = false, defaultValue = "5") int size) {
+        UUID userId = SecurityUtil.getLoggedUser().getId();
+        Page<Expense> expenses = expenseService.getAll(page, size, userId);
         return expenses.map(expense -> modelMapper.map(expense, ExpenseResponseDto.class));
     }
 
@@ -54,17 +53,18 @@ public class ExpenseController {
     @GetMapping("expense-groups/{id}/expenses")
     @ResponseStatus(value = HttpStatus.OK)
     public List<ExpenseResponseDto> getLastFewForExpenseGroup(@PathVariable UUID id,
-                                                              @RequestParam(required = false, defaultValue = "5") int size,
-                                                              @AuthenticationPrincipal User authDto) {
-        List<Expense> expenses = expenseService.getByExpenseGroupId(id, size, authDto.getId());
+                                                              @RequestParam(required = false, defaultValue = "5") int size) {
+        UUID userId = SecurityUtil.getLoggedUser().getId();
+        List<Expense> expenses = expenseService.getByExpenseGroupId(id, size, userId);
         return expenses.stream().map(expense -> modelMapper.map(expense, ExpenseResponseDto.class)).collect(Collectors.toList());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("expenses/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ExpenseResponseDto getById(@PathVariable UUID id, @AuthenticationPrincipal User authDto) {
-        Expense expense = expenseService.getByIdAndUserId(id, authDto.getId());
+    public ExpenseResponseDto getById(@PathVariable UUID id) {
+        UUID userId = SecurityUtil.getLoggedUser().getId();
+        Expense expense = expenseService.getByIdAndUserId(id, userId);
         return modelMapper.map(expense, ExpenseResponseDto.class);
     }
 
@@ -72,17 +72,18 @@ public class ExpenseController {
     @PutMapping("expenses/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public ExpenseResponseDto update(@PathVariable UUID id,
-                                     @RequestBody @Valid ExpenseRequestDto updateDto,
-                                     @AuthenticationPrincipal User authDto) {
-        Expense updatedExpense = expenseService.update(id, updateDto, authDto.getId());
+                                     @RequestBody @Valid ExpenseRequestDto updateDto) {
+        UUID userId = SecurityUtil.getLoggedUser().getId();
+        Expense updatedExpense = expenseService.update(id, updateDto, userId);
         return modelMapper.map(updatedExpense, ExpenseResponseDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("expenses/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable UUID id, @AuthenticationPrincipal User authDto) throws NotFoundException {
-        expenseService.deleteById(id, authDto.getId());
+    public void delete(@PathVariable UUID id) throws NotFoundException {
+        UUID userId = SecurityUtil.getLoggedUser().getId();
+        expenseService.deleteById(id, userId);
     }
 
 }
