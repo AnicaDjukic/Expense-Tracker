@@ -147,14 +147,14 @@ public class ExpenseGroupControllerTest {
     @WithMockUser(username = "peraperic", password = "pass")
     public void test_update_expense_group_success() throws Exception {
 
-        ExpenseGroupRequestDto newExpenseGroup = new ExpenseGroupRequestDto("New name for expense group", "Some new description");
+        ExpenseGroupRequestDto newExpenseGroup = new ExpenseGroupRequestDto("Pera new expense group", "Some new description");
 
         mockMvc.perform(put("/api/v1/expense-groups/46f8f3fa-e285-4895-8b9f-29391c46322f")
                         .contentType(contentType).content(objectMapper.writeValueAsString(newExpenseGroup)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.name").value("New name for expense group"))
+                .andExpect(jsonPath("$.name").value("Pera new expense group"))
                 .andExpect(jsonPath("$.description").value("Some new description"));
     }
 
