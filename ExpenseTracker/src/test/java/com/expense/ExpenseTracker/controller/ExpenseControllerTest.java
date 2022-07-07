@@ -18,7 +18,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -95,5 +97,30 @@ public class ExpenseControllerTest {
                 .andExpect(jsonPath("$.message").value("ExpenseGroup not found!"));
     }
 
+    @Test
+    @WithMockUser(username = "peraperic", password = "pass")
+    public void get_all_expenses_pera_has_one_expense() throws Exception {
+
+        mockMvc.perform(get("/api/v1/expenses"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content", hasSize(1)));
+    }
+
+    @Test
+    @WithMockUser(username = "mikamikic", password = "pass")
+    public void get_all_expenses_mika_has_two_expenses() throws Exception {
+
+        mockMvc.perform(get("/api/v1/expenses"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content", hasSize(2)));
+    }
+
+    @Test
+    public void get_all_expenses_unauthorized() throws Exception {
+        mockMvc.perform(get("/api/v1/expenses"))
+                .andExpect(status().isUnauthorized());
+    }
 
 }

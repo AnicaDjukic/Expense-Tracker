@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -40,11 +40,25 @@ public class ExpenseGroupControllerTest {
 
     @Test
     @WithMockUser(username = "peraperic", password = "pass")
-    public void get_all_expense_groups() throws Exception {
+    public void get_all_expense_groups_pera() throws Exception {
 
-        mockMvc.perform(get("/api/v1/expenses"))
+        mockMvc.perform(get("/api/v1/expense-groups"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content", hasSize(1)));
+                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content.[*].name").value(hasItem("Pera Expense group")));
     }
+
+    @Test
+    @WithMockUser(username = "mikamikic", password = "pass")
+    public void get_all_expense_groups_mika() throws Exception {
+
+        mockMvc.perform(get("/api/v1/expense-groups"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content.[*].name").value(hasItem("Mika Expense group")));
+    }
+
+
 }
