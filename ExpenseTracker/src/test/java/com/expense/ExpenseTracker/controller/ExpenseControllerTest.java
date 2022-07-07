@@ -1,6 +1,5 @@
 package com.expense.ExpenseTracker.controller;
 
-
 import com.expense.ExpenseTracker.dto.ExpenseRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -44,6 +43,8 @@ public class ExpenseControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
     }
+
+    /*** CREATE ***/
 
     @Test
     @WithMockUser(username = "peraperic", password = "pass")
@@ -104,6 +105,8 @@ public class ExpenseControllerTest {
                 .andExpect(jsonPath("$.message").value("ExpenseGroup not found!"));
     }
 
+    /*** GET ALL ***/
+
     @Test
     @WithMockUser(username = "peraperic", password = "pass")
     public void test_get_all_expenses() throws Exception {
@@ -120,6 +123,8 @@ public class ExpenseControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
+
+    /*** GET LAST FEW ***/
 
     @Test
     @WithMockUser(username = "peraperic", password = "pass")
@@ -146,6 +151,8 @@ public class ExpenseControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
+
+    /*** GET BY ID ***/
 
     @Test
     @WithMockUser(username = "mikamikic", password = "pass")
@@ -175,6 +182,8 @@ public class ExpenseControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
+
+    /*** PUT ***/
 
     @Test
     @WithMockUser(username = "peraperic", password = "pass")
@@ -247,6 +256,8 @@ public class ExpenseControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
+
+    /*** DELETE ***/
 
     @Test
     @WithMockUser(username = "mikamikic", password = "pass")

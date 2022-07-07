@@ -19,6 +19,9 @@ VALUES ('46f8f3fa-e285-4895-8b9f-29391c46322f', 'Pera new expense group descript
 INSERT INTO expense_group (ID, DESCRIPTION, NAME, USER_ID)
 VALUES ('57f8f3fa-e285-4895-8b9f-29391c46432e', 'Mika expense group description', 'Mika expense group', 'a8e2f208-b667-44e7-ae3a-9d0e044658b3');
 
+INSERT INTO expense_group (ID, DESCRIPTION, NAME, USER_ID)
+VALUES ('57f8f3fa-e285-4895-8b9f-29391c46433e', 'Mika new expense group description', 'Mika new expense group', 'a8e2f208-b667-44e7-ae3a-9d0e044658b3');
+
 INSERT INTO expense (ID, AMOUNT, CREATION_TIME, DESCRIPTION, EXPENSE_GROUP_ID, USER_ID)
 VALUES ('46f8f3fa-e285-4895-8b9f-29391c46000e', 1000.0, '2022-07-07 13:42:21.328452', 'Pera expense description', '46f8f3fa-e285-4895-8b9f-29391c46321f', 'a8e2f208-b667-44e7-ae3a-9d0e044658b2');
 
