@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---change Anica:1
+--changeset Anica:1
 
 CREATE TABLE IF NOT EXISTS public.income_group
 (
