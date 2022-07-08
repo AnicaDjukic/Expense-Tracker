@@ -62,7 +62,7 @@ public class IncomeControllerTest {
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.description").value("some description"))
                 .andExpect(jsonPath("$.amount").value(100.0))
-                .andExpect(jsonPath("$.incomeGroup.name").value("Pera new income group"));
+                .andExpect(jsonPath("$.incomeGroup.name").value("Pera income group"));
     }
 
     @Test
@@ -203,7 +203,7 @@ public class IncomeControllerTest {
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.description").value("New description"))
                 .andExpect(jsonPath("$.amount").value(300.0))
-                .andExpect(jsonPath("$.incomeGroup.name").value("Pera new income group"));
+                .andExpect(jsonPath("$.incomeGroup.name").value("Pera income group"));
     }
 
     @Test
