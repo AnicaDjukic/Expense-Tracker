@@ -90,6 +90,6 @@ public class IncomeService {
     public Income getByIdAndUserUsername(UUID id, String username) {
         User user = userService.getByUsername(username);
         repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
-        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
+        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(Income.class.getSimpleName()));
     }
 }

@@ -156,7 +156,7 @@ public class ExpenseControllerTest {
 
     @Test
     @WithMockUser(username = "mikamikic", password = "pass")
-    public void test_get_by_id() throws Exception {
+    public void test_get_expense_by_id() throws Exception {
 
         mockMvc.perform(get("/api/v1/expenses/46f8f3fa-e285-4895-8b9f-29391c46002e"))
                 .andExpect(status().isOk())
@@ -168,15 +168,17 @@ public class ExpenseControllerTest {
 
     @Test
     @WithMockUser(username = "peraperic", password = "pass")
-    public void test_get_by_id_forbidden() throws Exception {
+    public void test_get_expense_by_id_forbidden() throws Exception {
 
         mockMvc.perform(get("/api/v1/expenses/46f8f3fa-e285-4895-8b9f-29391c46002e"))
                 .andExpect(status().isForbidden())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message").value("Access denied to: Expense"));
     }
 
     @Test
-    public void test_get_by_id_unauthorized() throws Exception {
+    public void test_get_expense_by_id_unauthorized() throws Exception {
 
         mockMvc.perform(get("/api/v1/expenses/46f8f3fa-e285-4895-8b9f-29391c46002e"))
                 .andExpect(status().isUnauthorized())
@@ -242,7 +244,9 @@ public class ExpenseControllerTest {
         mockMvc.perform(put("/api/v1/expenses/46f8f3fa-e285-4895-8b9f-29391c46001e")
                         .contentType(contentType).content(objectMapper.writeValueAsString(newExpense)))
                 .andExpect(status().isForbidden())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message").value("Access denied to: Expense"));
     }
 
     @Test
@@ -283,7 +287,9 @@ public class ExpenseControllerTest {
 
         mockMvc.perform(delete("/api/v1/expenses/46f8f3fa-e285-4895-8b9f-29391c46003e"))
                 .andExpect(status().isForbidden())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message").value("Access denied to: Expense"));;
     }
 
     @Test
