@@ -36,4 +36,8 @@ public class UserService {
     public User getById(UUID userId) {
         return repository.findById(userId).orElseThrow(() -> new NotFoundException(User.class.getSimpleName()));
     }
+
+    public User getByUsername(String username) {
+        return repository.findByUsername(username).orElseThrow(() -> new NotFoundException(User.class.getSimpleName()));
+    }
 }

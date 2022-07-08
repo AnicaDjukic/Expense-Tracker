@@ -31,9 +31,9 @@ public class IncomeGroupController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public IncomeGroupResponseDto create(@RequestBody @Valid IncomeGroupRequestDto newExpenseGroupDto) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
+        String username = SecurityUtil.getLoggedIn().getName();
         IncomeGroup expenseGroup = modelMapper.map(newExpenseGroupDto, IncomeGroup.class);
-        IncomeGroup savedIncomeGroup = incomeGroupService.addNew(expenseGroup, userId);
+        IncomeGroup savedIncomeGroup = incomeGroupService.addNew(expenseGroup, username);
         return modelMapper.map(savedIncomeGroup, IncomeGroupResponseDto.class);
     }
 
@@ -42,8 +42,8 @@ public class IncomeGroupController {
     @ResponseStatus(value = HttpStatus.OK)
     public Page<IncomeGroupResponseDto> getAll(@RequestParam(required = false, defaultValue = "0") int page,
                                                @RequestParam(required = false, defaultValue = "5") int size) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        Page<IncomeGroup> incomeGroups = incomeGroupService.getAll(page, size, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        Page<IncomeGroup> incomeGroups = incomeGroupService.getAll(page, size, username);
         return incomeGroups.map(incomeGroup -> modelMapper.map(incomeGroup, IncomeGroupResponseDto.class));
     }
 
@@ -51,8 +51,8 @@ public class IncomeGroupController {
     @GetMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeGroupResponseDto getById(@PathVariable UUID id) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        IncomeGroup incomeGroup = incomeGroupService.getByIdAndUserId(id, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        IncomeGroup incomeGroup = incomeGroupService.getByIdAndUserUsername(id, username);
         return modelMapper.map(incomeGroup, IncomeGroupResponseDto.class);
     }
 
@@ -61,8 +61,8 @@ public class IncomeGroupController {
     @ResponseStatus(value = HttpStatus.OK)
     public IncomeGroupResponseDto update(@PathVariable UUID id,
                                          @RequestBody @Valid ExpenseGroupRequestDto updateDto) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        IncomeGroup updatedIncomeGroup = incomeGroupService.update(id, updateDto, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        IncomeGroup updatedIncomeGroup = incomeGroupService.update(id, updateDto, username);
         return modelMapper.map(updatedIncomeGroup, IncomeGroupResponseDto.class);
     }
 
@@ -70,8 +70,8 @@ public class IncomeGroupController {
     @DeleteMapping("{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable UUID id) {
-        UUID userId = SecurityUtil.getLoggedUser().getId();
-        incomeGroupService.deleteById(id, userId);
+        String username = SecurityUtil.getLoggedIn().getName();
+        incomeGroupService.deleteById(id, username);
     }
 
 }
