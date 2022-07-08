@@ -5,12 +5,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="db/changelog/changes/db-changelog-create_role_table-1.0.sql"/>
-    <include file="classpath:db/changelog/changes/db-changelog-create_users_table-1.0.sql"/>
-    <include file="classpath:db/changelog/changes/db-changelog-create_expense_group_table-1.0.sql"/>
-    <include file="classpath:db/changelog/changes/db-changelog-create_expense_table-1.0.sql"/>
-    <include file="classpath:db/changelog/changes/db-changelog-create_income_group_table-1.0.sql"/>
-    <include file="classpath:db/changelog/changes/db-changelog-create_income_table-1.0.sql"/>
+    <include file="db/changelog/db-changelog-create_role_table-1.0.sql"/>
+    <include file="classpath:db/changelog/db-changelog-create_users_table-1.0.sql"/>
+    <include file="classpath:db/changelog/db-changelog-create_expense_group_table-1.0.sql"/>
+    <include file="classpath:db/changelog/db-changelog-create_expense_table-1.0.sql"/>
+    <include file="classpath:db/changelog/db-changelog-create_income_group_table-1.0.sql"/>
+    <include file="classpath:db/changelog/db-changelog-create_income_table-1.0.sql"/>
+    <include file="classpath:db/changelog/db-changelog-data.sql"/>
 
-    
 </databaseChangeLog>
