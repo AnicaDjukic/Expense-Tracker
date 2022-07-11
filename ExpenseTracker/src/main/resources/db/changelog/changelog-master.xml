@@ -5,15 +5,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="1" author="anica">
-        <sqlFile encoding="utf8" path="db/changelog/db-changelog-create_role_table-1.sql"/>
-        <sqlFile encoding="utf8" path="db/changelog/db-changelog-create_users_table-1.sql"/>
-        <sqlFile encoding="utf8" path="db/changelog/db-changelog-create_expense_group_table-1.sql"/>
-        <sqlFile encoding="utf8" path="db/changelog/db-changelog-create_expense_table-1.sql"/>
-        <sqlFile encoding="utf8" path="db/changelog/db-changelog-create_income_group_table-1.sql"/>
-        <sqlFile encoding="utf8" path="db/changelog/db-changelog-create_income_table-1.sql"/>
-        <sqlFile encoding="utf8" path="db/changelog/db-changelog-data.sql"/>
-    </changeSet>
+    <include file="db/changelog/db-changelog-create_role_table-1.sql"/>
+    <include file="db/changelog/db-changelog-create_users_table-1.sql"/>
+    <include file="db/changelog/db-changelog-create_expense_group_table-1.sql"/>
+    <include file="db/changelog/db-changelog-create_expense_table-1.sql"/>
+    <include file="db/changelog/db-changelog-create_income_group_table-1.sql"/>
+    <include file="db/changelog/db-changelog-create_income_table-1.sql"/>
+    <include file="db/changelog/db-changelog-data.sql"/>
 
 
 </databaseChangeLog>
