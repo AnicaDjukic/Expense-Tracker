@@ -39,24 +39,24 @@ public class IncomeService {
         this.userService = userService;
     }
 
-    public Income addNew(Income income, UUID incomeGroupId, UUID userId) throws NotFoundException {
-        income.setIncomeGroup(incomeGroupService.getByIdAndUserId(incomeGroupId, userId));
-        income.setUser(userService.getById(userId));
+    public Income addNew(Income income, UUID incomeGroupId, String username) throws NotFoundException {
+        income.setIncomeGroup(incomeGroupService.getByIdAndUserUsername(incomeGroupId, username));
+        income.setUser(userService.getByUsername(username));
         return repository.save(income);
     }
 
-    public Page<Income> getAll(int pageNo, int size, UUID userId) {
-        User user = userService.getById(userId);
+    public Page<Income> getAll(int pageNo, int size, String username) {
+        User user = userService.getByUsername(username);
         return repository.findByUser(user, PageRequest.of(pageNo, size, Sort.by("creationTime").descending()));
     }
 
-    public List<Income> getAll(UUID userId) {
-        User user = userService.getById(userId);
+    public List<Income> getAll(String username) {
+        User user = userService.getByUsername(username);
         return repository.findByUser(user);
     }
 
-    public List<Income> getLastFew(int size, UUID userId) {
-        List<QIncome> qExpenses = qRepository.getLastFew(size, userId);
+    public List<Income> getLastFew(int size, String username) {
+        List<QIncome> qExpenses = qRepository.getLastFew(size, username);
         List<Income> incomes = new ArrayList<>();
         for (int i = 0; i < qExpenses.size(); i++) {
             incomes.add(modelMapper.map(qExpenses.get(i), Income.class));
@@ -64,21 +64,21 @@ public class IncomeService {
         return incomes;
     }
 
-    public Income update(UUID id, IncomeRequestDto updateDto, UUID userId) throws NotFoundException {
-        Income income = getByIdAndUserId(id, userId);
+    public Income update(UUID id, IncomeRequestDto updateDto, String username) throws NotFoundException {
+        Income income = getByIdAndUserUsername(id, username);
         income.setDescription(updateDto.getDescription());
         income.setAmount(updateDto.getAmount());
-        income.setIncomeGroup(incomeGroupService.getByIdAndUserId(updateDto.getIncomeGroupId(), userId));
+        income.setIncomeGroup(incomeGroupService.getByIdAndUserUsername(updateDto.getIncomeGroupId(), username));
         return repository.save(income);
     }
 
-    public void deleteById(UUID id, UUID userId) throws NotFoundException {
-        Income income = getByIdAndUserId(id, userId);
+    public void deleteById(UUID id, String username) throws NotFoundException {
+        Income income = getByIdAndUserUsername(id, username);
         repository.delete(income);
     }
 
-    public List<Income> getByIncomeGroupId(UUID incomeGroupId, int size, UUID userId) {
-        incomeGroupService.getByIdAndUserId(incomeGroupId, userId);
+    public List<Income> getByIncomeGroupId(UUID incomeGroupId, int size, String username) {
+        incomeGroupService.getByIdAndUserUsername(incomeGroupId, username);
         List<QIncome> qIncomes = qRepository.getLastFewByIncomeGroupId(incomeGroupId, size);
         List<Income> incomes = new ArrayList<>();
         for (int i = 0; i < qIncomes.size(); i++) {
@@ -87,9 +87,9 @@ public class IncomeService {
         return incomes;
     }
 
-    public Income getByIdAndUserId(UUID id, UUID userId) {
-        User user = userService.getById(userId);
+    public Income getByIdAndUserUsername(UUID id, String username) {
+        User user = userService.getByUsername(username);
         repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
-        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
+        return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(Income.class.getSimpleName()));
     }
 }

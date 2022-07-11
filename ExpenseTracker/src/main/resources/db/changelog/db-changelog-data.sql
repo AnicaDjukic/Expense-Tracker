@@ -1,3 +1,7 @@
+--liquibase formatted sql
+
+--changeset Anica:2
+
 INSERT INTO role (ID, NAME)
 VALUES (1, 'ROLE_USER');
 

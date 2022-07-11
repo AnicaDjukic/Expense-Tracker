@@ -26,37 +26,37 @@ public class IncomeGroupService {
         this.userService = userService;
     }
 
-    public IncomeGroup addNew(IncomeGroup incomeGroup, UUID userId) {
-        User user = userService.getById(userId);
+    public IncomeGroup addNew(IncomeGroup incomeGroup, String username) {
+        User user = userService.getByUsername(username);
         repository.findByNameAndUser(incomeGroup.getName(), user)
                 .ifPresent(incGroup -> {throw new NameAlreadyExistsException(IncomeGroup.class.getSimpleName(), incomeGroup.getName());});
-        incomeGroup.setUser(userService.getById(userId));
+        incomeGroup.setUser(userService.getByUsername(username));
         return repository.save(incomeGroup);
     }
 
-    public Page<IncomeGroup> getAll(int pageNo, int size, UUID userId) {
-        User user = userService.getById(userId);
+    public Page<IncomeGroup> getAll(int pageNo, int size, String username) {
+        User user = userService.getByUsername(username);
         return repository.findByUser(user, PageRequest.of(pageNo, size));
     }
 
-    public IncomeGroup update(UUID id, ExpenseGroupRequestDto updateDto, UUID userId) throws NotFoundException {
-        User user = userService.getById(userId);
+    public IncomeGroup update(UUID id, ExpenseGroupRequestDto updateDto, String username) throws NotFoundException {
+        User user = userService.getByUsername(username);
         Optional<IncomeGroup> existingIncGroup = repository.findByNameAndUser(updateDto.getName(), user);
         if (existingIncGroup.isPresent() && !existingIncGroup.get().getId().equals(id))
             throw new NameAlreadyExistsException(IncomeGroup.class.getSimpleName(), updateDto.getName());
-        IncomeGroup incomeGroup = getByIdAndUserId(id, userId);
+        IncomeGroup incomeGroup = getByIdAndUserUsername(id, username);
         incomeGroup.setName(updateDto.getName());
         incomeGroup.setDescription(updateDto.getDescription());
         return repository.save(incomeGroup);
     }
 
-    public void deleteById(UUID id, UUID userId) throws NotFoundException {
-        IncomeGroup incomeGroup = getByIdAndUserId(id, userId);
+    public void deleteById(UUID id, String username) throws NotFoundException {
+        IncomeGroup incomeGroup = getByIdAndUserUsername(id, username);
         repository.delete(incomeGroup);
     }
 
-    public IncomeGroup getByIdAndUserId(UUID id, UUID userId) {
-        User user = userService.getById(userId);
+    public IncomeGroup getByIdAndUserUsername(UUID id, String username) {
+        User user = userService.getByUsername(username);
         repository.findById(id).orElseThrow(() -> new NotFoundException(IncomeGroup.class.getSimpleName()));
         return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(IncomeGroup.class.getSimpleName()));
     }
