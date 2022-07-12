@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,7 +50,7 @@ public class ExpenseGroupService {
         return repository.save(expenseGroup);
     }
 
-    public void deleteById(UUID id, String username) throws NotFoundException {
+    public void deleteById(UUID id, String username) throws NotFoundException, SQLException {
         ExpenseGroup expenseGroup = getByIdAndUserUsername(id, username);
         repository.delete(expenseGroup);
     }

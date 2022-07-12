@@ -220,6 +220,17 @@ public class ExpenseGroupControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "mikamikic", password = "pass")
+    public void test_delete_expense_group_which_contains_expenses() throws Exception {
+
+        mockMvc.perform(delete("/api/v1/expense-groups/57f8f3fa-e285-4895-8b9f-29391c46432e"))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message").value("It's not possible to delete expense group which contains expenses."));
+    }
+
+    @Test
     public void test_delete_expense_group_unauthorized() throws Exception {
 
         mockMvc.perform(delete("/api/v1/expense-groups/57f8f3fa-e285-4895-8b9f-29391c46433e"))

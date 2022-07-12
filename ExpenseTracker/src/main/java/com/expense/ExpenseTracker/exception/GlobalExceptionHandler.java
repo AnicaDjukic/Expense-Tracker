@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
@@ -42,11 +43,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<Object> handleSQLException(SQLException exception) {
+        ExceptionResponse response = getExceptionResponse(createMessage(exception.getMessage()));
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     private ExceptionResponse getExceptionResponse(String message) {
         ExceptionResponse response = new ExceptionResponse();
         response.setDateTime(LocalDateTime.now());
         response.setMessage(message);
         return response;
+    }
+
+    private String createMessage(String message) {
+        if(message.contains("expense"))
+            return  "It's not possible to delete expense group which contains expenses.";
+        return "It's not possible to delete income group which contains incomes.";
     }
 }
 
