@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.UUID;
 
 @RestController
@@ -68,7 +69,7 @@ public class ExpenseGroupController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable UUID id) {
+    public void delete(@PathVariable UUID id) throws SQLException {
         String username = SecurityUtil.getLoggedIn().getName();
         expenseGroupService.deleteById(id, username);
     }

@@ -222,6 +222,17 @@ public class IncomeGroupControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "peraperic", password = "pass")
+    public void test_delete_income_group_which_contains_incomes() throws Exception {
+
+        mockMvc.perform(delete("/api/v1/income-groups/d413d87f-6fde-4a5a-aeed-c4b9c50b311e"))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message").value("It's not possible to delete income group which contains incomes."));
+    }
+
+    @Test
     public void test_delete_income_group_unauthorized() throws Exception {
 
         mockMvc.perform(delete("/api/v1/income-groups/d413d87f-6fde-4a5a-aeed-c4b9c50b311e"))
