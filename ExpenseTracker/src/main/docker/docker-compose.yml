@@ -6,21 +6,17 @@ services:
     build:
       context: .
     container_name: app
-
     ports:
       - "127.0.0.1:8080:8080/tcp"
     depends_on:
       - db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ExpenseTrackerDatabase
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+    env_file: ./env-var
 
   db:
     image: 'postgres:14.1-alpine'
     container_name: db
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=ExpenseTrackerDatabase
+    #environment:
+      #- POSTGRES_USER=postgres
+      #- POSTGRES_PASSWORD=admin
+      #- POSTGRES_DB=ExpenseTrackerDatabase
+    env_file: ./env-var
