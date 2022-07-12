@@ -1,5 +1,8 @@
 package com.expense.ExpenseTracker.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,16 +30,27 @@ public class Scheduler {
         this.incomeService = incomeService;
     }
 
-
-    @Scheduled(cron = "0 * 15 * * ?")  // 0 0 12 * * ? // Fire at 12:00 PM (noon) every day
-    public void reportForYesterday() {
+    @Scheduled(cron = "0 * 16 * * ?")  // 0 0 12 * * ? // Fire at 12:00 PM (noon) every day
+    public void reportForYesterday() throws IOException {
         for(User user : userService.getAll()) {
-            log.info("USER : " + user.getUsername());
-            log.info("Report for : " + LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
-            log.info("Expense amount : " + calculateExpenseAmount(user.getUsername()));
-            log.info("Income amount : " + calculateIncomeAmount(user.getUsername()));
-            log.info("Total amount : " + (calculateIncomeAmount(user.getUsername()) - calculateExpenseAmount(user.getUsername())));
+            String fileName = user.getUsername() + LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".txt";
+            File file = new File(fileName);
+            if(file.createNewFile())
+                writeToFile(user, fileName);
         }
+    }
+
+    private void writeToFile(User user, String fileName) throws IOException {
+        FileOutputStream fos = new FileOutputStream(fileName, true);
+        StringBuilder str = new StringBuilder("USER : " + user.getUsername()).append("\n");
+        str.append("Report for : ").append(LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))).append("\n");
+        str.append("Expense amount : ").append(calculateExpenseAmount(user.getUsername())).append("\n");
+        str.append("Income amount : ").append(calculateIncomeAmount(user.getUsername())).append("\n");
+        str.append("Total amount : ").append(calculateIncomeAmount(user.getUsername()) - calculateExpenseAmount(user.getUsername())).append("\n");
+        byte[] b= str.toString().getBytes();       //converts string into bytes
+        fos.write(b);
+        fos.close();
+        log.info("Generated report for user : " + user.getUsername());
     }
 
     private double calculateExpenseAmount(String username) {
