@@ -30,7 +30,7 @@ public class Scheduler {
         this.incomeService = incomeService;
     }
 
-    @Scheduled(cron = "0 * 16 * * ?")  // 0 0 12 * * ? // Fire at 12:00 PM (noon) every day
+    @Scheduled(cron = "0 0 0 * * ?")  // Fire at midnight  // 0 * 16 * * ? // for testing purposes every minute after 16 hours
     public void reportForYesterday() throws IOException {
         for(User user : userService.getAll()) {
             String fileName = user.getUsername() + LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".txt";
