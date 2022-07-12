@@ -91,4 +91,13 @@ public class ExpenseService {
         repository.findById(id).orElseThrow(() -> new NotFoundException(Expense.class.getSimpleName()));
         return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(Expense.class.getSimpleName()));
     }
+
+    public List<Expense> getExpensesForYesterday(String username) {
+        List<QExpense> qExpenses = qRepository.getExpensesForYesterday(username);
+        List<Expense> expenses = new ArrayList<>();
+        for (int i = 0; i < qExpenses.size(); i++) {
+            expenses.add(modelMapper.map(qExpenses.get(i), Expense.class));
+        }
+        return expenses;
+    }
 }

@@ -7,6 +7,7 @@ import com.expense.ExpenseTracker.dto.UserResponseDto;
 import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.security.JwtTokenUtil;
 import com.expense.ExpenseTracker.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "api/v1/auth")
+@Slf4j
 public class AuthController {
 
     private  final UserService userService;
@@ -52,7 +54,6 @@ public class AuthController {
                 );
 
         User user = (User) authenticate.getPrincipal();
-
         return new LoginResponseDto(jwtTokenUtil.generateToken(user));
     }
 }

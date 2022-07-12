@@ -8,6 +8,7 @@ import com.expense.ExpenseTracker.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,5 +40,9 @@ public class UserService {
 
     public User getByUsername(String username) {
         return repository.findByUsername(username).orElseThrow(() -> new NotFoundException(User.class.getSimpleName()));
+    }
+
+    public List<User> getAll() {
+        return repository.findAll();
     }
 }

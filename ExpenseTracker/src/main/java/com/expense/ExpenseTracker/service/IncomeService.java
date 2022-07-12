@@ -92,4 +92,13 @@ public class IncomeService {
         repository.findById(id).orElseThrow(() -> new NotFoundException(Income.class.getSimpleName()));
         return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(Income.class.getSimpleName()));
     }
+
+    public List<Income> getIncomesForYesterday(String username) {
+        List<QIncome> qIncomes = qRepository.getIncomesForYesterday(username);
+        List<Income> incomes = new ArrayList<>();
+        for (int i = 0; i < qIncomes.size(); i++) {
+            incomes.add(modelMapper.map(qIncomes.get(i), Income.class));
+        }
+        return incomes;
+    }
 }
