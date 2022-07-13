@@ -18,7 +18,7 @@ public class Scheduler {
         this.asyncService = asyncService;
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")    // Fire at midnight  // 0 * 16 * * ? // for testing purposes every minute after 16
+    @Scheduled(cron = "0 * 16 * * ?")    // 0 0 0 * * ? Fire at midnight  // 0 * 16 * * ? // for testing purposes every minute after 16
     public void reportForYesterday() {
         for (User user : userService.getAll()) {
             asyncService.execute(user.getUsername());

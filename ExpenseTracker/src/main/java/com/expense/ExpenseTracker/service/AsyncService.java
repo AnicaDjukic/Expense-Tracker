@@ -28,7 +28,7 @@ public class AsyncService {
 
     @Async("asyncServiceExecutor")
     public void execute(String username) {
-        log.info(username + " " + LocalDateTime.now());
+        log.info(username + " " + LocalDateTime.now() + " thread id: " + Thread.currentThread().getId());
         String fileName = username + LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".txt";
         try {
             writeToFile(username, fileName);
