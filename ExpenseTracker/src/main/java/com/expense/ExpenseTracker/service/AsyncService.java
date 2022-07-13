@@ -4,10 +4,8 @@ import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.Income;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -29,7 +27,7 @@ public class AsyncService {
     }
 
     @Async("asyncServiceExecutor")
-    public void run(String username) {
+    public void execute(String username) {
         log.info(username + " " + LocalDateTime.now());
         String fileName = username + LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".txt";
         try {
@@ -41,10 +39,12 @@ public class AsyncService {
     private void writeToFile(String username, String fileName) throws IOException {
         FileOutputStream fos = new FileOutputStream(fileName, false);
         StringBuilder str = new StringBuilder("USER : " + username).append("\n");
-        str.append("Report for : ").append(LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))).append("\n");
+        str.append("Report for : ");
+        str.append(LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))).append("\n");
         str.append("Expense amount : ").append(calculateExpenseAmount(username)).append("\n");
         str.append("Income amount : ").append(calculateIncomeAmount(username)).append("\n");
-        str.append("Total amount : ").append(calculateIncomeAmount(username) - calculateExpenseAmount(username)).append("\n");
+        str.append("Total amount : ");
+        str.append(calculateIncomeAmount(username) - calculateExpenseAmount(username)).append("\n");
         byte[] b= str.toString().getBytes();       //converts string into bytes
         fos.write(b);
         fos.close();
