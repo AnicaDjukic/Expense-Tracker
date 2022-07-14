@@ -2,29 +2,38 @@ package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
 import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
+import com.expense.ExpenseTracker.exception.ExceptionResponse;
 import com.expense.ExpenseTracker.exception.NameAlreadyExistsException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.ExpenseGroup;
 import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.ExpenseGroupRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class ExpenseGroupService {
 
     private final ExpenseGroupRepository repository;
 
     private final UserService userService;
 
-    public ExpenseGroupService(ExpenseGroupRepository repository, UserService userService) {
+    private final QueueSender queueSender;
+
+    public ExpenseGroupService(ExpenseGroupRepository repository, UserService userService, QueueSender queueSender) {
         this.repository = repository;
         this.userService = userService;
+        this.queueSender = queueSender;
     }
 
     public ExpenseGroup addNew(ExpenseGroup expenseGroup, String username) {
@@ -50,7 +59,7 @@ public class ExpenseGroupService {
         return repository.save(expenseGroup);
     }
 
-    public void deleteById(UUID id, String username) throws NotFoundException, SQLException {
+    public void deleteById(UUID id, String username) throws NotFoundException {
         ExpenseGroup expenseGroup = getByIdAndUserUsername(id, username);
         repository.delete(expenseGroup);
     }
@@ -64,5 +73,16 @@ public class ExpenseGroupService {
         User user = userService.getByUsername(username);
         repository.findById(id).orElseThrow(() -> new NotFoundException(ExpenseGroup.class.getSimpleName()));
         return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(ExpenseGroup.class.getSimpleName()));
+    }
+
+    public ExpenseGroup addNewByMQ(ExpenseGroup expenseGroup, String userId){
+        try {
+            User user = userService.getById(UUID.fromString(userId));
+            return addNew(expenseGroup, user.getUsername());
+        } catch (NotFoundException | NameAlreadyExistsException ex) {
+            queueSender.send(ex.getMessage() + " dateTime: " + LocalDateTime.now());
+            log.info(ex.getMessage() + " dateTime: " + LocalDateTime.now());
+            return null;
+        }
     }
 }

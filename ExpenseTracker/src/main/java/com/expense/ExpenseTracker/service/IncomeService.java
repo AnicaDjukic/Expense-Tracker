@@ -3,23 +3,25 @@ package com.expense.ExpenseTracker.service;
 import com.expense.ExpenseTracker.dto.IncomeRequestDto;
 import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
-import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.model.QIncome;
 import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.QIncomeRepository;
 import com.expense.ExpenseTracker.repository.IncomeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class IncomeService {
 
     private final IncomeRepository repository;
@@ -30,13 +32,16 @@ public class IncomeService {
 
     private final UserService userService;
 
+    private final QueueSender queueSender;
+
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public IncomeService(IncomeRepository repository, QIncomeRepository qRepository, IncomeGroupService incomeGroupService, UserService userService) {
+    public IncomeService(IncomeRepository repository, QIncomeRepository qRepository, IncomeGroupService incomeGroupService, UserService userService, QueueSender queueSender) {
         this.repository = repository;
         this.qRepository = qRepository;
         this.incomeGroupService = incomeGroupService;
         this.userService = userService;
+        this.queueSender = queueSender;
     }
 
     public Income addNew(Income income, UUID incomeGroupId, String username) throws NotFoundException {
@@ -100,5 +105,16 @@ public class IncomeService {
             incomes.add(modelMapper.map(qIncomes.get(i), Income.class));
         }
         return incomes;
+    }
+
+    public Income addNewByMq(Income income, UUID incomeGroupId, String userId) {
+        try {
+            User user = userService.getById(UUID.fromString(userId));
+            return addNew(income, incomeGroupId, user.getUsername());
+        } catch (NotFoundException | AccessResourceDeniedException ex) {
+            queueSender.send(ex.getMessage() + " dateTime: " + LocalDateTime.now());
+            log.info(ex.getMessage() + " dateTime: " + LocalDateTime.now());
+            return null;
+        }
     }
 }

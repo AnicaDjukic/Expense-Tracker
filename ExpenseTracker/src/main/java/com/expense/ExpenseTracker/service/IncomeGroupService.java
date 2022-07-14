@@ -7,23 +7,29 @@ import com.expense.ExpenseTracker.exception.NotFoundException;
 import com.expense.ExpenseTracker.model.IncomeGroup;
 import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.IncomeGroupRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class IncomeGroupService {
 
     private final IncomeGroupRepository repository;
 
     private final UserService userService;
 
-    public IncomeGroupService(IncomeGroupRepository repository, UserService userService) {
+    private final QueueSender queueSender;
+
+    public IncomeGroupService(IncomeGroupRepository repository, UserService userService, QueueSender queueSender) {
         this.repository = repository;
         this.userService = userService;
+        this.queueSender = queueSender;
     }
 
     public IncomeGroup addNew(IncomeGroup incomeGroup, String username) {
@@ -59,5 +65,16 @@ public class IncomeGroupService {
         User user = userService.getByUsername(username);
         repository.findById(id).orElseThrow(() -> new NotFoundException(IncomeGroup.class.getSimpleName()));
         return repository.findByIdAndUser(id, user).orElseThrow(() -> new AccessResourceDeniedException(IncomeGroup.class.getSimpleName()));
+    }
+
+    public IncomeGroup addNewByMQ(IncomeGroup incomeGroup, String userId) {
+        try {
+            User user = userService.getById(UUID.fromString(userId));
+            return addNew(incomeGroup, user.getUsername());
+        } catch (NotFoundException | NameAlreadyExistsException ex) {
+            queueSender.send(ex.getMessage() + " dateTime: " + LocalDateTime.now());
+            log.info(ex.getMessage() + " dateTime: " + LocalDateTime.now());
+            return null;
+        }
     }
 }
