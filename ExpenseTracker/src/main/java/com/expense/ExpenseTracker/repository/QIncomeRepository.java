@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,14 @@ public class QIncomeRepository {
         QIncome income = QIncome.income;
         JPAQuery<QIncome> query = new JPAQuery<>(entityManager);
         query.from(income).where(income.incomeGroup.id.eq(incomeGroupId)).orderBy(income.creationTime.desc()).limit(size);
+        return query.fetch();
+    }
+
+    public List<QIncome> getIncomesForYesterday(String username) {
+        QIncome income = QIncome.income;
+        JPAQuery<QIncome> query = new JPAQuery<>(entityManager);
+        query.from(income).where(income.creationTime.between(LocalDateTime.now().minusDays(1), LocalDateTime.now())
+                .and(income.user.username.eq(username))).orderBy(income.creationTime.desc());
         return query.fetch();
     }
 }
