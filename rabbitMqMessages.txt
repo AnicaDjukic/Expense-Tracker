@@ -1,0 +1,14 @@
+queue: expense-groups
+{
+"name": "Trosak",
+"description": "Troskovi neki",
+"userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
+}
+
+queue: expenses
+{
+"description": "Proba",
+"amount": 10,
+"expenseGroupId": "46f8f3fa-e285-4895-8b9f-29391c46321f",
+"userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
+}

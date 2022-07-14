@@ -1,8 +1,6 @@
 package com.expense.ExpenseTracker.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +9,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class Expense {
 
     @Id
@@ -29,15 +28,22 @@ public class Expense {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @ToString.Exclude
     private ExpenseGroup expenseGroup;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @ToString.Exclude
     private User user;
 
     @PrePersist
     protected void onCreate() {
         creationTime = LocalDateTime.now();
+    }
+
+    public Expense(String description, double amount) {
+        this.description = description;
+        this.amount = amount;
     }
 }
