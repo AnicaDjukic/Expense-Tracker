@@ -1,9 +1,6 @@
 package com.expense.ExpenseTracker.service;
 
-import com.expense.ExpenseTracker.model.Expense;
-import com.expense.ExpenseTracker.model.ExpenseGroup;
-import com.expense.ExpenseTracker.model.IncomeGroup;
-import com.expense.ExpenseTracker.model.User;
+import com.expense.ExpenseTracker.model.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -24,11 +21,14 @@ public class QueueConsumer {
 
     private final IncomeGroupService incomeGroupService;
 
-    public QueueConsumer(UserService userService, ExpenseGroupService expenseGroupService, ExpenseService expenseService, IncomeGroupService incomeGroupService) {
+    private final IncomeService incomeService;
+
+    public QueueConsumer(UserService userService, ExpenseGroupService expenseGroupService, ExpenseService expenseService, IncomeGroupService incomeGroupService, IncomeService incomeService) {
         this.userService = userService;
         this.expenseGroupService = expenseGroupService;
         this.expenseService = expenseService;
         this.incomeGroupService = incomeGroupService;
+        this.incomeService = incomeService;
     }
 
     @RabbitListener(queues = {"expense-groups"})
@@ -66,6 +66,19 @@ public class QueueConsumer {
         User user = userService.getById(UUID.fromString(convertedObject.get("userId").getAsString()));
         IncomeGroup savedIncomeGroup = incomeGroupService.addNew(incomeGroup, user.getUsername());
         System.out.println(savedIncomeGroup);
+    }
+
+    @RabbitListener(queues = {"incomes"})
+    public void receiveIncome(@Payload String fileBody) {
+        System.out.println("Message " + fileBody);
+        JsonObject convertedObject = new Gson().fromJson(fileBody, JsonObject.class);
+        System.out.println(convertedObject.toString());
+
+        Income income = new Income(convertedObject.get("description").getAsString(),
+                convertedObject.get("amount").getAsDouble());
+        User user = userService.getById(UUID.fromString(convertedObject.get("userId").getAsString()));
+        Income savedIncome = incomeService.addNew(income, UUID.fromString(convertedObject.get("incomeGroupId").getAsString()), user.getUsername());
+        System.out.println(savedIncome);
     }
 
 }
