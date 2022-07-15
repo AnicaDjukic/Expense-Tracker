@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IncomeGroupRepository extends JpaRepository<IncomeGroup, UUID> {
-    Optional<IncomeGroup> findByName(String name);
 
     Optional<IncomeGroup> findByNameAndUser(String name, User user);
 

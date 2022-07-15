@@ -3,6 +3,7 @@ package com.expense.ExpenseTracker.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class ExpenseGroup {
 
     @Id
@@ -25,6 +27,7 @@ public class ExpenseGroup {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @ToString.Exclude
     private User user;
 
     public ExpenseGroup(String name, String description) {

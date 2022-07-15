@@ -19,7 +19,6 @@ import java.util.List;
 
 import static ch.qos.logback.core.util.OptionHelper.isEmpty;
 
-
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 

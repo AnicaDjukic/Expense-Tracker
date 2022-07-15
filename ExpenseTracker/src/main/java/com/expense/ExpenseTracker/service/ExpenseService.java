@@ -3,22 +3,26 @@ package com.expense.ExpenseTracker.service;
 import com.expense.ExpenseTracker.dto.ExpenseRequestDto;
 import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
+import com.expense.ExpenseTracker.message_queue.QueueSender;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.QExpense;
 import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.QExpenseRepository;
 import com.expense.ExpenseTracker.repository.ExpenseRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class ExpenseService {
 
     private final ExpenseRepository repository;
@@ -29,13 +33,16 @@ public class ExpenseService {
 
     private final UserService userService;
 
+    private final QueueSender queueSender;
+
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public ExpenseService(ExpenseRepository repository, QExpenseRepository qRepository, ExpenseGroupService expenseGroupService, UserService userService) {
+    public ExpenseService(ExpenseRepository repository, QExpenseRepository qRepository, ExpenseGroupService expenseGroupService, UserService userService, QueueSender queueSender) {
         this.repository = repository;
         this.qRepository = qRepository;
         this.expenseGroupService = expenseGroupService;
         this.userService = userService;
+        this.queueSender = queueSender;
     }
 
     public Expense addNew(Expense expense, UUID expenseGroupId, String username) throws NotFoundException {
@@ -99,5 +106,16 @@ public class ExpenseService {
             expenses.add(modelMapper.map(qExpenses.get(i), Expense.class));
         }
         return expenses;
+    }
+
+    public Expense addNewByMQ(Expense expense, UUID expenseGroupId, String userId) {
+        try {
+            User user = userService.getById(UUID.fromString(userId));
+            return addNew(expense, expenseGroupId, user.getUsername());
+        } catch (NotFoundException | AccessResourceDeniedException ex) {
+            queueSender.send(ex.getMessage() + " dateTime: " + LocalDateTime.now());
+            log.info(ex.getMessage() + " dateTime: " + LocalDateTime.now());
+            return null;
+        }
     }
 }

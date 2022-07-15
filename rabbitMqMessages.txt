@@ -1,0 +1,29 @@
+queue: expense-groups
+{
+"name": "Expense group",
+"description": "Some expenses",
+"userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
+}
+
+queue: expenses
+{
+"description": "New expense",
+"amount": 100,
+"expenseGroupId": "46f8f3fa-e285-4895-8b9f-29391c46321f",
+"userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
+}
+
+queue: income-groups
+{
+"name": "Income group",
+"description": "Some incomes",
+"userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
+}
+
+queue: incomes
+{
+"description": "New income",
+"amount": 100,
+"incomeGroupId": "d413d87f-6fde-4a5a-aeed-c4b9c50b311e",
+"userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
+}
