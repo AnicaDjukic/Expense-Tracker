@@ -16,14 +16,17 @@ public class ExpenseGroupMQConsumer {
 
     private final ExpenseGroupService expenseGroupService;
 
+    private final Gson gson;
+
     public ExpenseGroupMQConsumer(ExpenseGroupService expenseGroupService) {
         this.expenseGroupService = expenseGroupService;
+        this.gson = new Gson();
     }
 
     @RabbitListener(queues = {"expense-groups"})
     public void receiveExpenseGroup(@Payload String fileBody) {
         try {
-            JsonObject convertedObject = new Gson().fromJson(fileBody, JsonObject.class);
+            JsonObject convertedObject = gson.fromJson(fileBody, JsonObject.class);
             log.info(convertedObject.toString());
             createNewExpenseGroup(convertedObject);
         } catch (JsonSyntaxException exception) {
@@ -36,7 +39,10 @@ public class ExpenseGroupMQConsumer {
                 convertedObject.get("description").getAsString());
         ExpenseGroup savedExpenseGroup = expenseGroupService.addNewByMQ(expenseGroup,
                 convertedObject.get("userId").getAsString());
-        if(savedExpenseGroup != null)  log.info("Successfully saved: " + savedExpenseGroup);
-        else log.warn("Saving new expense group failed");
+        if(savedExpenseGroup != null) {
+            log.info("Successfully saved: " + savedExpenseGroup);
+        } else {
+            log.warn("Saving new expense group failed");
+        }
     }
 }

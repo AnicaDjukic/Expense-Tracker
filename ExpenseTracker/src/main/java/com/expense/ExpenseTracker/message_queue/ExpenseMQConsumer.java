@@ -18,14 +18,17 @@ public class ExpenseMQConsumer {
 
     private final ExpenseService expenseService;
 
+    private final Gson gson;
+
     public ExpenseMQConsumer(ExpenseService expenseService) {
         this.expenseService = expenseService;
+        this.gson = new Gson();
     }
 
     @RabbitListener(queues = {"expenses"})
     public void receiveExpense(@Payload String fileBody) {
         try {
-            JsonObject convertedObject = new Gson().fromJson(fileBody, JsonObject.class);
+            JsonObject convertedObject = gson.fromJson(fileBody, JsonObject.class);
             log.info(convertedObject.toString());
             createNewExpense(convertedObject);
         } catch (JsonSyntaxException exception) {
@@ -40,7 +43,10 @@ public class ExpenseMQConsumer {
         Expense savedExpense = expenseService.addNewByMQ(expense,
                 UUID.fromString(convertedObject.get("expenseGroupId").getAsString()),
                 convertedObject.get("userId").getAsString());
-        if(savedExpense != null)  log.info("Successfully saved: " + savedExpense);
-        else log.warn("Saving new expense failed");
+        if(savedExpense != null)  {
+            log.info("Successfully saved: " + savedExpense);
+        } else {
+            log.warn("Saving new expense failed");
+        }
     }
 }

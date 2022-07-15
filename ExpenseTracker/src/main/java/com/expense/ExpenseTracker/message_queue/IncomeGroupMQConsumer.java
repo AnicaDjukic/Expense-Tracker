@@ -16,14 +16,17 @@ public class IncomeGroupMQConsumer {
 
     private final IncomeGroupService incomeGroupService;
 
+    private final Gson gson;
+
     public IncomeGroupMQConsumer(IncomeGroupService incomeGroupService) {
         this.incomeGroupService = incomeGroupService;
+        this.gson = new Gson();
     }
 
     @RabbitListener(queues = {"income-groups"})
     public void receiveIncomeGroup(@Payload String fileBody) {
         try {
-            JsonObject convertedObject = new Gson().fromJson(fileBody, JsonObject.class);
+            JsonObject convertedObject = gson.fromJson(fileBody, JsonObject.class);
             log.info(convertedObject.toString());
             createNewIncomeGroup(convertedObject);
         } catch (JsonSyntaxException exception) {
@@ -36,7 +39,10 @@ public class IncomeGroupMQConsumer {
                 convertedObject.get("description").getAsString());
         IncomeGroup savedIncomeGroup = incomeGroupService.addNewByMQ(incomeGroup,
                 convertedObject.get("userId").getAsString());
-        if(savedIncomeGroup != null)  log.info("Successfully saved: " + savedIncomeGroup);
-        else log.warn("Saving new income group failed");
+        if(savedIncomeGroup != null)  {
+            log.info("Successfully saved: " + savedIncomeGroup);
+        } else {
+            log.warn("Saving new income group failed");
+        }
     }
 }

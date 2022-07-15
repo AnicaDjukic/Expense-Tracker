@@ -1,29 +1,29 @@
 queue: expense-groups
 {
-"name": "Trosak",
-"description": "Troskovi neki",
+"name": "Expense group",
+"description": "Some expenses",
 "userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
 }
 
 queue: expenses
 {
-"description": "Novi trosak",
-"amount": 10,
+"description": "New expense",
+"amount": 100,
 "expenseGroupId": "46f8f3fa-e285-4895-8b9f-29391c46321f",
 "userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
 }
 
 queue: income-groups
 {
-"name": "Prihod",
-"description": "Prihod neki",
+"name": "Income group",
+"description": "Some incomes",
 "userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
 }
 
 queue: incomes
 {
-"description": "Novi prihod",
-"amount": 10,
+"description": "New income",
+"amount": 100,
 "incomeGroupId": "d413d87f-6fde-4a5a-aeed-c4b9c50b311e",
 "userId" : "a8e2f208-b667-44e7-ae3a-9d0e044658b2"
 }
