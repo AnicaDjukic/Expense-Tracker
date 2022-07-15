@@ -2,7 +2,6 @@ package com.expense.ExpenseTracker.security;
 
 import com.expense.ExpenseTracker.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -91,11 +90,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // Our public endpoints
                 .antMatchers("/api/v1/**").permitAll()
-                /*.antMatchers(HttpMethod.GET, "/api/author/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/author/search").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/book/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/book/search").permitAll()*/
-                // Our private endpoints
                 .antMatchers("/api/test/**").permitAll() // permit the class of test
                 .antMatchers("/**").permitAll() // permit all the routers after swagger-ui.html
                 .anyRequest().authenticated();
@@ -122,7 +116,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         // Autentifikacija ce biti ignorisana ispod navedenih putanja (kako bismo ubrzali pristup resursima)
         // Zahtevi koji se mecuju za web.ignoring().antMatchers() nemaju pristup SecurityContext-u
 
