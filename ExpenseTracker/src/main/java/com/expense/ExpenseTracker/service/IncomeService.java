@@ -3,6 +3,7 @@ package com.expense.ExpenseTracker.service;
 import com.expense.ExpenseTracker.dto.IncomeRequestDto;
 import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
+import com.expense.ExpenseTracker.message_queue.QueueSender;
 import com.expense.ExpenseTracker.model.Income;
 import com.expense.ExpenseTracker.model.QIncome;
 import com.expense.ExpenseTracker.model.User;

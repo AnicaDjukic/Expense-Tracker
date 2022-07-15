@@ -2,20 +2,17 @@ package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
 import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
-import com.expense.ExpenseTracker.exception.ExceptionResponse;
 import com.expense.ExpenseTracker.exception.NameAlreadyExistsException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
+import com.expense.ExpenseTracker.message_queue.QueueSender;
 import com.expense.ExpenseTracker.model.ExpenseGroup;
 import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.ExpenseGroupRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;

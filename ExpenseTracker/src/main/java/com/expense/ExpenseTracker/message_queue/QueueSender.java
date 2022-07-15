@@ -1,4 +1,4 @@
-package com.expense.ExpenseTracker.service;
+package com.expense.ExpenseTracker.message_queue;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

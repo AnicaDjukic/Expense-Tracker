@@ -2,8 +2,8 @@ package com.expense.ExpenseTracker.service;
 
 import com.expense.ExpenseTracker.dto.ExpenseRequestDto;
 import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
-import com.expense.ExpenseTracker.exception.NameAlreadyExistsException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
+import com.expense.ExpenseTracker.message_queue.QueueSender;
 import com.expense.ExpenseTracker.model.Expense;
 import com.expense.ExpenseTracker.model.QExpense;
 import com.expense.ExpenseTracker.model.User;

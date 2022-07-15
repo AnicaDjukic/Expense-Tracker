@@ -4,6 +4,7 @@ import com.expense.ExpenseTracker.dto.ExpenseGroupRequestDto;
 import com.expense.ExpenseTracker.exception.AccessResourceDeniedException;
 import com.expense.ExpenseTracker.exception.NameAlreadyExistsException;
 import com.expense.ExpenseTracker.exception.NotFoundException;
+import com.expense.ExpenseTracker.message_queue.QueueSender;
 import com.expense.ExpenseTracker.model.IncomeGroup;
 import com.expense.ExpenseTracker.model.User;
 import com.expense.ExpenseTracker.repository.IncomeGroupRepository;
